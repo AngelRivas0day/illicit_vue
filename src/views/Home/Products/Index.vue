@@ -5,7 +5,7 @@
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Doloribus labore neque ipsam corporis! Dolorum alias maxime voluptates quisquam, vitae fuga earum blanditiis deleniti eligendi dolores, in, necessitatibus omnis ad quibusdam quos reprehenderit sed repudiandae enim quia?<br>Itaque deserunt cum provident enim aliquid illum, expedita obcaecati. Alias harum odit minus, praesentium blanditiis tenetur tempore voluptatibus nostrum, autem excepturi in quae perferendis!</p>
         </div>
         <div class="our-products__image">
-            <img :src="image" alt="">
+            <img src="@/assets/img/isometric_glasses.jpeg" alt="">
         </div>
     </div>
 </template>
@@ -14,7 +14,7 @@
 export default {
     name: 'Products',
     data: () => ({
-        image: '../../assets/img/isometric_glasses.jpeg'
+        image: '...'
     })
 }
 </script>
@@ -25,6 +25,7 @@ export default {
 .our-products{
     @include flex("column","center","center");
     padding: 20px 15px;
+    background: #f7f7f7;
     .our-products__content{
         flex: 1;
         h1{
@@ -54,19 +55,25 @@ export default {
         }
     }
     @media #{$break-medium}{
-        @include flex("row","stretch","center");
-        padding: 80px 25px;
-         .our-products__content{
-        flex: 1;
-        h1{
-            font-size: 60px;
-            line-height: 4rem;
-            margin-bottom: 25px;
+        @include flex("row","center","center");
+        padding: 0px 25px;
+        .our-products__content{
+            flex: 1;
+            h1{
+                font-size: 55px;
+                line-height: 4rem;
+                margin-bottom: 25px;
+            }
+            p{
+                font-size: 16px;
+            }
         }
-        p{
-            font-size: 17px;
+        .our-products__image{
+            flex: 1.2;
+            img{
+                height: 90vH;
+            }
         }
-    }
     }
 }
 </style>

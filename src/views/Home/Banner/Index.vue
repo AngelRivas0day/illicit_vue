@@ -10,7 +10,7 @@
                 :mouseDrag="true"
                 :touchDrag="true"
                 :pullDrag="true"
-                :navSpeed="1000"
+                :navSpeed="2000"
                 :autoplay="true"
                 :autoplaySpeed="false"
             >

@@ -26,11 +26,16 @@
                         <img src="" alt="" />
                     </div>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
-                        <md-button class="mb-2 actions__log md-icon-button md-dense">
-                            <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
-                        </md-button>
                         <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
-                            <md-badge class="mr-3" md-content="1">
+                            <md-button md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
+                                <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
+                            </md-button>
+                            <md-menu-content>
+                                <Auth />
+                            </md-menu-content>
+                        </md-menu>
+                        <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
+                            <md-badge class="mr-0 mr-md-3" md-content="1">
                                 <md-button md-menu-trigger class="mb-2 actions__fav md-icon-button md-dense mr-3">
                                     <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">favorite</md-icon>
                                 </md-button>
@@ -40,7 +45,10 @@
                             </md-menu-content>
                         </md-menu>
                         <div class="navbar__button">
-                            <div class="menu" :style="'color:'+(whiteIcons ? 'white' : '#333333')" @click="showNavigation = true">
+                            <div
+                            class="menu"
+                            :style="'color:'+(whiteIcons ? 'white' : '#333333')"
+                            @click="showNavigation = true">
                                 <div :style="'background:'+(whiteIcons ? 'white' : '#333333')" class="bar"></div>
                                 <div :style="'background:'+(whiteIcons ? 'white' : '#333333')" class="bar"></div>
                                 <div :style="'background:'+(whiteIcons ? 'white' : '#333333')" class="bar"></div>
@@ -58,11 +66,12 @@
 <script>
 import Footer from "@/components/Footer";
 import Favs from '@/components/Favs'
+import Auth from '@/components/Auth'
 import { mapState } from 'vuex'
 
 export default {
     name: "MainLayout",
-    components: { Footer, Favs },
+    components: { Footer, Favs, Auth },
     mounted(){
         console.log("Mounted: ", this.whiteIcons);
     },
@@ -96,10 +105,8 @@ export default {
 
 .md-drawer__{
     z-index: 300 !important;
-    width: 80vw;
-    .group{
-
-    }
+    width: 50vw;
+    min-width: 300px;
     .sidenav__menu-content{
         height: 100%;
         width: 100%;
@@ -151,7 +158,7 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300");
 .navbar {
     box-sizing: border-box;
-    padding: 10px 120px 0 25px;
+    padding: 10px 50px 0 25px;
     position: fixed;
     width: 100%;
     top: 0;
@@ -166,9 +173,12 @@ export default {
         flex-direction: row;
         height: 50px;
     }
+    @media #{$break-medium}{
+        padding: 10px 110px 0 25px;
+    }
 }
 
-.menu {
+.menu{
     display: inline-block;
     position: relative;
     width: 30px;
@@ -178,37 +188,36 @@ export default {
     font-size: 30px;
     font-family: "Josefin Sans", sans-serif;
     cursor: pointer;
-}
-.menu::before,
-.menu::after {
-    position: absolute;
-    transition: 0.4s ease;
-    opacity: 0;
-    pointer-events: none;
-}
-.menu:before {
-    content: "M \00a0 \00a0 \00a0 \00a0 \00a0U";
-    top: 0px;
-    left: -100%;
-    width: 215px;
-}
-.menu:after {
-    content: "N";
-    top: 50px;
-    left: 96%;
-}
-.menu:hover::before,
-.menu:hover::after {
-    top: 4px;
-    opacity: 1;
-    transition: 0.2s ease, opacity 0.17s 0.03s ease-in;
-}
-
-.bar {
-    width: 80%;
-    height: 3px;
-    margin: 0 auto 6px;
-    transition: transform 0.4s ease;
+    @media #{$break-medium}{
+        &:after, &:before{
+            position: absolute;
+            transition: 0.4s ease;
+            opacity: 0;
+            pointer-events: none;
+        }
+        &:before{
+            content: "M \00a0 \00a0 \00a0 \00a0 \00a0U";
+            top: 0px;
+            left: -100%;
+            width: 215px;
+        }
+        &:after{
+            content: "N";
+            top: 50px;
+            left: 96%;
+        }
+        &:hover:after,&:hover:before{
+            top: 4px;
+            opacity: 1;
+            transition: 0.2s ease, opacity 0.17s 0.03s ease-in;
+        }
+    }
+    .bar{
+        width: 80%;
+        height: 3px;
+        margin: 0 auto 6px;
+        transition: transform 0.4s ease;
+    }
 }
 
 ::v-deep .md-overlay{
