@@ -7,9 +7,8 @@ import {
     MdBadge,
     MdMenu,
     MdList,
-    // MdTextarea,
     MdField,
-    // MdInput
+    MdCard
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -27,6 +26,5 @@ Vue.use(MdIcon)
 Vue.use(MdBadge)
 Vue.use(MdMenu)
 Vue.use(MdList)
-// Vue.use(MdTextarea)
 Vue.use(MdField)
-// Vue.use(MdInput)
+Vue.use(MdCard)

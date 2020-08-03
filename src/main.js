@@ -9,6 +9,7 @@ import './plugins/OwlCarousel'
 import './plugins/Stripe'
 import './plugins/GoogleMaps'
 import './plugins/VueResponsive'
+import './plugins/Vuelidate'
 // directives
 import './directives'
 // styles

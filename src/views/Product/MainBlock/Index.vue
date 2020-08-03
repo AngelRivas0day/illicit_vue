@@ -36,7 +36,11 @@ export default {
     },
     methods: {
         buy(){
-            console.log("Buy!");
+            console.log("Buy!")
+            this.$router.push({
+                name: 'Checkout',
+                params: { id: 1 }
+            })
         }
     }
 }

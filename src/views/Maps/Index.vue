@@ -45,6 +45,7 @@ export default {
     mounted() {
         store.dispatch('background/setWhiteIcons', null, { root: true });
         this.geolocate();
+        this.addMarker();
     },
     destroyed(){
         store.dispatch('background/unsetWhiteIcons', null, { root: true });
@@ -247,6 +248,7 @@ export default {
         // receives a place object via the autocomplete component
         setPlace(place) {
             this.currentPlace = place;
+            console.log("Place: ", JSON.stringify(place));
         },
         addMarker() {
             if (this.currentPlace) {
