@@ -3,6 +3,12 @@
         <div class="maps-inner">
             <div class="maps__side">
                 <div class="map__side-inner">
+                    <label>
+                        <gmap-autocomplete
+                        @place_changed="setPlace">
+                        </gmap-autocomplete>
+                        <button @click="addMarker">Add</button>
+                    </label>
                     <h1>test</h1>
                     <span
                         >Lorem ipsum dolor sit amet consectetur, adipisicing
@@ -28,7 +34,7 @@
                     <gmap-marker
                         :key="index"
                         v-for="(m, index) in markers"
-                        :position="m.position"
+                        :="m.position"
                         @click="center = m.position"
                     ></gmap-marker>
                 </gmap-map>
@@ -248,7 +254,7 @@ export default {
         // receives a place object via the autocomplete component
         setPlace(place) {
             this.currentPlace = place;
-            console.log("Place: ", JSON.stringify(place));
+            console.log("Place: ", place);
         },
         addMarker() {
             if (this.currentPlace) {

@@ -113,7 +113,7 @@ export default {
                     z-index: -1;
                     position: absolute;
                     content: '';
-                    background-color: rgb(147,41,32);
+                    background-color: #2ec5c5;
                     width: 30%;
                     height: 100%;
                     left: 0px;
