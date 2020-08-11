@@ -1,55 +1,47 @@
 <template>
-    <div class="login">
-        <div class="login__form">
-            <div class="form-top w-100">
-                <div class="row">
-                    <div class="col-6">
-                        <p class="ml-5">Inicio de sesi&oacute;n</p>
-                    </div>
-                    <div class="col-6 text-right">
-                        <p class="mr-5">ILLICIT</p>
-                    </div>
-                </div>
-            </div>
-            <form @submit="onSubmit" class="row">
-                <div class="col-xs-12 col-sm-12">
-                    <md-field>
-                        <md-icon class="md-accent">alternate_email</md-icon>
-                        <label>Correo</label>
-                        <md-input v-model="form.email"></md-input>
-                    </md-field>
-                </div>
-                <div class="col-xs-12 col-sm-12">
-                    <md-field>
-                        <md-icon v-if="!isPasswordValid" class="md-accent">vpn_key</md-icon>
-                        <md-icon v-if="isPasswordValid" class="md-accent">done</md-icon>
-                        <label>Contrase&ntilde;a</label>
-                        <md-input type="password" v-model="form.password"></md-input>
-                    </md-field>
-                </div>
+    <div class="auth__form">
+        <div class="form-top w-100">
+            <div class="row">
                 <div class="col-6">
-                    <md-button to="/registro" class="login-button" type="button">Registrarse</md-button>
+                    <p class="ml-5">Inicio de sesi&oacute;n</p>
                 </div>
-                <div class="col-6">
-                    <md-button :disabled="isFormValid" class="register-button" type="submit">Iniciar sesi&oacute;n</md-button>
-                </div>
-            </form>
-            <div class="form-bottom w-100">
-                <div class="row">
-                    <div class="col-6">
-                        <router-link class='button-action ml-5' to="/">T&eacute;rminos y codiciones</router-link>
-                    </div>
-                    <div class="col-6 text-right">
-                        <router-link class='button-action mr-5' to="/">Pol&iacute;tica de privacidad</router-link>
-                    </div>
+                <div class="col-6 text-right">
+                    <p class="mr-5">ILLICIT</p>
                 </div>
             </div>
         </div>
-        <div class="login__image">
-            <div class="image__logo">
-                <!-- <img src="" alt=""> -->
+        <form @submit="onSubmit" class="row">
+            <div class="col-xs-12 col-sm-12">
+                <md-field>
+                    <md-icon class="md-accent">alternate_email</md-icon>
+                    <label>Correo</label>
+                    <md-input v-model="form.email"></md-input>
+                </md-field>
             </div>
-            <img src="@/assets/img/login_bg.jpg" alt="">
+            <div class="col-xs-12 col-sm-12">
+                <md-field>
+                    <md-icon v-if="!isPasswordValid" class="md-accent">vpn_key</md-icon>
+                    <md-icon v-if="isPasswordValid" class="md-accent">done</md-icon>
+                    <label>Contrase&ntilde;a</label>
+                    <md-input type="password" v-model="form.password"></md-input>
+                </md-field>
+            </div>
+            <div class="col-6">
+                <md-button @click="changeForm" class="login-button" type="button">Registrarse</md-button>
+            </div>
+            <div class="col-6">
+                <md-button :disabled="!isFormValid" class="register-button" type="submit">Iniciar sesi&oacute;n</md-button>
+            </div>
+        </form>
+        <div class="form-bottom w-100">
+            <div class="row">
+                <div class="col-6">
+                    <router-link class='button-action ml-5' to="/">T&eacute;rminos y codiciones</router-link>
+                </div>
+                <div class="col-6 text-right">
+                    <router-link class='button-action mr-5' to="/">Pol&iacute;tica de privacidad</router-link>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -76,6 +68,9 @@ export default {
             if(this.errors.length == 0){
                 console.log("No errors")
             }
+        },
+        changeForm(){
+            this.$emit('clicked', 'Register')
         }
     },
     computed: {
@@ -111,9 +106,7 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/_vars';
 
-.login{
-    background: #dadada;
-    &__form{
+    .auth__form{
         flex: 1;
         background: white;
         box-shadow: inset 2px 0px 300px -121px rgba(0, 0, 0, 0.65);
@@ -151,37 +144,11 @@ export default {
                 border: 1.2px solid #2ec5c5;
                 color: black;
             }
-        }
-    }
-    &__image{
-        flex: 1;
-    }
-    @media #{$break-medium}{
-        height: 100vH;
-        @include flex("row","stretch","center");
-        &__form{
-            form{
-                width: 60%;
-            }
-        }
-        &__image{
-            position: relative;
-            .image__logo{
-                width: 30px;
-                height: 30px;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(255,255,255,.6);
-            }
-            img{
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
+            @media #{$break-medium}{
+                width: 60% !important;
             }
         }
     }
-}
 
 ::v-deep .md-field.md-theme-default{
     color: black !important;

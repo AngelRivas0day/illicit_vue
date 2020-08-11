@@ -124,8 +124,10 @@ export default {
         position: relative;
         @include flex("row","center","center");
         .form-inner{
-            width: 100%;
+            width: 70%;
             padding: 0 25px;
+            display: block;
+            margin: 0 auto;
             .form-row{
                 padding-bottom: 80px;
             }

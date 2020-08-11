@@ -26,14 +26,9 @@
                         <img src="" alt="" />
                     </div>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
-                        <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
-                            <md-button md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
-                                <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
-                            </md-button>
-                            <md-menu-content>
-                                <Auth />
-                            </md-menu-content>
-                        </md-menu>
+                        <md-button to="/auth" md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
+                            <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
+                        </md-button>
                         <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
                             <md-badge class="mr-0 mr-md-3" md-content="1">
                                 <md-button md-menu-trigger class="mb-2 actions__fav md-icon-button md-dense mr-3">
@@ -66,12 +61,11 @@
 <script>
 import Footer from "@/components/Footer";
 import Favs from '@/components/Favs'
-import Auth from '@/components/Auth'
 import { mapState } from 'vuex'
 
 export default {
     name: "MainLayout",
-    components: { Footer, Favs, Auth },
+    components: { Footer, Favs },
     mounted(){
         console.log("Mounted: ", this.whiteIcons);
     },

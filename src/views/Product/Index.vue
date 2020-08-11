@@ -1,54 +1,40 @@
 <template>
     <div class="product">
-        <MainBlock :productImages="productImages" :productInfo="productInfo" />
+        <MainBlock />
+        <Features />
     </div>
 </template>
 
 <script>
 import MainBlock from './MainBlock/Index'
+import Features from './Features/Index'
+import store from '@/store'
 
 export default {
     name: 'Product',
-    components: {MainBlock},
-    beforeMount(){
+    components: {MainBlock,Features},
+    mounted(){
+        this.itemId = this.$route.params.id
         this.fetchData();
     },
     data: () => ({
+        itemId: null,
         product: {}
     }),
-    computed: {
-        productImages(){
-            return this.product.colors;
-        },
-        productInfo(){
-            return {
-                id: this.product.id,
-                name: this.product.name,
-                description: this.product.description,
-                price: 2000
-            };
-        }
-    },
     methods: {
         fetchData(){
             console.log(this.$route.params.id);
-            this.product = {
-                id: this.$route.params.id,
-                name: 'Rodia Raskolnikov',
-                description: 'Lorem ipsum dolor sit amet, consectetur aditis',
-                colors: [
-                    {
-                        id: 1,
-                        color: '#333333',
-                        images: [
-                            {
-                                image: "",
-                                lazyLoad: ""
-                            }
-                        ]
-                    }
-                ]
-            }
+            store.dispatch('loading/isLoading',null,{root:true})
+            store.dispatch('product/getGlass', this.itemId, {root:true})
+                .then(resp=>{
+                    console.log("Lente desde vuex: ",resp)
+                })
+                .catch(err=>{
+                    console.log("Error desde vuex: ", err)
+                })
+                .finally(()=>{
+                    store.dispatch('loading/notLoading',null,{root:true})
+                })
         }
     }
 }

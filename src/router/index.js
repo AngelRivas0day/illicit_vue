@@ -10,14 +10,9 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Home" */ '../views/Home/Index.vue')
   },
   {
-    path: '/registro',
-    name: 'Register',
-    component: () => import(/* webpackChunkName: "Register" */ '../views/Auth/Register/Index.vue')
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: () => import(/* webpackChunkName: "Register" */ '../views/Auth/Login/Index.vue')
+    path: '/auth',
+    name: 'Auth',
+    component: () => import(/* webpackChunkName: "Register" */ '../views/Auth/Index.vue')
   },
   {
     path: '/productos',

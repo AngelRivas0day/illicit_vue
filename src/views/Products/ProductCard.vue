@@ -1,15 +1,15 @@
 <template>
     <div class="product__card">
         <div @click="openProduct(product)" class="card__image">
-            <img :src="product.image" alt="">
+            <img :src="product.designs[0].mainImage" alt="">
             <div class="card__image--hover">
                 <span>{{product.name}}</span>
             </div>
         </div>
         <div class="card__colors">
             <ul class="colors__list">
-                <template v-for="color in product.colors">
-                    <li :key="color.name" :click="setColor(color)" class="list__item" :class="'background:'+color.value"></li>
+                <template v-for="design in product.designs">
+                    <li :key="design.name" :click="setColor(design)" class="list__item" :style="'background-color:'+design.color.hex"></li>
                 </template>
             </ul>
         </div>
@@ -92,8 +92,8 @@ export default {
             margin: 0;
             text-align: center;
             .list__item{
-                width: max(12px, 12px);
-                height: max(12px, 12px);
+                width: 12px;
+                height: 12px;
                 border-radius: 100%;
                 margin: 0 4px;
                 cursor: pointer;
