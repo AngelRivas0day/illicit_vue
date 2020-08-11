@@ -52,6 +52,7 @@ import {
     minLength,
     email
 } from 'vuelidate/lib/validators'
+import store from '@/store'
 
 export default {
     name: 'Login',
@@ -64,10 +65,19 @@ export default {
         submitStatus: null
     }),
     methods: {
-        onSubmit(){
-            if(this.errors.length == 0){
-                console.log("No errors")
-            }
+        onSubmit(e){
+            e.preventDefault();
+            store.dispatch('user/login', {
+                email: this.form.email,
+                password: this.form.password
+            })
+            .then(resp=>{
+                console.log(resp)
+                this.$router.push({name: 'UserProfile'})
+            })
+            .catch(err=>{
+                console.log(err)
+            })
         },
         changeForm(){
             this.$emit('clicked', 'Register')

@@ -26,7 +26,7 @@
                         <img src="" alt="" />
                     </div>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
-                        <md-button to="/auth" md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
+                        <md-button @click="goToLogin" md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
                             <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
                         </md-button>
                         <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
@@ -66,12 +66,6 @@ import { mapState } from 'vuex'
 export default {
     name: "MainLayout",
     components: { Footer, Favs },
-    mounted(){
-        console.log("Mounted: ", this.whiteIcons);
-    },
-    updated(){
-        console.log("Updated: ", this.whiteIcons);
-    },
     data: () => ({
         showNavigation: false,
         menuOptions: [
@@ -89,7 +83,19 @@ export default {
     computed: {
         ...mapState('background',{
             whiteIcons: 'whiteIcons'
+        }),
+        ...mapState('user',{
+            token: 'token'
         })
+    },
+    methods: {
+        goToLogin(){
+            if(this.token != ''){
+                this.$router.push({name: 'UserProfile'})
+            }else{
+                this.$router.push({name: 'Auth'})
+            }
+        }
     }
 };
 </script>

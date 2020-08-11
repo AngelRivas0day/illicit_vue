@@ -118,8 +118,7 @@ export default {
                 email: this.form.email,
                 password: this.form.password,
             };
-            store
-                .dispatch("user/register", user, { root: true })
+            store.dispatch("user/register", user, { root: true })
                 .then((resp) => {
                     console.log(resp);
                 })

@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import User from '@/views/User/Index.vue'
 
 Vue.use(VueRouter)
 
@@ -13,6 +14,15 @@ Vue.use(VueRouter)
     path: '/auth',
     name: 'Auth',
     component: () => import(/* webpackChunkName: "Register" */ '../views/Auth/Index.vue')
+  },
+  {
+    path: '/user',
+    name: 'User',
+    component: User,
+    children: [
+      { path: '', name: 'UserProfile', component: () => import('../views/User/UserInfo/Index.vue') },
+      { path: '', name: 'UserHistory', component: () => import('../views/User/UserHistory/Index.vue') }
+    ]
   },
   {
     path: '/productos',

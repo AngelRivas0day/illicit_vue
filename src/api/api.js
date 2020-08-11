@@ -42,7 +42,7 @@ function getAll(endpoint){
 }
 
 function patch(endpoint, id, data){
-    const config = setHeaders('x-www-url-formencoded')
+    const config = setHeaders('json')
     return Axios.patch(`${base_url}/${endpoint}/${id}`, data, config)
 }
 

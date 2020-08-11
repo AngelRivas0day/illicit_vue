@@ -5,16 +5,18 @@ export default {
     namespaced: true,
     state: {
         isLoading: false,
-        user: {},
-        success: false
+        userName: '',
+        success: false,
+        token: localStorage.getItem('token') || null
     },
     mutations: {
         SET_LOADING(state, paylaod){
             state.isLoading = paylaod
         },
-        AUTH_SUCCESS(state, { user, success }){
-            state.user = user
-            state.success = success
+        AUTH_SUCCESS(state, {userName, token}){
+            state.userName = userName
+            state.success = true
+            state.token = token
         },
         AUTH_ERROR( state, success ){
             state.success = success
@@ -32,7 +34,8 @@ export default {
                 commit('SET_LOADING', true)
                 api.post('clients/login', {email, password})
                     .then(resp=>{
-                        // commit('AUTH_SUCCESS', {})
+                        localStorage.setItem('token', resp.data.token)
+                        commit('AUTH_SUCCESS', {userName: resp.data.name, token: resp.data.token})
                         resolve(resp)
                     })
                     .catch(err=>{
