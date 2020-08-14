@@ -6,6 +6,8 @@ import background from './modules/background'
 import product from './modules/product'
 import loading from './modules/loading'
 import user from './modules/user'
+import banners from './modules/banners'
+import addresses from './modules/addresses'
 
 Vue.use(Vuex)
 
@@ -15,6 +17,8 @@ export default new Vuex.Store({
     background,
     product,
     loading,
-    user
+    user,
+    banners,
+    addresses
   }
 })

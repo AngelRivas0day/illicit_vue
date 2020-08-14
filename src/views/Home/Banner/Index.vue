@@ -1,6 +1,6 @@
 <template>
     <div id="banner">
-        <div class="banner-inner">
+        <div v-if="banners.length > 0" class="banner-inner">
             <carousel
                 class="carousel"
                 :items="1"
@@ -14,7 +14,7 @@
                 :autoplay="true"
                 :autoplaySpeed="false"
             >
-                <template v-for="slide in slides">
+                <template v-for="slide in banners">
                     <div :key="slide.id" class="slide">
                         <div class="slide-inner">
                             <div class="slide-inner__content">
@@ -25,8 +25,8 @@
                                 </h1>
                                 <router-link
                                     class="slide__button"
-                                    :to="slide.url"
-                                    >VER MAS</router-link
+                                    :to="slide.buttonUrl"
+                                    >{{slide.buttonText}}</router-link
                                 >
                             </div>
                             <img
@@ -43,33 +43,24 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
     name: "Banner",
-    data: () => ({
-        slides: [
-            {
-                id: 1,
-                title: "ILLICIT ES IPSUM",
-                url: "productos",
-                image: "https://source.unsplash.com/1600x900?glasses,white",
-                placeholderImage: "",
-            },
-            {
-                id: 2,
-                title: "LOREM IPSUM DOLOR SIT AMET",
-                url: "/",
-                image: "https://source.unsplash.com/1600x900?eyewear,white",
-                placeholderImage: "",
-            },
-            {
-                id: 3,
-                title: "CONSECTETUR ADITIS",
-                url: "/",
-                image: "https://source.unsplash.com/1600x900?glass,white",
-                placeholderImage: "",
-            },
-        ],
-    }),
+    mounted(){
+        this.getData()
+        console.log(this.banners)
+    },
+    computed: {
+        ...mapState('banners',{
+            banners: 'banners'
+        })
+    },
+    methods: {
+        ...mapActions('banners',{
+            getData: 'getBanners'
+        })
+    }
 };
 </script>
 
@@ -99,7 +90,8 @@ export default {
             }
             .slide__button{
                 display: block;
-                width: 120px;
+                width: auto;
+                max-width: 200px;
                 transition: all .3s;
                 text-align: center;
                 color: black;

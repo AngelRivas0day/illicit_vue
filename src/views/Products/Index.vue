@@ -1,57 +1,57 @@
 <template>
     <div class="products">
-    <div class="products__header">
-        <div class="header-inner">
-           <img src="https://source.unsplash.com/1600x900?glasses,white" alt="">
+        <div class="products__header">
+            <div class="header-inner">
+            <img src="https://source.unsplash.com/1600x900?glasses,white" alt="">
+            </div>
         </div>
-    </div>
-    <div class="products__content">
-        <div class="container">
-            <div class="row">
-                <template v-if="glasses.length">
-                    <div v-for="glass in glasses" :key="glass.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                        <template v-if="(glass.designs.length) > 0">
-                            <ProductCard :product="glass" />
+        <div class="products__content">
+            <div class="container">
+                <div class="row">
+                    <template v-if="glasses.length">
+                        <template v-for="glass in glasses">
+                            <div
+                                :key="glass.id"
+                                v-if="(glass.designs.length) > 0"
+                                class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4"
+                            >
+                                <template>
+                                    <ProductCard :product="glass" />
+                                </template>
+                            </div>
                         </template>
+                    </template>
+                    <div class="col-12 text-center">
+                        <md-button @click="getData" class="md-raised md-dense md-primary">
+                            ver m&aacute;s
+                        </md-button>
                     </div>
-                </template>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
 import ProductCard from './ProductCard'
-import store from '@/store'
-import { getGlasses } from '@/api/products'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Products',
     components: {ProductCard},
-    data: () => ({
-        glasses: [],
-        start: 0,
-        limit: 20
-    }),
+    computed: {
+        ...mapState('product',{
+            glasses: 'glasses',
+            isLoading: 'isLoading'
+        })
+    },
     mounted(){
         this.getData()
     },
     methods: {
-        getData(){
-            store.dispatch('loading/isLoading',null,{root:true})
-            getGlasses(this.start, this.limit)
-                .then(resp=>{
-                    console.log(resp)
-                    this.glasses = resp.data
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
-                .finally(()=>{
-                    store.dispatch('loading/notLoading',null,{root:true})
-                })
-        }
+        ...mapActions('product',{
+            getData: 'getGlasses'
+        })
     }
 }
 </script>

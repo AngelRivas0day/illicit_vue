@@ -19,10 +19,9 @@ Vue.use(VueRouter)
     path: '/user',
     name: 'User',
     component: User,
-    children: [
-      { path: '', name: 'UserProfile', component: () => import('../views/User/UserInfo/Index.vue') },
-      { path: '', name: 'UserHistory', component: () => import('../views/User/UserHistory/Index.vue') }
-    ]
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/productos',

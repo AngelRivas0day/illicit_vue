@@ -3,12 +3,6 @@
         <div class="maps-inner">
             <div class="maps__side">
                 <div class="map__side-inner">
-                    <label>
-                        <gmap-autocomplete
-                        @place_changed="setPlace">
-                        </gmap-autocomplete>
-                        <button @click="addMarker">Add</button>
-                    </label>
                     <h1>test</h1>
                     <span
                         >Lorem ipsum dolor sit amet consectetur, adipisicing
@@ -34,7 +28,7 @@
                     <gmap-marker
                         :key="index"
                         v-for="(m, index) in markers"
-                        :="m.position"
+                        :position="m.position"
                         @click="center = m.position"
                     ></gmap-marker>
                 </gmap-map>
@@ -51,7 +45,6 @@ export default {
     mounted() {
         store.dispatch('background/setWhiteIcons', null, { root: true });
         this.geolocate();
-        this.addMarker();
     },
     destroyed(){
         store.dispatch('background/unsetWhiteIcons', null, { root: true });
@@ -251,23 +244,6 @@ export default {
         },
     }),
     methods: {
-        // receives a place object via the autocomplete component
-        setPlace(place) {
-            this.currentPlace = place;
-            console.log("Place: ", place);
-        },
-        addMarker() {
-            if (this.currentPlace) {
-                const marker = {
-                    lat: this.currentPlace.geometry.location.lat(),
-                    lng: this.currentPlace.geometry.location.lng(),
-                };
-                this.markers.push({ position: marker });
-                this.places.push(this.currentPlace);
-                this.center = marker;
-                this.currentPlace = null;
-            }
-        },
         geolocate: function() {
             navigator.geolocation.getCurrentPosition((position) => {
                 this.center = {

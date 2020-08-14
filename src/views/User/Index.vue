@@ -1,12 +1,18 @@
 <template>
     <div class="profile">
-        <router-view />
+        <TopNav />
+        <Tabs />
     </div>
 </template>
 
 <script>
+import Tabs from './Tabs'
 export default {
-    name: 'User'
+    name: 'User',
+    components: {
+        TopNav: () => import('./TopNav/Index'),
+        Tabs
+    },
 }
 </script>
 

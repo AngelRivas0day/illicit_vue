@@ -8,7 +8,12 @@ import {
     MdMenu,
     MdList,
     MdField,
-    MdCard
+    MdCard,
+    MdTabs,
+    MdSwitch,
+    MdDialog,
+    MdEmptyState,
+    MdChips
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -28,3 +33,8 @@ Vue.use(MdMenu)
 Vue.use(MdList)
 Vue.use(MdField)
 Vue.use(MdCard)
+Vue.use(MdTabs)
+Vue.use(MdSwitch)
+Vue.use(MdDialog)
+Vue.use(MdEmptyState)
+Vue.use(MdChips)

@@ -8,6 +8,42 @@ $terciary-color: "";
 $gray: #C4C4C4;
 $main-green: #2ec5c5;
 
+@mixin white_form{
+    ::v-deep .md-field{
+        color: black !important;
+        input{
+            -webkit-text-fill-color: #333333 !important;
+        }
+        i:after{
+            height: 0px !important;
+        }
+    }
+    
+    ::v-deep .md-textarea{
+        -webkit-text-fill-color: #333333 !important;
+    }
+
+    ::v-deep .md-field.md-theme-default label{
+        color: black !important;
+    }
+    
+    ::v-deep .md-field.md-theme-default.md-focused .md-icon{
+        color: #2ec5c5 !important;
+    }
+    
+    ::v-deep .md-field.md-theme-default:after {
+        background-color: black !important;
+    }
+    
+    ::v-deep .md-field.md-theme-default:before {
+        background-color: black !important;
+    }
+
+    ::v-deep .md-count{
+        color: #333 !important;
+    }
+}
+
 @mixin center-layout{
     min-height: 100vH;
     display: flex;

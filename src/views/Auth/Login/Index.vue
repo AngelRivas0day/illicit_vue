@@ -73,7 +73,7 @@ export default {
             })
             .then(resp=>{
                 console.log(resp)
-                this.$router.push({name: 'UserProfile'})
+                this.$router.push({name: 'User'})
             })
             .catch(err=>{
                 console.log(err)

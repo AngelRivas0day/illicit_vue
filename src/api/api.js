@@ -36,24 +36,50 @@ function getOne(endpoint, id){
     return Axios.get(`${base_url}/${endpoint}/${id}`, config)
 }
 
-function getAll(endpoint){
-    const config = setHeaders('json')
+function getAll(endpoint, isToken = false){
+    var config;
+    if(isToken == true){
+        config = setHeaders('json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders('json')
+    }
     return Axios.get(`${base_url}/${endpoint}`, config)
 }
 
-function patch(endpoint, id, data){
-    const config = setHeaders('json')
+function patch(endpoint, id, data, isToken = false){
+    var config;
+    if(isToken == true){
+        config = setHeaders('json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders('json')
+    }
     return Axios.patch(`${base_url}/${endpoint}/${id}`, data, config)
 }
 
-function post(endpoint, data){
-    const config = setHeaders('json')
+function post(endpoint, data, isToken = false){
+    var config;
+    if(isToken == true){
+        config = setHeaders('json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders('json')
+    }
     return Axios.post(`${base_url}/${endpoint}`, data, config)
+}
+
+function delete_(endpoint, id, isToken = false){
+    var config;
+    if(isToken == true){
+        config = setHeaders('json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders('json')
+    }
+    return Axios.delete(`${base_url}/${endpoint}/${id}`, config)
 }
 
 export {
     getOne,
     getAll,
     patch,
-    post
+    post,
+    delete_
 }

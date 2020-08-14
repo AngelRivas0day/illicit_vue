@@ -7,7 +7,9 @@ export default {
         isLoading: false,
         userName: '',
         success: false,
-        token: localStorage.getItem('token') || null
+        token: localStorage.getItem('token') || null,
+        favorites: [],
+        activeTab: 'UserInfo' //default tab
     },
     mutations: {
         SET_LOADING(state, paylaod){
@@ -26,6 +28,12 @@ export default {
         },
         REGISTER_ERROR( state, paylaod ){
             state.success = paylaod
+        },
+        SET_FAVORITES(state, payload){
+            state.favorites = payload
+        },
+        SET_TAB(state, payload){
+            state.activeTab = payload
         }
     },
     actions: {
@@ -63,6 +71,24 @@ export default {
                         commit('SET_LOADING', false)
                     })
             })
+        },
+        getFavorites({commit}, userId){
+            return new Promise((resolve, reject)=>{
+                api.getOne('clients/favorites', userId)
+                    .then(resp=>{
+                        commit('SET_FAVORITES', resp.data)
+                        resolve(resp.data)
+                    })
+                    .catch(err=>{
+                        reject(err)
+                    })
+            })
+        },
+        setTab({commit}, tab){
+            commit('SET_TAB', tab)
         }
+    },
+    getters: {
+      isLoggedIn: state => !!state.token,
     }
-  }
+}

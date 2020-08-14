@@ -91,7 +91,7 @@ export default {
     methods: {
         goToLogin(){
             if(this.token != ''){
-                this.$router.push({name: 'UserProfile'})
+                this.$router.push({name: 'User'})
             }else{
                 this.$router.push({name: 'Auth'})
             }
