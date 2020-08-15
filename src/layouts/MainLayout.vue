@@ -30,7 +30,7 @@
                             <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
                         </md-button>
                         <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
-                            <md-badge class="mr-0 mr-md-3" md-content="1">
+                            <md-badge class="mr-0 mr-md-3" :md-content="favorites.length">
                                 <md-button md-menu-trigger class="mb-2 actions__fav md-icon-button md-dense mr-3">
                                     <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">favorite</md-icon>
                                 </md-button>
@@ -86,6 +86,9 @@ export default {
         }),
         ...mapState('user',{
             token: 'token'
+        }),
+        ...mapState('favorites',{
+            favorites: 'favorites'
         })
     },
     methods: {

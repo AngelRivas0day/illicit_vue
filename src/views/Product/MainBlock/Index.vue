@@ -2,7 +2,7 @@
     <div class="main-block">
         <div class="main-block__info">
             <div class="info__body">
-                <h1 class="info__title">{{glass.name}}</h1>
+                <h1 @click="addFavorite({id: glass.id, name: glass.name})" class="info__title">{{glass.name}}</h1>
                 <span class="info__price">${{glass.price}}</span>
                 <ul class="info__colors-selector">
                     <template v-for="c in glass.designs">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: 'MainBlock',
@@ -43,6 +43,9 @@ export default {
         currentDesign: {}
     }),
     methods: {
+        ...mapActions('favorites',{
+            addFavorite: 'addFavorite'
+        }),
         buy(){
             console.log("Buy!")
             this.$router.push({

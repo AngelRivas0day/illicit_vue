@@ -31,8 +31,13 @@ function setHeaders(contentType, token = null){
     return config;
 }
 
-function getOne(endpoint, id){
-    const config = setHeaders('json')
+function getOne(endpoint, id, isToken = false){
+    var config;
+    if(isToken == true){
+        config = setHeaders('json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders('json')
+    }
     return Axios.get(`${base_url}/${endpoint}/${id}`, config)
 }
 

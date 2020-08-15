@@ -8,7 +8,6 @@ export default {
         userName: '',
         success: false,
         token: localStorage.getItem('token') || null,
-        favorites: [],
         activeTab: 'UserInfo' //default tab
     },
     mutations: {
@@ -69,18 +68,6 @@ export default {
                     })
                     .finally(()=>{
                         commit('SET_LOADING', false)
-                    })
-            })
-        },
-        getFavorites({commit}, userId){
-            return new Promise((resolve, reject)=>{
-                api.getOne('clients/favorites', userId)
-                    .then(resp=>{
-                        commit('SET_FAVORITES', resp.data)
-                        resolve(resp.data)
-                    })
-                    .catch(err=>{
-                        reject(err)
                     })
             })
         },

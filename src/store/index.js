@@ -8,6 +8,7 @@ import loading from './modules/loading'
 import user from './modules/user'
 import banners from './modules/banners'
 import addresses from './modules/addresses'
+import favorites from './modules/favorites'
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
     loading,
     user,
     banners,
-    addresses
+    addresses,
+    favorites
   }
 })
