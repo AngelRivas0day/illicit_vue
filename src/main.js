@@ -12,6 +12,7 @@ import './plugins/VueResponsive'
 import './plugins/Vuelidate'
 import './plugins/VueNotify'
 import './plugins/VueLazyLoad'
+import './plugins/VueInputMask'
 
 // directives
 import './directives'

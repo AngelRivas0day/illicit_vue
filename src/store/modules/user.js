@@ -82,7 +82,7 @@ export default {
         updateInfo({commit, dispatch}, updatedInfo){
             return new Promise((resolve, reject)=>{
                 commit('SET_LOADING', true)
-                api.patch('clients', updatedInfo, true)
+                api.patch('clients', null,  updatedInfo, true)
                     .then(resp=>{
                         Vue.notify({
                             group: 'user',

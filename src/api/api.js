@@ -51,14 +51,18 @@ function getAll(endpoint, isToken = false){
     return Axios.get(`${base_url}/${endpoint}`, config)
 }
 
-function patch(endpoint, id, data, isToken = false){
+function patch(endpoint, id = null, data, isToken = false){
     var config;
     if(isToken == true){
         config = setHeaders('json', localStorage.getItem('token'))
     }else{
         config = setHeaders('json')
     }
-    return Axios.patch(`${base_url}/${endpoint}/${id}`, data, config)
+    if(id){
+        return Axios.patch(`${base_url}/${endpoint}/${id}`, data, config)
+    }else{
+        return Axios.patch(`${base_url}/${endpoint}`, data, config)
+    }
 }
 
 function post(endpoint, data, isToken = false){
