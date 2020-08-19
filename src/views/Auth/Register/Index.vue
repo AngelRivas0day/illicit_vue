@@ -11,6 +11,9 @@
             </div>
         </div>
         <form @submit="onSubmit" class="row">
+            <div v-if="isLoading" class="col-12 mb-3">
+                <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+            </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field>
                     <md-icon class="md-accent">account_circle</md-icon>
@@ -34,12 +37,8 @@
             </div>
             <div class="col-xs-12 col-sm-12">
                 <md-field>
-                    <md-icon v-if="!isPasswordValid" class="md-accent"
-                        >vpn_key</md-icon
-                    >
-                    <md-icon v-if="isPasswordValid" class="md-accent"
-                        >done</md-icon
-                    >
+                    <md-icon v-if="!isPasswordValid" class="md-accent">vpn_key</md-icon>
+                    <md-icon v-if="isPasswordValid" class="md-accent">done</md-icon>
                     <label>Contrase&ntilde;a</label>
                     <md-input
                         type="password"
@@ -49,18 +48,17 @@
             </div>
             <div class="col-xs-12 col-sm-12">
                 <md-field>
-                    <md-icon v-if="!isRepeatedPasswordValid" class="md-accent"
-                        >warning</md-icon
-                    >
-                    <md-icon v-if="isRepeatedPasswordValid" class="md-accent"
-                        >done</md-icon
-                    >
+                    <md-icon v-if="!isRepeatedPasswordValid" class="md-accent">warning</md-icon>
+                    <md-icon v-if="isRepeatedPasswordValid" class="md-accent">done</md-icon>
                     <label>Repetir contrase&ntilde;a</label>
                     <md-input
                         type="password"
                         v-model="form.repeatedPassword"
                     ></md-input>
                 </md-field>
+            </div>
+            <div v-if="!success" class="col-12 mb-4 text-center">
+                <span class="text-danger">{{ errMessage }}</span>
             </div>
             <div class="col-6">
                 <md-button @click="changeForm" class="login-button" type="button">
@@ -94,7 +92,7 @@
 
 <script>
 import { required, minLength, sameAs, email } from "vuelidate/lib/validators";
-import store from "@/store";
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: "Register",
@@ -110,6 +108,9 @@ export default {
         submitStatus: null,
     }),
     methods: {
+        ...mapActions('user',{
+            register:'register'   
+        }),
         onSubmit(e) {
             e.preventDefault();
             const user = {
@@ -118,7 +119,7 @@ export default {
                 email: this.form.email,
                 password: this.form.password,
             };
-            store.dispatch("user/register", user, { root: true })
+            this.register(user)
                 .then((resp) => {
                     console.log(resp);
                 })
@@ -131,6 +132,11 @@ export default {
         }
     },
     computed: {
+        ...mapState('user', {
+            isLoading: 'isLoading',
+            success: 'success',
+            errMessage: 'errMessage'
+        }),
         isRepeatedPasswordValid() {
             if (
                 this.$v.form.repeatedPassword.sameAsPassword &&
@@ -200,8 +206,11 @@ export default {
         box-shadow: inset 2px 0px 300px -121px rgba(0, 0, 0, 0.65);
         @include center-layout;
         justify-content: space-between;
-        .form-top {
-            margin-top: 30px;
+        .form-top{
+            margin-top: 55px;
+            @media #{$break-large}{
+                margin-top: 30px;
+            }
         }
         .form-bottom {
             margin-bottom: 30px;

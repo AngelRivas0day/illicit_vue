@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <notifications class="mt-1" group="user" />
+        <notifications position="top left" class="mt-1" group="user" />
         <MainLayout />
     </div>
 </template>

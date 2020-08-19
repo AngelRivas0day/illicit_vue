@@ -2,7 +2,12 @@
     <div class="main-block">
         <div class="main-block__info">
             <div class="info__body">
-                <h1 @click="addFavorite({id: glass.id, name: glass.name})" class="info__title">{{glass.name}}</h1>
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <h1 class="info__title">{{glass.name}}</h1>
+                    <md-button @click="addFavorite({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
+                        <md-icon :class="{'md-primary': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
+                    </md-button>
+                </div>
                 <span class="info__price">${{glass.price}}</span>
                 <ul class="info__colors-selector">
                     <template v-for="c in glass.designs">
@@ -23,7 +28,7 @@
                 :key="i" v-show="d.name == currentDesign.name"
                 class="main-block__image"
             >
-                <img :src="i" alt="">
+                <img v-lazy="i" alt="">
             </div>
         </template>
     </div>
@@ -37,17 +42,27 @@ export default {
     computed: {
         ...mapState('product',{
             glass: 'glass'
+        }),
+        ...mapState('favorites',{
+            favorites: 'favorites'
+        })
+    },
+    updated(){
+        this.favorites.forEach(fav => {
+            if(fav.id == this.glass.id){
+                this.isFavorite = true
+            }
         })
     },
     data: ()=>({
-        currentDesign: {}
+        currentDesign: {},
+        isFavorite: false
     }),
     methods: {
         ...mapActions('favorites',{
             addFavorite: 'addFavorite'
         }),
         buy(){
-            console.log("Buy!")
             this.$router.push({
                 name: 'Checkout',
                 params: { id: this.glass.id }
@@ -104,6 +119,11 @@ export default {
             }
             .info__desc{
 
+            }
+            .md-fav{
+                &.not-fav{
+                    color: rgba(0,0,0,.4)
+                }
             }
         }
         .info__actions{

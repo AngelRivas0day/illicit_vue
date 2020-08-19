@@ -1,11 +1,11 @@
 <template>
     <div class="auth">
         <div class="auth__form">
-            <keep-alive>
+            <!-- <keep-alive> -->
                 <component @clicked="changeComponent" :is="activeComponent" />
-            </keep-alive>
+            <!-- </keep-alive> -->
         </div>
-        <div class="auth__image">
+        <div v-responsive.lg.xl class="auth__image">
             <div class="image__logo">
                 <!-- <img src="" alt=""> -->
             </div>

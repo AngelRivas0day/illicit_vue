@@ -13,7 +13,8 @@ import {
     MdSwitch,
     MdDialog,
     MdEmptyState,
-    MdChips
+    MdChips,
+    MdProgress
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -38,3 +39,4 @@ Vue.use(MdSwitch)
 Vue.use(MdDialog)
 Vue.use(MdEmptyState)
 Vue.use(MdChips)
+Vue.use(MdProgress)

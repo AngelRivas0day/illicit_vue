@@ -11,20 +11,28 @@
             </div>
         </div>
         <form @submit="onSubmit" class="row">
+            <div v-if="isLoading" class="col-12">
+                <md-progress-bar md-mode="indeterminate"></md-progress-bar>
+            </div>
             <div class="col-xs-12 col-sm-12">
                 <md-field>
-                    <md-icon class="md-accent">alternate_email</md-icon>
+                    <md-icon v-if="!success" class="md-primary">warning</md-icon>
+                    <md-icon v-if="success" class="md-accent">alternate_email</md-icon>
                     <label>Correo</label>
                     <md-input v-model="form.email"></md-input>
                 </md-field>
             </div>
             <div class="col-xs-12 col-sm-12">
                 <md-field>
-                    <md-icon v-if="!isPasswordValid" class="md-accent">vpn_key</md-icon>
-                    <md-icon v-if="isPasswordValid" class="md-accent">done</md-icon>
+                    <md-icon v-if="!success" class="md-primary">warning</md-icon>
+                    <md-icon v-if="!isPasswordValid && success" class="md-accent">vpn_key</md-icon>
+                    <md-icon v-if="isPasswordValid && success" class="md-accent">done</md-icon>
                     <label>Contrase&ntilde;a</label>
                     <md-input type="password" v-model="form.password"></md-input>
                 </md-field>
+            </div>
+            <div v-if="!success" class="col-12 mb-4 text-center">
+                <span class="text-danger">{{ errMessage }}</span>
             </div>
             <div class="col-6">
                 <md-button @click="changeForm" class="login-button" type="button">Registrarse</md-button>
@@ -52,7 +60,7 @@ import {
     minLength,
     email
 } from 'vuelidate/lib/validators'
-import store from '@/store'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Login',
@@ -65,9 +73,12 @@ export default {
         submitStatus: null
     }),
     methods: {
+        ...mapActions('user',{
+            login:'login'
+        }),
         onSubmit(e){
             e.preventDefault();
-            store.dispatch('user/login', {
+            this.login({
                 email: this.form.email,
                 password: this.form.password
             })
@@ -97,7 +108,12 @@ export default {
             }else{
                 return false
             }
-        }
+        },
+        ...mapState('user',{
+            success: 'success',
+            isLoading: 'isLoading',
+            errMessage: 'errMessage'
+        })
     },
     validations: {
         form: {
@@ -123,7 +139,10 @@ export default {
         @include center-layout;
         justify-content: space-between;
         .form-top{
-            margin-top: 30px;
+            margin-top: 55px;
+            @media #{$break-large}{
+                margin-top: 30px;
+            }
         }
         .form-bottom{
             margin-bottom: 30px;

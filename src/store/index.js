@@ -9,6 +9,7 @@ import user from './modules/user'
 import banners from './modules/banners'
 import addresses from './modules/addresses'
 import favorites from './modules/favorites'
+import maps from './modules/maps'
 
 Vue.use(Vuex)
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     user,
     banners,
     addresses,
-    favorites
+    favorites,
+    maps
   }
 })

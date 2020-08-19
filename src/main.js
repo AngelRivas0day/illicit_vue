@@ -11,6 +11,7 @@ import './plugins/GoogleMaps'
 import './plugins/VueResponsive'
 import './plugins/Vuelidate'
 import './plugins/VueNotify'
+import './plugins/VueLazyLoad'
 
 // directives
 import './directives'

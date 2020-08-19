@@ -3,33 +3,30 @@
         <div class="maps-inner">
             <div class="maps__side">
                 <div class="map__side-inner">
-                    <h1>test</h1>
-                    <span
-                        >Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Possimus.</span
-                    >
+                    <h1>{{ currentPin.street }}</h1>
+                    <span>
+                        # {{ currentPin.extNumber }}
+                    </span>
                     <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing
-                        elit. Tenetur, delectus.
+                        {{ currentPin.description }}
                     </p>
+                    <a :href="currentPin.link" target="_blank">Google maps</a>
                 </div>
                 <div class="map__side-controls">
-                    <button class="controls--prev">anterior</button>
-                    <button class="controls--next">siguiente</button>
+                    <button class="controls--prev" @click="setPin(currentPinIndex, true, false)">anterior</button>
+                    <button class="controls--next" @click="setPin(currentPinIndex, false, true)">siguiente</button>
                 </div>
             </div>
             <div class="maps__render-map">
                 <gmap-map
+                    v-if="pinsLoaded"
                     class="map"
-                    :center="center"
-                    :zoom="12"
+                    :center="currentPin.marker"
+                    :zoom="16"
                     :options="mapStyle"
                 >
                     <gmap-marker
-                        :key="index"
-                        v-for="(m, index) in markers"
-                        :position="m.position"
-                        @click="center = m.position"
+                        :position="currentPin.marker"
                     ></gmap-marker>
                 </gmap-map>
             </div>
@@ -38,22 +35,28 @@
 </template>
 
 <script>
-import store from '@/store'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: "Maps",
+    computed: {
+        ...mapState('maps',{
+            pins: 'pins',
+            isLoading: 'isLoading'
+        })
+    },
     mounted() {
-        store.dispatch('background/setWhiteIcons', null, { root: true });
-        this.geolocate();
+        this.setWhiteIcons()
+        this.getPins()
+            .finally(()=>{
+                this.setFirstPin()
+                this.pinsLoaded = true
+            })
     },
     destroyed(){
-        store.dispatch('background/unsetWhiteIcons', null, { root: true });
+        this.setWhiteIcons()
     },
     data: () => ({
-        center: { lat: 45.508, lng: -73.587 },
-        markers: [],
-        places: [],
-        currentPlace: null,
         mapStyle: {
             styles: [
                 {
@@ -242,16 +245,32 @@ export default {
                 },
             ],
         },
+        currentPin: {},
+        currentPinIndex: null,
+        pinsLoaded: false
     }),
     methods: {
-        geolocate: function() {
-            navigator.geolocation.getCurrentPosition((position) => {
-                this.center = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-            });
+        ...mapActions('background',{
+            setWhiteIcons: 'setWhiteIcons',
+            unsetWhiteIcons: 'unsetWhiteIcons'
+        }),
+        ...mapActions('maps',{
+            getPins: 'getPins'
+        }),
+        setFirstPin(){
+            this.currentPin = this.pins[0]
+            this.currentPinIndex = this.pins.findIndex(x => x.id === this.currentPin.id)
+            console.log(this.currentPin)
         },
+        setPin(index, prev = false, next = false){
+            if(next && index + 1 != this.pins.length){
+                this.currentPin = this.pins[index + 1]
+                this.currentPinIndex += 1
+            }else if(prev && index != 0){
+                this.currentPin = this.pins[index - 1]
+                this.currentPinIndex -= 1
+            }
+        }
     },
 };
 </script>

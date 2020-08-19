@@ -50,7 +50,7 @@ export default {
                     commit('SET_FAVORITES', resp.data)
                     Vue.notify({
                         group: 'user',
-                        title: 'Agregado de favoritos',
+                        title: 'Agregado a favoritos',
                         text: 'Elemento agregar a favoritos, podrás acceder a el rápidamente.',
                         type: 'success'
                     });
