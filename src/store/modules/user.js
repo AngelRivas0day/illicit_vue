@@ -1,6 +1,8 @@
 // store/modules/product.js
 import * as api from '@/api/api'
 import Vue from 'vue'
+import firebase from 'firebase'
+import router from '@/router'
 
 export default {
     namespaced: true,
@@ -43,6 +45,36 @@ export default {
         }
     },
     actions: {
+        socialLogin({commit}){
+            const provider = new firebase.auth.GoogleAuthProvider()
+            return new Promise((resolve, reject)=>{
+                commit('SET_LOADING', true)
+                firebase.auth().signInWithPopup(provider)
+                    .then(resp=>{
+                        console.log(resp)
+                        const newUser = {
+                            name: resp.additionalUserInfo.profile.given_name,
+                            lastName: resp.additionalUserInfo.profile.family_name,
+                            email: resp.user.email,
+                            uid: resp.user.uid
+                        }
+                        api.post('clients/login/google', newUser, false)
+                            .then(resp=>{
+                                localStorage.setItem('token', resp.data.token)
+                                commit('AUTH_SUCCESS', { userName: resp.data.name, token: resp.data.token})
+                                router.push({name: 'User'})
+                            })
+                        resolve(resp)
+                    })
+                    .catch(err=>{
+                        commit('AUTH_ERROR', err.response.data)
+                        reject(err)
+                    })
+                    .finally(()=>{
+                        commit('SET_LOADING', false)
+                    })
+            })
+        },
         login({commit}, {email, password}){
             console.log('login vuex', email, password)
             return new Promise((resolve, reject)=>{
@@ -79,6 +111,9 @@ export default {
                     })
             })
         },
+        // logout({commit}){
+
+        // },
         updateInfo({commit, dispatch}, updatedInfo){
             return new Promise((resolve, reject)=>{
                 commit('SET_LOADING', true)

@@ -20,10 +20,7 @@ export default {
         if(!localStorage.getItem('token')){
             this.$router.push({name:'Auth'})
         }
-        this.setWhiteIcons()
-    },
-    destroyed(){
-        this.setWhiteIcons()
+        this.unsetWhiteIcons()
     },
     components: {
         TopNav: () => import('./TopNav/Index'),

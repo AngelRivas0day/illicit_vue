@@ -13,6 +13,7 @@ import './plugins/Vuelidate'
 import './plugins/VueNotify'
 import './plugins/VueLazyLoad'
 import './plugins/VueInputMask'
+import './plugins/Firebase'
 
 // directives
 import './directives'

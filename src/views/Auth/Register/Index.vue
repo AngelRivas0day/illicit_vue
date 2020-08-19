@@ -72,6 +72,9 @@
                     type="submit"
                 >Registrarse</md-button>
             </div>
+            <div class="col-12 mt-5">
+                <div @click="socialLogin">log in with google</div>
+            </div>
         </form>
         <div class="form-bottom w-100">
             <div class="row">
@@ -109,7 +112,8 @@ export default {
     }),
     methods: {
         ...mapActions('user',{
-            register:'register'   
+            register:'register',
+            socialLogin: 'socialLogin'
         }),
         onSubmit(e) {
             e.preventDefault();
