@@ -127,6 +127,29 @@ $main-green: #2ec5c5;
     }
 }
 
+@mixin transition-common($class, $color){
+    #{$class}{
+        position: relative;
+        &:after{
+            content: '';
+            transition: ease-out .8s;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #{$color};
+            z-index: 1;
+            height: 100%;
+            width: 0px;
+        }
+        &.animate{
+            &:after{
+                width: 100%;
+                left: 0;
+            }
+        }
+    }
+}
+
 
 .fade-enter-active,
 .fade-leave-active {

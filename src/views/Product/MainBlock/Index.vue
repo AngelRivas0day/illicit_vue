@@ -25,8 +25,10 @@
         <template v-for="d in glass.designs">
             <div
                 v-for="i in d.images"
-                :key="i" v-show="d.name == currentDesign.name"
+                :key="i"
+                v-show="d.name == currentDesign.name"
                 class="main-block__image"
+                :class="[isTransition ? 'animate' : 'no-animate']"
             >
                 <img v-lazy="i" alt="">
             </div>
@@ -36,9 +38,11 @@
 
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
+import transition from '@/mixins/transition'
 
 export default {
     name: 'MainBlock',
+    mixins: [transition],
     computed: {
         ...mapState('product',{
             glass: 'glass'
@@ -57,9 +61,12 @@ export default {
             }
         })
     },
+    mounted(){
+        this.transition()
+    },
     data: ()=>({
         currentDesign: {},
-        isFavorite: false
+        isFavorite: false,
     }),
     methods: {
         ...mapActions('favorites',{
@@ -72,8 +79,9 @@ export default {
             })
         },
         setDesign(design){
-            console.log(design)
-            this.currentDesign = design
+            this.transition(() => {
+                this.currentDesign = design
+            })
         }
     },
     watch: {
@@ -170,6 +178,7 @@ export default {
         }
     }
     &__image{
+        position: relative;
         order: 1;
         height: 50vH;
         width: 100%;
@@ -185,6 +194,23 @@ export default {
             order: initial;
             height: 100vH;
             width: 50%;
+        }
+        &:after{
+            content: '';
+            transition: ease-out .6s;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: black;
+            z-index: 1;
+            height: 100%;
+            width: 0px;
+        }
+        &.animate{
+            &:after{
+                width: 100%;
+                left: 0;
+            }
         }
     }
 }

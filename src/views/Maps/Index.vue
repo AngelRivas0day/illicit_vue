@@ -1,7 +1,7 @@
 <template>
     <div class="maps">
         <div class="maps-inner">
-            <div class="maps__side">
+            <div class="maps__side" :class="[isTransition ? 'animate' : 'no-animate']">
                 <div class="map__side-inner">
                     <h1>{{ currentPin.street }}</h1>
                     <span>
@@ -17,7 +17,7 @@
                     <button class="controls--next" @click="setPin(currentPinIndex, false, true)">siguiente</button>
                 </div>
             </div>
-            <div class="maps__render-map">
+            <div class="maps__render-map" :class="[isTransition ? 'animate' : 'no-animate']">
                 <gmap-map
                     v-if="pinsLoaded"
                     class="map"
@@ -36,9 +36,11 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
+import transition from '@/mixins/transition'
 
 export default {
     name: "Maps",
+    mixins: [transition],
     computed: {
         ...mapState('maps',{
             pins: 'pins',
@@ -263,13 +265,22 @@ export default {
             console.log(this.currentPin)
         },
         setPin(index, prev = false, next = false){
-            if(next && index + 1 != this.pins.length){
-                this.currentPin = this.pins[index + 1]
-                this.currentPinIndex += 1
-            }else if(prev && index != 0){
-                this.currentPin = this.pins[index - 1]
-                this.currentPinIndex -= 1
-            }
+            this.transition(() => {
+                if(next && index + 1 != this.pins.length){
+                    this.currentPin = this.pins[index + 1]
+                    this.currentPinIndex += 1
+                }else if(prev && index != 0){
+                    this.currentPin = this.pins[index - 1]
+                    this.currentPinIndex -= 1
+                }
+            })
+            // if(next && index + 1 != this.pins.length){
+            //     this.currentPin = this.pins[index + 1]
+            //     this.currentPinIndex += 1
+            // }else if(prev && index != 0){
+            //     this.currentPin = this.pins[index - 1]
+            //     this.currentPinIndex -= 1
+            // }
         }
     },
 };
@@ -277,6 +288,9 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../assets/css/vars";
+
+@include transition-common('.maps__side', 'white');
+@include transition-common('.maps__render-map', 'white');
 
 .maps {
     height: 100vh;

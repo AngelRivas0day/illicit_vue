@@ -1,15 +1,15 @@
 <template>
     <div class="product__card">
         <div @click="openProduct(product)" class="card__image">
-            <img :src="product.designs[0].mainImage" alt="">
+            <img :src="product.designs[designIndex].mainImage" alt="">
             <div class="card__image--hover">
                 <span>{{product.name}}</span>
             </div>
         </div>
         <div class="card__colors">
             <ul class="colors__list">
-                <template v-for="design in product.designs">
-                    <li :key="design.name" :click="setColor(design)" class="list__item" :style="'background-color:'+design.color.hex"></li>
+                <template v-for="(design, i) in product.designs">
+                    <li :key="design.name" @click="designIndex = i" class="list__item" :style="'background-color:'+design.color.hex"></li>
                 </template>
             </ul>
         </div>
@@ -25,10 +25,10 @@ export default {
             required: true
         }
     },
+    data: () => ({
+        designIndex: 0
+    }),
     methods: {
-        setColor(color){
-            console.log(color)
-        },
         openProduct(product){
             console.log(product)
             let slug = product.slug

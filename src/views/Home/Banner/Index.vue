@@ -13,6 +13,7 @@
                 :navSpeed="2000"
                 :autoplay="true"
                 :autoplaySpeed="false"
+                :autoplayHoverPause="true"
             >
                 <template v-for="slide in banners">
                     <div :key="slide.id" class="slide">
