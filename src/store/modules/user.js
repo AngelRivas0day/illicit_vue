@@ -42,10 +42,16 @@ export default {
         },
         SET_USER_INFO(state, payload){
             state.user = payload
+        },
+        LOGOUT_SUCCESS(state){
+            state.user = {}
+            state.userName = ''
+            state.success = true
+            state.token = null
         }
     },
     actions: {
-        socialLogin({commit}){
+        googleLogin({commit}){
             const provider = new firebase.auth.GoogleAuthProvider()
             return new Promise((resolve, reject)=>{
                 commit('SET_LOADING', true)
@@ -68,6 +74,36 @@ export default {
                     })
                     .catch(err=>{
                         commit('AUTH_ERROR', err.response.data)
+                        reject(err)
+                    })
+                    .finally(()=>{
+                        commit('SET_LOADING', false)
+                    })
+            })
+        },
+        facebookLogin({commit}){
+            const provider = new firebase.auth.FacebookAuthProvider()
+            return new Promise((resolve, reject)=>{
+                commit('SET_LOADING', true)
+                firebase.auth().signInWithPopup(provider)
+                    .then(resp=>{
+                        console.log(resp)
+                        const newUser = {
+                            name: resp.additionalUserInfo.profile.first_name,
+                            lastName: resp.additionalUserInfo.profile.last_name,
+                            email: resp.user.email,
+                            uid: resp.user.uid
+                        }
+                        api.post('clients/login/google', newUser, false)
+                            .then(resp=>{
+                                localStorage.setItem('token', resp.data.token)
+                                commit('AUTH_SUCCESS', { userName: resp.data.name, token: resp.data.token})
+                                router.push({name: 'User'})
+                            })
+                        resolve(resp)
+                    })
+                    .catch(err=>{
+                        commit('AUTH_ERROR', err)
                         reject(err)
                     })
                     .finally(()=>{
@@ -111,9 +147,24 @@ export default {
                     })
             })
         },
-        // logout({commit}){
-
-        // },
+        logout({commit}){
+            return new Promise((resolve, reject)=>{
+                commit('SET_LOADING', true)
+                api.getAll('clients/logout', true)
+                    .then(resp=>{
+                        localStorage.removeItem('token')
+                        commit('LOGOUT_SUCCESS')
+                        router.push({name: 'Auth'})
+                        resolve(resp)
+                    })
+                    .catch(err=>{
+                        reject(err.response.data)
+                    })
+                    .finally(()=>{
+                        commit('SET_LOADING', false)
+                    })
+            })
+        },
         updateInfo({commit, dispatch}, updatedInfo){
             return new Promise((resolve, reject)=>{
                 commit('SET_LOADING', true)

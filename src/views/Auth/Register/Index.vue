@@ -72,9 +72,7 @@
                     type="submit"
                 >Registrarse</md-button>
             </div>
-            <div class="col-12 mt-5">
-                <div @click="socialLogin">log in with google</div>
-            </div>
+            <SocialLogin />
         </form>
         <div class="form-bottom w-100">
             <div class="row">
@@ -96,9 +94,13 @@
 <script>
 import { required, minLength, sameAs, email } from "vuelidate/lib/validators";
 import { mapActions, mapState } from 'vuex'
+import SocialLogin from '../SocialLogin'
 
 export default {
     name: "Register",
+    components: {
+        SocialLogin
+    },
     data: () => ({
         form: {
             name: "",
@@ -113,7 +115,6 @@ export default {
     methods: {
         ...mapActions('user',{
             register:'register',
-            socialLogin: 'socialLogin'
         }),
         onSubmit(e) {
             e.preventDefault();
@@ -220,6 +221,9 @@ export default {
             margin-bottom: 30px;
             a {
                 color: #2ec5c5 !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
         form {
@@ -227,6 +231,7 @@ export default {
             .button-action {
                 font-weight: 100 !important;
                 text-transform: none !important;
+                text-align: center;
             }
             [class*="-button"] {
                 min-width: 150px;

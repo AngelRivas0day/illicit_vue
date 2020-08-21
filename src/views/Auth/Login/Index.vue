@@ -40,6 +40,7 @@
             <div class="col-6">
                 <md-button :disabled="!isFormValid" class="register-button" type="submit">Iniciar sesi&oacute;n</md-button>
             </div>
+            <SocialLogin />
         </form>
         <div class="form-bottom w-100">
             <div class="row">
@@ -61,9 +62,13 @@ import {
     email
 } from 'vuelidate/lib/validators'
 import { mapActions, mapState } from 'vuex'
+import SocialLogin from '../SocialLogin'
 
 export default {
     name: 'Login',
+    components: {
+        SocialLogin
+    },
     data: () => ({
         form: {
             email: '',
@@ -148,6 +153,9 @@ export default {
             margin-bottom: 30px;
             a{
                 color: #2ec5c5 !important;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
         form{
@@ -155,6 +163,7 @@ export default {
             .button-action{
                 font-weight: 100 !important;
                 text-transform: none !important;
+                text-align: center;
             }
             [class*="-button"]{
                 min-width: 150px;

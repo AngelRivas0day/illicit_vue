@@ -8,19 +8,28 @@
 <script>
 import MainBlock from './MainBlock/Index'
 import Features from './Features/Index'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Product',
     components: {MainBlock,Features},
     mounted(){
-        this.itemId = this.$route.params.id
-        this.fetchData(this.itemId);
+        let itemSlug = this.$route.params.slug
+        this.glasses.forEach(glass => {
+            if(itemSlug == glass.slug){
+                this.fetchData(glass.id)
+            }
+        })
     },
     data: () => ({
         itemId: null,
         product: {}
     }),
+    computed: {
+        ...mapState('product',{
+            glasses: 'glasses'
+        })
+    },
     methods: {
         ...mapActions('product',{
             fetchData: 'getGlass'

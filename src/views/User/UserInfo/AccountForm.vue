@@ -33,6 +33,7 @@
                 </div>
                 <div class="col-12 text-right">
                     <md-button class="md-dense md-primary md-raised" type="submit">Guardar</md-button>
+                    <md-button @click="logout" class="md-dense md-primary md-raised ml-3" type="button">Cerrar sesi&oacute;n</md-button>
                 </div>
             </form>
         <!-- </transition> -->
@@ -66,7 +67,8 @@ export default {
     methods: {
         ...mapActions('user',{
             getInfo: 'getInfo',
-            updateInfo: 'updateInfo'
+            updateInfo: 'updateInfo',
+            logout: 'logout'
         }),
         onSubmit(e){
             e.preventDefault()

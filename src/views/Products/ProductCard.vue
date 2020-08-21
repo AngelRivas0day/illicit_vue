@@ -31,10 +31,10 @@ export default {
         },
         openProduct(product){
             console.log(product)
-            let id = product.id
+            let slug = product.slug
             this.$router.push({
                 name: 'Product',
-                params: { id }
+                params: { slug }
             })
         }
     }

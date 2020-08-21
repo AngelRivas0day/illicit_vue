@@ -29,7 +29,7 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Products" */ '../views/Products/Index.vue')
   },
   {
-    path: '/productos/:id',
+    path: '/productos/:slug',
     name: 'Product',
     component: () => import(/* webpackChunkName: "Product" */ '../views/Product/Index.vue')
   },
