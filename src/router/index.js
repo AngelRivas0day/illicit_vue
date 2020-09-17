@@ -34,9 +34,24 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Product" */ '../views/Product/Index.vue')
   },
   {
-    path: '/checkout/:id',
+    path: '/productos/checkout/:slug',
     name: 'Checkout',
-    component: () => import(/* webpackChunkName: "Product" */ '../views/Checkout/Index.vue')
+    component: () => import(/* webpackChunkName: "Checkout" */ '../views/Checkout/Index.vue')
+  },
+  {
+    path: '/productos/payment/:slug',
+    name: 'Payment',
+    component: () => import(/* webpackChunkName: "Payment" */ '../views/Payment/Index.vue')
+  },
+  {
+    path: '/productos/payment/done',
+    name: 'PaymentSuccess',
+    component: () => import(/* webpackChunkName: "PaymentSuccess" */ '../views/Payment/PaymentSuccess/Index.vue')
+  },
+  {
+    path: '/productos/payment/error',
+    name: 'PaymentError',
+    component: () => import(/* webpackChunkName: "PaymentError" */ '../views/Payment/Error.vue')
   },
   {
     path: '/ubicaciones',

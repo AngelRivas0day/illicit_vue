@@ -19,21 +19,7 @@
                         <md-button class="md-accent text-white md-raised ml-0" @click="showDialog = true">A&ntilde;adir direcc&oacute;n</md-button>
                     </div>
                     <div :key="ad.id" v-for="(ad, index) in addresses" class="col-xs-12 col-sm-12 col-md-4">
-                        <md-card>
-                            <md-card-header>
-                                <md-card-header-text>
-                                    <div class="md-title">Direcci&oacute;n #{{ index + 1 }} <small style="font-size: 10px;" v-if="ad.isDefault">(DEFAULT)</small></div>
-                                    <div class="md-subhead">{{ ad.city }}</div>
-                                </md-card-header-text>
-                            </md-card-header>
-
-                            <md-card-content>
-
-                            </md-card-content>
-                            <md-card-actions>
-                                <md-button @click="deleteAddress(ad.id)" class="md-dense md-primary text-white md-raised">Borrar</md-button>
-                            </md-card-actions>
-                        </md-card>
+                        <AddressCard :address="ad" :index="index" />
                     </div>
                 </div>
             </div>
@@ -44,12 +30,14 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import AddressForm from './AddressForm'
+import AddressCard from './AddressCard'
 import { mapFields } from 'vuex-map-fields';
 
 export default {
     name: 'Addresses',
     components: {
-        AddressForm
+        AddressForm,
+        AddressCard
     },
     mounted(){
         this.getAddresses()
@@ -64,8 +52,7 @@ export default {
     },
     methods: {
         ...mapActions('addresses',{
-           getAddresses:'getAddresses',
-           deleteAddress:'deleteAddress'
+           getAddresses:'getAddresses'
         })
     }
 };

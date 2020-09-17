@@ -14,7 +14,10 @@ import {
     MdDialog,
     MdEmptyState,
     MdChips,
-    MdProgress
+    MdProgress,
+    MdCheckbox,
+    MdRadio,
+    MdTable
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -40,3 +43,6 @@ Vue.use(MdDialog)
 Vue.use(MdEmptyState)
 Vue.use(MdChips)
 Vue.use(MdProgress)
+Vue.use(MdCheckbox)
+Vue.use(MdRadio)
+Vue.use(MdTable)

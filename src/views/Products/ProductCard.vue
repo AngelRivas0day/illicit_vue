@@ -30,7 +30,6 @@ export default {
     }),
     methods: {
         openProduct(product){
-            console.log(product)
             let slug = product.slug
             this.$router.push({
                 name: 'Product',

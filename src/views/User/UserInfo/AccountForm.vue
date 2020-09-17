@@ -2,7 +2,7 @@
     <div>
         <!-- <transition name="slide-fade"> -->
             <div v-if="isLoading" class="loader text-center py-5">
-                <md-progress-spinner md-mode="indeterminate"></md-progress-spinner>
+                <TransparentLoading :fullScreen="false" />
             </div>
         <!-- </transition>
         <transition name="slide-fade"> -->
@@ -28,7 +28,7 @@
                     <md-field>
                         <md-icon class="md-accent">call</md-icon>
                         <label>Tel&eacute;fono</label>
-                        <md-input v-model="form.phone" v-mask="'###-###-####'"></md-input>
+                        <md-input v-model="form.phone" v-mask="'+## ###-###-####'"></md-input>
                     </md-field>
                 </div>
                 <div class="col-12 text-right">
@@ -42,14 +42,21 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import TransparentLoading from '@/components/TransparentLoading'
 
 export default {
     name: 'AccountForm',
-    mounted(){
-        this.getInfo()
-            .then(resp=>{
-                this.form = resp
-            })
+    components: {
+        TransparentLoading
+    },
+    async mounted(){
+        try {
+            const data = await this.getInfo()
+            console.log("Data async:", data)
+            this.form = data
+        } catch (error) {
+            console.log("Error")   
+        }
     },
     computed: {
         ...mapState('user',{

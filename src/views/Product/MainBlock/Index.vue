@@ -4,8 +4,8 @@
             <div class="info__body">
                 <div class="d-flex flex-row justify-content-between align-items-center">
                     <h1 class="info__title">{{glass.name}}</h1>
-                    <md-button @click="addFavorite({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
-                        <md-icon :class="{'md-primary': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
+                    <md-button @click="addFav({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
+                        <md-icon :class="{'is-fav': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
                     </md-button>
                 </div>
                 <span class="info__price">${{glass.price}}</span>
@@ -39,6 +39,7 @@
 <script>
 import { mapState, mapActions, mapGetters } from 'vuex'
 import transition from '@/mixins/transition'
+import { mapFields } from 'vuex-map-fields';
 
 export default {
     name: 'MainBlock',
@@ -52,17 +53,25 @@ export default {
         }),
         ...mapGetters('user',{
             isLoggedIn: 'isLoggedIn'
+        }),
+        ...mapFields('order',{
+            lenseSpecs: 'lenseSpecs'
         })
     },
-    updated(){
+    mounted(){
         this.favorites.forEach(fav => {
             if(fav.id == this.glass.id){
                 this.isFavorite = true
             }
         })
-    },
-    mounted(){
-        this.transition()
+        this.transition(()=>{
+            this.currentDesign = {
+                name: this.glass.designs[0].name,
+                hex: this.glass.designs[0].color.hex,
+                image: this.glass.designs[0].mainImage,
+            }
+            this.lenseSpecs.design = this.currentDesign
+        })
     },
     data: ()=>({
         currentDesign: {},
@@ -70,23 +79,48 @@ export default {
     }),
     methods: {
         ...mapActions('favorites',{
-            addFavorite: 'addFavorite'
+            addFavorite: 'addFavorite',
+            deleteFavorite: 'deleteFavorite'
         }),
         buy(){
             this.$router.push({
                 name: 'Checkout',
-                params: { id: this.glass.id }
+                params: { slug: this.glass.slug }
             })
         },
         setDesign(design){
             this.transition(() => {
-                this.currentDesign = design
+                this.currentDesign = {
+                    name: design.name,
+                    hex: design.color.hex,
+                    image: design.mainImage
+                }
+                this.lenseSpecs.design = this.currentDesign // vuex binding
             })
+        },
+        addFav({id, name}){
+            if(this.isFavorite){
+                this.deleteFavorite({id, name})
+                    .then(()=>{
+                        this.isFavorite = false
+                    })
+            }else{
+                this.addFavorite({id, name})
+                    .then(()=>{
+                        this.isFavorite = true
+                    })
+            }
         }
     },
     watch: {
         glass(){
             this.currentDesign = this.glass.designs[0]
+            this.lenseSpecs = { // vuex binding
+                name: this.glass.name,
+                price: this.glass.price,
+                slug: this.glass.slug,
+                magnification: 'test'
+            }
         }
     }
 }
@@ -111,6 +145,14 @@ export default {
             .info__title{
 
             }
+            .md-fav{
+                &.is-fav{
+                    color: red !important;
+                }
+                &.not-fav{
+                    color: rgba(33,33,33,.3) !important;
+                }
+            }
             .info__price{
 
             }
@@ -130,11 +172,6 @@ export default {
             }
             .info__desc{
 
-            }
-            .md-fav{
-                &.not-fav{
-                    color: rgba(0,0,0,.4)
-                }
             }
         }
         .info__actions{

@@ -1,41 +1,40 @@
 import * as api from '@/api/api'
 
-export default {
-    namespaced: true,
-    state: {
-        banners: [],
-        isLoading: false,
-        success: false
+const state = {
+    banners: [],
+    isLoading: false,
+    error: null
+}
+
+const mutations = {
+    SET_BANNERS(state, payload){
+        state.banners = payload
     },
-    mutations: {
-        SET_BANNERS(state, payload){
-            state.banners = payload
-            state.success = true
-        },
-        SET_LOADING(state, payload){
-            state.isLoading = payload
-        },
-        SET_SUCCESS(state, payload){
-            state.success = payload
-        }
+    SET_LOADING(state, payload){
+        state.isLoading = payload
     },
-    actions: {
-        getBanners({commit}){
-            return new Promise((resolve, reject)=>{
-                commit('SET_LOADING', true)
-                api.getAll('banners')
-                    .then(resp=>{
-                        commit('SET_BANNERS', resp.data)
-                        resolve()
-                    })
-                    .catch(err=>{
-                        commit('SET_SUCCESS', false)
-                        reject(err)
-                    })
-                    .finally(()=>{
-                        commit('SET_LOADING', false)
-                    })
-            })
+    SET_ERROR(state, payload){
+        state.error = payload
+    }
+}
+
+const actions = {
+    async getBanners({commit}){
+        try{
+            commit('SET_LOADING', true)
+            const { data } = await api.getAll('banners')
+            commit('SET_BANNERS', data)
+        }catch(error){
+            commit('SET_ERROR', error.response)
+        }finally{
+            commit('SET_LOADING', false)
         }
     }
+}
+
+export default {
+    namespaced: true,
+    state,
+    mutations,
+    actions
 }
