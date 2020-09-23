@@ -225,4 +225,20 @@ export default {
         right: 20px;
     }
 }
+
+.carousel{
+    .slide__title{
+        transition: all 3s;
+    }
+    ::v-deep .owl-item.active{
+        .slide__title{
+            opacity: 1;
+        }
+    }
+     ::v-deep .owl-item:not(.active){
+        .slide__title{
+            opacity: 0;
+        }
+    }
+}
 </style>

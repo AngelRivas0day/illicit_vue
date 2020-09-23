@@ -52,7 +52,6 @@ export default {
     async mounted(){
         try {
             const data = await this.getInfo()
-            console.log("Data async:", data)
             this.form = data
         } catch (error) {
             console.log("Error")   

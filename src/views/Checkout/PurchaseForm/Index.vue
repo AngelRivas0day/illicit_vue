@@ -39,8 +39,12 @@
                     <div class="col-12">
                         <md-button @click="showDialog = true" class="md-dense md-raised md-primary ml-0 mb-3">Nueva direcci&oacute;n</md-button>
                     </div>
-                    <div :key="ad.id" v-for="(ad, index) in addresses" class="col-xs-12 col-sm-12 col-md-6 mb-3">
-                        <AddressCard class="mr-3" :address="ad" :index="index" :readOnly="true" @selected="setAddress" />
+                    <div :key="ad.id" v-for="ad in addresses" class="col-12">
+                        <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
+                            {{ `${ad.state}, ${ad.city}. ${ad.street} #${ad.extNumber} ${ad.intNumber ? 'int. ' + ad.intNumber : ''}`}}
+                            &nbsp;
+                            <small>{{ ad.isDefault ? '(Default)' : '' }}</small>
+                        </md-radio>
                     </div>
                 </div>
             </div>
@@ -71,7 +75,7 @@ import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'PurchaseForm',
     components: {
-        AddressCard: () => import('@/views/User/Addresses/AddressCard.vue'),
+        // AddressCard: () => import('@/views/User/Addresses/AddressCard.vue'),
         AddressForm: () => import('@/views/User/Addresses/AddressForm.vue')
     },
     data: ()=>({
@@ -84,9 +88,19 @@ export default {
         priceMod: 0,
         lensePrice: 0
     }),
-    mounted(){
-        this.getAddresses()
-        this.lensePrice = this.lenseSpecs.price
+    async mounted(){
+        try {
+            this.lensePrice = this.lenseSpecs.price
+            await this.getAddresses()
+            this.addresses.forEach(address=>{
+                if(address.isDefault){
+                    this.addressId = address.id
+                    return
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
     },
     computed: {
         ...mapState('addresses',{
@@ -149,28 +163,17 @@ export default {
             this.lenseSpecs.graduation = this.selectedFile
         },
         handleMaterialChange(value){
-            // let newPrice = this.lensePrice
-            // switch (value) {
-            //     case "poli":
-            //         this.lenseSpecs.price += 250
-            //         break;
-            //     case "mat_1":
-            //         this.lenseSpecs.price += 120
-            //         break;
-            //     default:
-            //         break;
-            // }
             switch (value) {
-                case "poli":
+                case "Policarbonato":
                     this.priceMod = 200
                     break;
-                case "mat_1":
+                case "Material 1":
                     this.priceMod = 100
                     break;
                 default:
                     break;
             }
-            this.lenseSpecs.price = this.lensePrice + this.priceMod
+            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
         },
         handleAntireflectiveChange(value){
             if(value){
@@ -178,7 +181,7 @@ export default {
             }else{
                 this.priceMod -= 120
             }
-            this.lenseSpecs.price = this.lensePrice + this.priceMod
+            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
         }
     },
     validations: {

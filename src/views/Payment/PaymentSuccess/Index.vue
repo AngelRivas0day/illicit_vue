@@ -9,11 +9,17 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
     name: 'PaymentSuccess',
     methods: {
+        ...mapActions('user',{
+            setTab: 'setTab'
+        }),
         goToOrders(){
-            console.log("test")
+            this.setTab('UserHistory')
+            this.$router.push({name: 'User'})
         }
     }
 }

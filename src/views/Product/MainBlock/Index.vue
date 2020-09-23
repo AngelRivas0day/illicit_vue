@@ -22,17 +22,24 @@
                 <button @click="buy()" class="info__buy">COMPRAR</button>            
             </div>
         </div>
-        <template v-for="d in glass.designs">
-            <div
-                v-for="i in d.images"
-                :key="i"
-                v-show="d.name == currentDesign.name"
-                class="main-block__image"
-                :class="[isTransition ? 'animate' : 'no-animate']"
-            >
-                <img v-lazy="i" alt="">
-            </div>
-        </template>
+        <div
+            class="main-block__image"
+            :class="[isTransition ? 'animate' : 'no-animate']"
+        >
+            <img v-lazy="currentDesign.images[0]" alt="">
+        </div>
+        <div
+            class="main-block__image"
+            :class="[isTransition ? 'animate' : 'no-animate']"
+        >
+            <img v-lazy="currentDesign.images[1]" alt="">
+        </div>
+        <div
+            class="main-block__image"
+            :class="[isTransition ? 'animate' : 'no-animate']"
+        >
+            <img v-lazy="currentDesign.images[2]" alt="">
+        </div>
     </div>
 </template>
 
@@ -69,6 +76,7 @@ export default {
                 name: this.glass.designs[0].name,
                 hex: this.glass.designs[0].color.hex,
                 image: this.glass.designs[0].mainImage,
+                images: this.glass.designs[0].images
             }
             this.lenseSpecs.design = this.currentDesign
         })
@@ -93,7 +101,8 @@ export default {
                 this.currentDesign = {
                     name: design.name,
                     hex: design.color.hex,
-                    image: design.mainImage
+                    image: design.mainImage,
+                    images: design.images
                 }
                 this.lenseSpecs.design = this.currentDesign // vuex binding
             })
@@ -115,6 +124,7 @@ export default {
     watch: {
         glass(){
             this.currentDesign = this.glass.designs[0]
+            // console.log(this.currentDesign)
             this.lenseSpecs = { // vuex binding
                 name: this.glass.name,
                 price: this.glass.price,
@@ -135,7 +145,7 @@ export default {
     flex-wrap: wrap;
     &__info{
         flex: -1;
-        order: 1; // this is meant to make the mobile layout order
+        order: -1; // this is meant to make the mobile layout order
         @include flex("column","flex-start","flex-end");
         width: 100%;
         height: 50vH;
@@ -203,8 +213,7 @@ export default {
             }
         }
         @media #{$break-large}{
-            order: initial;
-            order: inherit;
+            order: -2;
             width: 50%;
             height: 100vH;
             .info__actions{
@@ -216,21 +225,12 @@ export default {
     }
     &__image{
         position: relative;
-        order: 1;
         height: 50vH;
         width: 100%;
         img{
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        &:first-of-type{
-            order: -2;
-        }
-        @media #{$break-medium}{
-            order: initial;
-            height: 100vH;
-            width: 50%;
         }
         &:after{
             content: '';
@@ -248,6 +248,23 @@ export default {
                 width: 100%;
                 left: 0;
             }
+        }
+        @for $i from 1 to 4{
+            &:nth-child(#{$i}){
+                @if $i == 1 {
+                    order: -1;
+                } @else if $i == 2 {
+                    order: -2;
+                } @else {
+                    order: $i;
+                }
+            }
+        }
+        @media #{$break-medium}{
+            order: initial;
+            height: 100vH;
+            width: 50%;
+            order: inherit;
         }
     }
 }

@@ -20,7 +20,6 @@ const state = {
         design: "",
         material: "",
         antireflective: "",
-        magnification: "testeo",
         graduation: null,
     },
     addressId: null,
@@ -54,7 +53,6 @@ const mutations = {
             design: "",
             material: "",
             antireflective: "",
-            magnification: "testeo",
             graduation: null,
         };
         state.addressId = "";

@@ -12,7 +12,10 @@ import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Product',
-    components: {MainBlock,Features},
+    components: {
+        MainBlock,
+        Features
+    },
     mounted(){
         let itemSlug = this.$route.params.slug
         this.glasses.forEach(glass => {

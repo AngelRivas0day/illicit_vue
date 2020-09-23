@@ -9,7 +9,7 @@ const state = {
     userName: '',
     success: true,
     token: localStorage.getItem('token') || null,
-    activeTab: 'UserInfo', //default tab
+    activeTab: 'UserInfo', // UserInfo | UserHistory | UserCoupons
     errMessage: '',
     user: null
 }

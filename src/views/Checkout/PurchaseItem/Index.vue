@@ -20,8 +20,15 @@
             </div>
         </div>
         <div class="purchase-pricing">
+            <div class="delivery-info">
+                <small>
+                    Sin precio de envio
+                </small>
+                <md-icon class="info-icon">help</md-icon>
+                <md-tooltip md-direction="right">El precio de envio viene dado por la direcci&oacute;n de env&iacute;o</md-tooltip>
+            </div>
+            
             <p><span>Subtotal: </span>${{lenseSpecs.price}}</p>
-            <small>Sin precio de envio</small>
         </div>
     </div>
 </template>
@@ -96,5 +103,25 @@ export default {
 }
 .purchase-pricing{
     padding: 15px;
+    p{
+        margin-top: 10px;
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 0;
+        span{
+
+        }
+    }
+    small{
+        font-size: 14px;
+        color: black;
+    }
+    .info-icon{
+        color: black;
+        font-size: 18px !important;
+    }
+    .delivery-info{
+        cursor: pointer;
+    }
 }
 </style>
