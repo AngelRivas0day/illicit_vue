@@ -1,8 +1,8 @@
 <template>
     <div class="tabs">
-        <keep-alive>
+        <!-- <keep-alive> -->
             <component :is="activeTab" />
-        </keep-alive>
+        <!-- </keep-alive> -->
     </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
 
 <style lang="scss">
 .tabs{
-    min-height: 40vh;
+    min-height: 100vh;
     width: 100%;
     padding: 20px 30px;
 }

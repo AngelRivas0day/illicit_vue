@@ -1,37 +1,25 @@
 <template>
-    <div>
-        <div>
-            <md-table>
-                <md-table-row>
-                    <md-table-head md-numeric>ID</md-table-head>
-                    <md-table-head>Producto</md-table-head>
-                    <md-table-head>Precio</md-table-head>
-                    <md-table-head>Enviado</md-table-head>
-                    <md-table-head>Direcci&oacute;n</md-table-head>
-                </md-table-row>
-
-                <md-table-row>
-                    <md-table-cell md-numeric>1</md-table-cell>
-                    <md-table-cell>Shawna Dubbin</md-table-cell>
-                    <md-table-cell>$400.00</md-table-cell>
-                    <md-table-cell>Enviado</md-table-cell>
-                    <md-table-cell>Salto del Agua #2415 Guadalajara, Jalisco</md-table-cell>
-                </md-table-row>
-
-                <md-table-row>
-                    <md-table-cell md-numeric>2</md-table-cell>
-                    <md-table-cell>Odette Demageard</md-table-cell>
-                    <md-table-cell>odemageard1@spotify.com</md-table-cell>
-                    <md-table-cell>Female</md-table-cell>
-                    <md-table-cell>Account Coordinator</md-table-cell>
-                </md-table-row>
-
-                <md-table-row>
-                    <md-table-cell md-numeric>3</md-table-cell>
-                    <md-table-cell>Vera Taleworth</md-table-cell>
-                    <md-table-cell>vtaleworth2@google.ca</md-table-cell>
-                    <md-table-cell>Male</md-table-cell>
-                    <md-table-cell>Community Outreach Specialist</md-table-cell>
+    <div class="orders">
+        <OrderDetails
+            v-if="showDialog && currentOrder"
+            :order="currentOrder"
+        />
+        <div v-if="orders">
+            <md-table v-model="orders" @md-selected="onSelect">
+                <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single">
+                    <md-table-cell md-label="Producto" md-sort-by="Producto" >{{item.specs.name}}</md-table-cell>
+                    <md-table-cell md-label="Material" md-sort-by="Material" >{{item.specs.material}}</md-table-cell>
+                    <md-table-cell md-label="Antirreflejante" md-sort-by="Antirreflejante" >{{item.specs.antireflective == "true" ? 'Si' : 'No'}}</md-table-cell>
+                    <md-table-cell md-label="Precio" md-sort-by="Precio" >$ {{item.specs.price}}</md-table-cell>
+                    <md-table-cell md-label="Envio" md-sort-by="Envio">
+                        <span :class="{
+                            'text-success' : item.orderStatus == 'SUCCEEDED',
+                            'text-warning': item.orderStatus == 'PENDING'
+                        }">{{item.orderStatus}}</span>
+                    </md-table-cell>
+                    <md-table-cell md-label="Pago" md-sort-by="Pago">
+                        <span :class="{'text-success' : item.paymentStatus == 'SUCCEEDED'}">{{item.paymentStatus}}</span>
+                    </md-table-cell>
                 </md-table-row>
             </md-table>
         </div>
@@ -39,23 +27,48 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 export default {
     name: "OrdersList",
-    mounted(){
-        // this.getOrders()
+    components: {
+        OrderDetails: () => import('./OrderDetails.vue')
     },
+    async mounted(){
+        console.log("mounted")
+        try {
+            await this.getOrders()
+            console.log(this.orders)
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    data: () => ({
+        currentOrder: null
+    }),
     methods: {
         ...mapActions('orders',{
             getOrders:'getOrders'
-        })
+        }),
+        onSelect(item){
+            if(item){
+                this.currentOrder = item
+                this.showDialog = true
+            } else {
+                this.showDialog = false
+                this.currentOrder = null
+            }
+        }
     },
     computed: {
-        ...mapState('orders',{
-            orders: 'orders'
+        ...mapFields('orders',{
+            orders: 'orders',
+            showDialog: 'showDialog'
         })
     }
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+
+</style>

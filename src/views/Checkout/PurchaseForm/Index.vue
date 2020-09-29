@@ -1,5 +1,9 @@
 <template>
     <div class="purchase-form">
+        <!-- <md-dialog-alert
+            :md-active.sync="failedOrder"
+            md-content="Ups! Algo ha salido mal"
+            md-confirm-text="Continuar" /> -->
         <md-dialog class="dialog" :md-active.sync="showDialog" @md-closed="getAddresses">
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
             <AddressForm />
@@ -113,7 +117,8 @@ export default {
         ...mapFields('order',{
             lenseSpecs: 'lenseSpecs',
             addressId: 'addressId',
-            paymentMethod: 'paymentMethod'
+            paymentMethod: 'paymentMethod',
+            isOrderOk: 'isOrderOk'
         }),
         isMaterialValid(){
             return this.$v.lenseSpecs.material.required ? true : false
@@ -138,25 +143,41 @@ export default {
             }else{
                 return false
             }
+        },
+        failedOrder(){
+            return !this.isOrderOk
         }
     },
     methods: {
         ...mapActions('addresses',{
            getAddresses:'getAddresses'
         }),
+        ...mapActions('order',{
+           createOrder:'createOrder'
+        }),
         setAddress(addressId){
             if(addressId != ""){
                 this.addressId = addressId
             }
         },
-        goToPay(e){
+        async goToPay(e){
             e.preventDefault()
             if(this.isFormValid){
-                this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
+                if(this.paymentMethod == "card"){
+                    this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
+                }else if(this.paymentMethod == "store"){
+                    try {
+                        await this.createOrder()
+                        this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
+                    } catch (error) {
+                        this.$router.push({name: 'Products'})
+                    }
+                }
             }else{
                 this.errorMessage = "Todos los campos son obligatorios"
                 // some warnings
             }
+            // agregar logica para procesar el pago desde aqui cuando es con tarjeta
         },
         handleChange(e){
             this.selectedFile = e.target.files[0]

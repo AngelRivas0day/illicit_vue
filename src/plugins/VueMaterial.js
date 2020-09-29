@@ -18,7 +18,8 @@ import {
     MdCheckbox,
     MdRadio,
     MdTable,
-    MdTooltip
+    MdTooltip,
+    MdRipple
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -48,3 +49,4 @@ Vue.use(MdCheckbox)
 Vue.use(MdRadio)
 Vue.use(MdTable)
 Vue.use(MdTooltip)
+Vue.use(MdRipple)

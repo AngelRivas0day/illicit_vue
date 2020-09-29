@@ -23,18 +23,21 @@
             </div>
         </div>
         <div
+            v-if="currentDesign"
             class="main-block__image"
             :class="[isTransition ? 'animate' : 'no-animate']"
         >
             <img v-lazy="currentDesign.images[0]" alt="">
         </div>
         <div
+            v-if="currentDesign"
             class="main-block__image"
             :class="[isTransition ? 'animate' : 'no-animate']"
         >
             <img v-lazy="currentDesign.images[1]" alt="">
         </div>
         <div
+            v-if="currentDesign"
             class="main-block__image"
             :class="[isTransition ? 'animate' : 'no-animate']"
         >

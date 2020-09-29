@@ -29,6 +29,7 @@ const state = {
     isError: false,
     isOrderOk: false,
     errorMessage: null,
+    paymentStatus: null
 }
 
 const mutations = {
@@ -86,15 +87,15 @@ const actions = {
         var reducible = [
             state.lenseSpecs,
             { addressId: state.addressId },
-            { paymentStatus: state.paymentStatus },
+            { paymentStatus: state.paymentStatus || "PENDING" },
         ];
         const orderObject = Object.assign({}, ...reducible);
         try {
             commit("SET_LOADING", true)
             await api.post("orders", toFormData(orderObject), true)
             commit("ORDER_SUCCESS", true)
-            commit("RESET_INFO")
-            router.push({ name: "PaymentSuccess" })
+            // commit("RESET_INFO")
+            // router.push({ name: "PaymentSuccess" })
         } catch (error) {
             commit("ORDER_SUCCESS", false);
         } finally {

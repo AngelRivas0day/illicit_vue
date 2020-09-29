@@ -2,7 +2,17 @@
     <div class="payment">
         <div class="payment-card-container">
             <div class="payment-card">
+                <div class="payment-card--inner">
+                    <div class="payment-card__number">
+                        <span>••••</span>
+                        <span>••••</span>
+                        <span>••••</span>
+                        <span>••••</span>
+                    </div>
+                    <div class="payment-card__expiry">
 
+                    </div>
+                </div>
             </div>
         </div>
         <div class="payment-form">
@@ -119,6 +129,7 @@ export default {
     methods: {
         ...mapActions("order", {
             createPayment: "createPayment",
+            resetInfo: 'resetInfo'
         }),
         // createToken() {
         //     window.Stripe.setPublishableKey(this.publicKey);
@@ -129,8 +140,16 @@ export default {
         // },
         onSubmit(e) {
             e.preventDefault();
-            createToken().then((data) => {
-                this.createPayment({ stripeToken: data.token.id, total: this.lenseSpecs.price });
+            createToken().then(async (data) => {
+                try {
+                    await this.createPayment({ stripeToken: data.token.id, total: this.lenseSpecs.price });
+                    this.$router.push({name: 'PaymentSuccess'})
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    this.resetInfo()
+                }
+                
             });
             // this.createToken()
         },
@@ -157,7 +176,17 @@ export default {
             border-radius: 15px;
             box-sizing: border-box;
             padding: 50px 20px;
-            transform: translateY(50%);;
+            transform: translateY(50%);
+            &--inner{
+                .payment-card{
+                    &__number{
+                        span{
+                            color: white;
+                            font-size: 26px;
+                        }
+                    }
+                }
+            }
         }
         // animation: rotate 2s linear normal;
         // animation-fill-mode:forwards;
