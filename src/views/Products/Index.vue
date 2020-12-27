@@ -22,9 +22,9 @@
                         </template>
                     </template>
                     <div class="col-12 text-center">
-                        <md-button @click="getData" class="md-raised md-dense md-primary">
-                            ver m&aacute;s
-                        </md-button>
+                        <button @click="getData" class="see-more">
+                            <span>ver m&aacute;s</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -57,7 +57,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../assets/css/vars";
+@import "@/assets/css/_vars";
 
 .products {
     position: relative;
@@ -90,6 +90,9 @@ export default {
         box-shadow: inset 2px 0px 300px -121px rgba(0, 0, 0, 0.75);
         padding: 50px 0;
         // box-sizing: content-box;
+        .see-more{
+            @include call-to-action-2(black);
+        }
     }
 }
 </style>

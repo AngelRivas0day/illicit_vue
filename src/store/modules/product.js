@@ -1,13 +1,15 @@
 /* eslint-disable */
 import * as api from '@/api/products'
 
+const pagination = 10
+
 const state = {
     glass: {},
     designs: [],
     isLoading: false,
     success: null,
     start: 0,
-    end: 10,
+    end: pagination,
     glasses: [],
     error: null
 }
@@ -27,7 +29,7 @@ const mutations = {
     SET_GLASSES(state, payload) {
         state.success = true
         state.start = payload.length - 1
-        state.end = payload.length + 10
+        state.end = payload.length + pagination
         state.glasses = [...payload]
     }
 }

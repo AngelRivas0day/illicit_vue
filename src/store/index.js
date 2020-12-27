@@ -12,6 +12,7 @@ import favorites from './modules/favorites'
 import maps from './modules/maps'
 import order from './modules/order'
 import orders from './modules/orders'
+import brands from './modules/brands'
 
 Vue.use(Vuex)
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     favorites,
     maps,
     order,
-    orders
+    orders,
+    brands
   }
 })

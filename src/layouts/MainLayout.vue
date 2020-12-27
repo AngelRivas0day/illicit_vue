@@ -19,7 +19,7 @@
                 </ul>
             </div>
         </md-drawer>
-        <md-content>
+        <md-content class="white-content">
             <div class="navbar">
                 <div class="navbar__container">
                     <div class="navbar__logo">

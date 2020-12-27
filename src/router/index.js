@@ -29,17 +29,17 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Products" */ '../views/Products/Index.vue')
   },
   {
-    path: '/productos/:slug',
+    path: '/productos/:id/:slug',
     name: 'Product',
     component: () => import(/* webpackChunkName: "Product" */ '../views/Product/Index.vue')
   },
   {
-    path: '/productos/checkout/:slug',
+    path: '/productos/checkout/:id/:slug',
     name: 'Checkout',
     component: () => import(/* webpackChunkName: "Checkout" */ '../views/Checkout/Index.vue')
   },
   {
-    path: '/productos/payment/:slug',
+    path: '/productos/payment/:id/:slug',
     name: 'Payment',
     component: () => import(/* webpackChunkName: "Payment" */ '../views/Payment/Index.vue')
   },
@@ -57,6 +57,11 @@ Vue.use(VueRouter)
     path: '/ubicaciones',
     name: 'Maps',
     component: () => import(/* webpackChunkName: "Maps" */ '../views/Maps/Index.vue')
+  },
+  {
+    path: '/historias',
+    name: 'Stories',
+    component: () => import(/* webpackChunkName: "Stories" */ '../views/Stories/Index.vue')
   },
   {
     path: '/contacto',

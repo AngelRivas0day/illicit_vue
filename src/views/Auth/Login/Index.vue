@@ -188,29 +188,29 @@ export default {
         }
     }
 
-::v-deep .md-field.md-theme-default{
+::v-deep .md-field.md-theme-default {
     color: black !important;
-    input{
+    input {
         -webkit-text-fill-color: #333333 !important;
     }
-    i:after{
+    i:after {
         height: 0px !important;
     }
 }
 
-::v-deep .md-field.md-theme-default label{
-    color: black !important;
+::v-deep .md-field.md-theme-default label {
+    color: #333333 !important;
 }
 
-::v-deep .md-field.md-theme-default.md-focused .md-icon{
-    color: #2ec5c5 !important;
+::v-deep .md-field.md-theme-default.md-focused .md-icon {
+    color: #333333 !important;
 }
 
 ::v-deep .md-field.md-theme-default:after {
-    background-color: black !important;
+    background-color: #333333 !important;
 }
 
 ::v-deep .md-field.md-theme-default:before {
-    background-color: black !important;
+    background-color: #2ec5c5 !important;
 }
 </style>

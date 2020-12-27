@@ -19,7 +19,9 @@ import {
     MdRadio,
     MdTable,
     MdTooltip,
-    MdRipple
+    MdRipple,
+    MdDialogConfirm,
+    MdDivider
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -50,3 +52,5 @@ Vue.use(MdRadio)
 Vue.use(MdTable)
 Vue.use(MdTooltip)
 Vue.use(MdRipple)
+Vue.use(MdDialogConfirm)
+Vue.use(MdDivider)

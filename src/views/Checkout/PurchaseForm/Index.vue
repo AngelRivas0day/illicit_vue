@@ -8,6 +8,15 @@
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
             <AddressForm />
         </md-dialog>
+        <md-dialog :md-fullscreen="false" :md-active.sync="showHelp">
+            <md-dialog-title>¿Cómo subir mi graduación?</md-dialog-title>
+            <md-dialog-content>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, fuga.
+            </md-dialog-content>
+            <md-dialog-actions>
+                <md-button class="md-primary md-dense md-raised" @click="showHelp = false">Entendido</md-button>
+            </md-dialog-actions>
+        </md-dialog>
         <form @submit="goToPay" class="row">
             <div class="col-12">
                 <h2>Especificaciones del lente</h2>
@@ -33,15 +42,20 @@
                 <md-field class="mt-0">
                     <label>Graduaci&oacute;n</label>
                     <md-file @change="handleChange"/>
+                    <span @click="showHelp = true" class="md-helper-text">
+                        <md-icon>help</md-icon>
+                        ¿Necesitas ayuda?
+                    </span>
                 </md-field>
             </div>
             <div class="col-12 mt-4">
                 <h2>Direcci&oacute;n de env&iacute;o</h2>
             </div>
-            <div class="col-12 mb-2 mt-0 mb-4">
+            <div class="col-12 mb-2 mt-0 mb-3">
                 <div class="row no-gutters ml-0">
                     <div class="col-12">
-                        <md-button @click="showDialog = true" class="md-dense md-raised md-primary ml-0 mb-3">Nueva direcci&oacute;n</md-button>
+                        <!-- <md-button @click="showDialog = true" class="md-dense md-primary mb-3 ml-0 md-secondary-button">Nueva direcci&oacute;n</md-button> -->
+                        <button @click="showDialog = true" class="md-secondary-button ml-0 mb-3"><span>Nueva direcci&oacute;n</span></button>
                     </div>
                     <div :key="ad.id" v-for="ad in addresses" class="col-12">
                         <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
@@ -58,14 +72,18 @@
             <div class="col-12">
                 <md-radio v-model="paymentMethod" value="card" class="text-white">Tarjeta de cr&eacute;dito / d&eacute;bito</md-radio>
                 <md-radio v-model="paymentMethod" value="store" class="text-white">En tienda</md-radio>
+                <!-- en tienda solo para optica hehe -->
             </div>
             <div v-if="errorMessage != null" class="col-12">
                 <div class="text-left text-warning">
                     {{errorMessage}}
                 </div>
             </div>
-            <div class="col-12 text-right mt-3">
-                <md-button class="md-dense md-raised md-primary" type="submit">Siguiente</md-button>
+            <div class="col-12 mt-3">
+                <md-button class="md-raised md-primary ml-0 px-2" type="submit">
+                    <!-- <span>Siguiente</span> -->
+                    Siguiente
+                </md-button>
             </div>
         </form>
     </div>
@@ -90,21 +108,21 @@ export default {
             {id: 2, name: 'Material 1', value: 'mat_1'}
         ],
         priceMod: 0,
-        lensePrice: 0
+        lensePrice: 0,
+        showHelp: false
     }),
     async mounted(){
-        try {
-            this.lensePrice = this.lenseSpecs.price
-            await this.getAddresses()
-            this.addresses.forEach(address=>{
-                if(address.isDefault){
-                    this.addressId = address.id
-                    return
-                }
-            })
-        } catch (error) {
-            console.log(error)
-        }
+        let restoredLenseSpecs = this.$cookies.get('lense_specs')
+        this.lenseSpecs = restoredLenseSpecs
+        
+        this.lensePrice = this.lenseSpecs.price
+        await this.getAddresses()
+        this.addresses.forEach(address=>{
+            if(address.isDefault){
+                this.addressId = address.id
+                return
+            }
+        })
     },
     computed: {
         ...mapState('addresses',{
@@ -225,7 +243,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/css/vars";
+@import "@/assets/css/_vars";
+
+.call-to-action-1{
+    // @include small-button("white", "black", "white");
+    // @include call-to-action-2;
+    // padding: 8px;
+    // border: none;
+    // min-width: 110px;
+    // text-align: center;
+    // color: black;
+    // background: #dadada;
+    // border-radius: 1px;
+    // text-transform: uppercase;
+    // font-weight: 200;
+    // letter-spacing: 1px;
+}
+
+.md-secondary-button{
+    // @include secondary-button;
+    @include call-to-action-2(white);
+    text-transform: uppercase;
+}
+
+.md-helper-text{
+    cursor: pointer !important;
+    .md-icon{
+        font-size: 16px !important;
+    }
+}
 
 .purchase-form{
     padding: 50px 0;

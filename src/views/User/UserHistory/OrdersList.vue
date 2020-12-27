@@ -6,7 +6,7 @@
         />
         <div v-if="orders">
             <md-table v-model="orders" @md-selected="onSelect">
-                <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="single">
+                <md-table-row slot="md-table-row" slot-scope="{ item }" @click="onSelect(item)" >
                     <md-table-cell md-label="Producto" md-sort-by="Producto" >{{item.specs.name}}</md-table-cell>
                     <md-table-cell md-label="Material" md-sort-by="Material" >{{item.specs.material}}</md-table-cell>
                     <md-table-cell md-label="Antirreflejante" md-sort-by="Antirreflejante" >{{item.specs.antireflective == "true" ? 'Si' : 'No'}}</md-table-cell>

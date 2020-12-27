@@ -3,14 +3,21 @@
         <div class="payment-card-container">
             <div class="payment-card">
                 <div class="payment-card--inner">
-                    <div class="payment-card__number">
+                    <div class="payment-card__number mt-5 mb-3">
                         <span>••••</span>
                         <span>••••</span>
                         <span>••••</span>
                         <span>••••</span>
                     </div>
-                    <div class="payment-card__expiry">
-
+                    <div class="d-flex flex-row">
+                        <div class="payment-card__card-holder">
+                            <small>Titular</small><br>
+                            <span>Jhon Wick</span>
+                        </div>
+                        <div class="payment-card__expiry">
+                            <small>Expiraci&oacute;n</small><br>
+                            <span>MM / YY</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -131,13 +138,6 @@ export default {
             createPayment: "createPayment",
             resetInfo: 'resetInfo'
         }),
-        // createToken() {
-        //     window.Stripe.setPublishableKey(this.publicKey);
-        //     window.Stripe.createToken(this.card, this.stripeResponseHandler);
-        // },
-        // stripeResponseHandler(status, response){
-        //     console.log(response)
-        // },
         onSubmit(e) {
             e.preventDefault();
             createToken().then(async (data) => {
@@ -175,14 +175,41 @@ export default {
             background: #333;
             border-radius: 15px;
             box-sizing: border-box;
-            padding: 50px 20px;
-            transform: translateY(50%);
+            padding: 50px 20px 40px 20px;
+            transform: translateY(20%);
             &--inner{
                 .payment-card{
                     &__number{
+                        width: 100%;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
                         span{
                             color: white;
-                            font-size: 26px;
+                            font-size: 34px;
+                            letter-spacing: 3px;
+                        }
+                    }
+                    &__expiry{
+                        flex: 1;
+                        small{
+                            color: rgba(255,255,255,.8) !important;
+                        }
+                        span{
+                            color: white;
+                            font-size: 19px;
+                            font-weight: 200;
+                        }
+                    }
+                    &__card-holder{
+                        flex: 1;
+                        small{
+                            color: rgba(255,255,255,.8) !important;
+                        }
+                        span{
+                            color: white;
+                            font-size: 19px;
+                            font-weight: 200;
                         }
                     }
                 }

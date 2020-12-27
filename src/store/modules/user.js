@@ -52,7 +52,16 @@ const mutations = {
 }
 
 const actions = {
-    async googleLogin({commit}){
+    checkIfOrigin(){
+        if(Vue.$cookies.get('origin-url')){
+            console.log(Vue.$cookies.get('origin-url'))
+            router.push(Vue.$cookies.get('origin-url'))
+            Vue.$cookies.remove('origin-url')
+        }else{
+            console.log("no hay origin URL")
+        }
+    },
+    async googleLogin({commit, dispatch}){
         const provider = new firebase.auth.GoogleAuthProvider()
         try {
             const { additionalUserInfo, user } = await firebase.auth().signInWithPopup(provider)
@@ -66,13 +75,14 @@ const actions = {
             localStorage.setItem('token', data.token)
             commit('AUTH_SUCCESS', { userName: data.name, token: data.token})
             router.push({name: 'User'})
+            dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
             commit('AUTH_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
         }
     },
-    async facebookLogin({commit}){
+    async facebookLogin({commit, dispatch}){
         const provider = new firebase.auth.FacebookAuthProvider()
         try {
             const { additionalUserInfo, user } = await firebase.auth().signInWithPopup(provider)
@@ -86,18 +96,20 @@ const actions = {
             localStorage.setItem('token', data.token)
             commit('AUTH_SUCCESS', { userName: data.name, token: data.token})
             router.push({name: 'User'})
+            dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
             commit('AUTH_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
         }
     },
-    async login({commit}, {email, password}){
+    async login({commit, dispatch}, {email, password}){
         try {
             commit('SET_LOADING', true)
             const { data } = await api.post('clients/login', {email, password})
             localStorage.setItem('token', data.token)
             commit('AUTH_SUCCESS', {userName: data.name, token: data.token})
+            dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
             commit('AUTH_ERROR', error.response.data)
         } finally {

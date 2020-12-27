@@ -14,14 +14,19 @@ import './plugins/VueNotify'
 import './plugins/VueLazyLoad'
 import './plugins/VueInputMask'
 import './plugins/Firebase'
+import './plugins/VueCookies'
+import './plugins/VueClipboard'
 
 // directives
 import './directives'
 // styles
 import './assets/css/mainTheme.scss'
 import './assets/css/fieldTheme.scss'
+import '../node_modules/animate.css/animate.min.css'
 
 Vue.prototype.$store = store
+Vue.$cookies.config('1d')
+
 
 router.beforeEach((to, from, next)=>{
   if(to.matched.some(record=>record.meta.requiresAuth)){

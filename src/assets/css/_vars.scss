@@ -7,6 +7,18 @@ $main-red: rgb(147,41,32);
 $terciary-color: "";
 $gray: #C4C4C4;
 $main-green: #2ec5c5;
+$main-green-mate: #24919c;
+
+// $primary-color: #f9f9f9;
+// $secondary-color: #222222;
+// $tertiary-color: #24919c;
+// $quaternary-color: #AD9C9C;
+// $quinary-color: #FAFAFA;
+
+$primary-color: #f9f9f9;
+$secondary-color: #222222;
+$tertiary-color: #24919c;
+$quaternary-color: #FF5E5B;
 
 @mixin white_form{
     ::v-deep .md-field{
@@ -41,6 +53,168 @@ $main-green: #2ec5c5;
 
     ::v-deep .md-count{
         color: #333 !important;
+    }
+}
+
+@mixin simple-button($text-color, $hover-color, $bg-color){
+    display: block;
+    width: auto;
+    max-width: 200px;
+    transition: all .3s;
+    text-align: center;
+    color: #{$text-color};
+    background-color: transparent;
+    text-decoration: none;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        z-index: -1;
+        position: absolute;
+        content: '';
+        background-color: #{$bg-color};
+        width: 30%;
+        height: 100%;
+        left: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &:hover:after{
+        width: 100%;
+        height: 100%;
+    }
+    &:hover{
+        color: #{$hover-color};
+    }
+}
+
+@mixin secondary-button(){
+    position: relative;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 7px 0;
+    min-width: 140px;
+    text-align: center;
+    transition: all .4s;
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0px;
+        background-color: white;
+        z-index: -1;
+    }
+    &:hover{
+        color: black;
+        // border-color: transparent;
+    }
+    &:hover:after{
+        width: 100% !important;
+    }
+}
+
+@mixin small-button($text-color, $hover-color, $bg-color){
+    position: relative;
+    transition: all .4s;
+    padding: 9px 25px;
+    border: none;
+    background-color: transparent;
+    color: #{$text-color};
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: #{$bg-color};
+        z-index: -1;
+    }
+    &:hover{
+        color: #{$hover-color};
+    }
+    &:hover:after{
+        width: 100% !important;
+    }
+}
+
+@mixin call-to-action-2($color){
+    padding: 10px 25px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    background: transparent;
+    outline: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+
+    min-width: 130px;
+    width: 160px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    color: $color;
+    span{
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        &:after, &:before{
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            background: $color !important;
+            transition: all 0.3s ease;
+        }
+        &:before {
+            width: 1px;
+            height: 50%;
+        }
+        &:after {
+            width: 20%;
+            height: 1px;
+        }
+        &:hover:before {
+            height: 100%;
+        }
+        &:hover:after {
+            width: 100%;
+        }
+    }
+    &:before, &:after{
+        position: absolute;
+        content: "";
+        right: 0;
+        top: 0;
+        background: $color !important;
+        transition: all 0.3s ease;
+    }
+    &:before {
+        height: 50%;
+        width: 1px;
+    
+    }
+    &:after {
+        width: 20%;
+        height: 1px;
+    
+    }
+    &:hover:before {
+        height: 100%;
+    }
+    &:hover:after {
+        width: 100%;
     }
 }
 

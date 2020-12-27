@@ -61,8 +61,8 @@
                 </md-field>
             </div>
             <div class="col-12 text-right">
-                <md-button v-if="!isCheckout" type="submit" class="md-primary md-raised mr-2">Guardar</md-button>
-                <md-button v-if="!isCheckout" @click="showDialog = false" class="md-accent md-raised mr-0">Cancelar</md-button>
+                <md-button v-if="!isCheckout" @click="showDialog = false" class="mr-2">Cancelar</md-button>
+                <md-button v-if="!isCheckout" type="submit" class="md-primary md-raised mr-0">Guardar</md-button>
             </div>
         </form>
     </div>

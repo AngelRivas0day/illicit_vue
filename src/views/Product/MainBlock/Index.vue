@@ -1,47 +1,57 @@
 <template>
-    <div class="main-block">
-        <div class="main-block__info">
-            <div class="info__body">
-                <div class="d-flex flex-row justify-content-between align-items-center">
-                    <h1 class="info__title">{{glass.name}}</h1>
-                    <md-button @click="addFav({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
-                        <md-icon :class="{'is-fav': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
-                    </md-button>
+    <div>
+        <md-dialog-confirm
+            :md-active.sync="showDialog"
+            md-title="Parece que no has iniciado sesión"
+            md-content="Para poder hacer tu compra tienes que iniciar sesión. Es muy rápido hacerlo."
+            md-confirm-text="Iniciar sesión"
+            md-cancel-text="Cancelar"
+            @md-cancel="onCancel"
+            @md-confirm="onConfirm" />
+        <div class="main-block">
+            <div class="main-block__info">
+                <div class="info__body">
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <h1 class="info__title">{{glass.name}}</h1>
+                        <md-button @click="addFav({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
+                            <md-icon :class="{'is-fav': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
+                        </md-button>
+                    </div>
+                    <span class="info__price">${{glass.price}}</span>
+                    <ul class="info__colors-selector">
+                        <template v-for="c in glass.designs">
+                            <li @click="setDesign(c)" :key="c.name" :style="'background-color:'+c.color.hex+';'"></li>
+                        </template>
+                    </ul>
+                    <p class="info__desc">
+                        {{glass.description}}
+                    </p>
                 </div>
-                <span class="info__price">${{glass.price}}</span>
-                <ul class="info__colors-selector">
-                    <template v-for="c in glass.designs">
-                        <li @click="setDesign(c)" :key="c.name" :style="'background-color:'+c.color.hex+';'"></li>
-                    </template>
-                </ul>
-                <p class="info__desc">
-                    {{glass.description}}
-                </p>
+                <div class="info__actions">
+                    <button @click="buy()" class="info__buy">COMPRAR</button>            
+                </div>
             </div>
-            <div class="info__actions">
-                <button @click="buy()" class="info__buy">COMPRAR</button>            
+            <div
+                v-if="currentDesign"
+                class="main-block__image"
+                :class="[isTransition ? 'animate' : 'no-animate']"
+            >
+                <img v-lazy="currentDesign.images[0]" alt="">
             </div>
-        </div>
-        <div
-            v-if="currentDesign"
-            class="main-block__image"
-            :class="[isTransition ? 'animate' : 'no-animate']"
-        >
-            <img v-lazy="currentDesign.images[0]" alt="">
-        </div>
-        <div
-            v-if="currentDesign"
-            class="main-block__image"
-            :class="[isTransition ? 'animate' : 'no-animate']"
-        >
-            <img v-lazy="currentDesign.images[1]" alt="">
-        </div>
-        <div
-            v-if="currentDesign"
-            class="main-block__image"
-            :class="[isTransition ? 'animate' : 'no-animate']"
-        >
-            <img v-lazy="currentDesign.images[2]" alt="">
+            <div
+                v-if="currentDesign"
+                class="main-block__image"
+                :class="[isTransition ? 'animate' : 'no-animate']"
+            >
+                <img v-lazy="currentDesign.images[1]" alt="">
+            </div>
+            <div
+                v-if="currentDesign"
+                class="main-block__image"
+                :class="[isTransition ? 'animate' : 'no-animate']"
+            >
+                <img v-lazy="currentDesign.images[2]" alt="">
+            </div>
         </div>
     </div>
 </template>
@@ -85,8 +95,9 @@ export default {
         })
     },
     data: ()=>({
-        currentDesign: {},
+        currentDesign: null,
         isFavorite: false,
+        showDialog: false
     }),
     methods: {
         ...mapActions('favorites',{
@@ -94,10 +105,22 @@ export default {
             deleteFavorite: 'deleteFavorite'
         }),
         buy(){
-            this.$router.push({
-                name: 'Checkout',
-                params: { slug: this.glass.slug }
-            })
+            if(this.isLoggedIn){
+                this.$router.push({
+                    name: 'Checkout',
+                    params: { id: this.glass.id, slug: this.glass.slug }
+                })
+                this.$cookies.set('lense_specs', JSON.stringify(this.lenseSpecs))
+            }else{
+                this.$cookies.set('origin-url', `productos/${this.glass.id}/${this.glass.slug}`)
+                this.showDialog = true
+            }
+        },
+        onCancel(){
+            this.showDialog = false
+        },
+        onConfirm(){
+            this.$router.push({name: 'Auth'})
         },
         setDesign(design){
             this.transition(() => {
@@ -155,9 +178,9 @@ export default {
         box-sizing: border-box;
         padding: 15px;
         .info__body{
-            .info__title{
+            // .info__title{
 
-            }
+            // }
             .md-fav{
                 &.is-fav{
                     color: red !important;
@@ -166,9 +189,9 @@ export default {
                     color: rgba(33,33,33,.3) !important;
                 }
             }
-            .info__price{
+            // .info__price{
 
-            }
+            // }
             .info__colors-selector{
                 list-style: none;
                 padding: 0;
@@ -183,46 +206,23 @@ export default {
                     cursor: pointer;
                 }
             }
-            .info__desc{
+            // .info__desc{
 
-            }
+            // }
         }
         .info__actions{
             .info__buy{
-                position: relative;
-                transition: all .4s;
-                padding: 9px 25px;
-                border: none;
-                background-color: transparent;
-                color: black;
-                z-index: 1;
-                &:after{
-                    transition: all .3s;
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    height: 100%;
-                    width: 2px;
-                    background-color: black;
-                    z-index: -1;
-                }
-                &:hover{
-                    color: white;
-                }
-                &:hover:after{
-                    width: 100% !important;
-                }
+                @include small-button("black", "white", "black");
             }
         }
-        @media #{$break-large}{
+        @media #{$break-medium}{
             order: -2;
             width: 50%;
             height: 100vH;
             .info__actions{
                 margin-bottom: 50px !important;
-                .info__buy{
-                }
+                // .info__buy{
+                // }
             }
         }
     }

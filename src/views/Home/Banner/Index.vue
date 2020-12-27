@@ -14,6 +14,7 @@
                 :autoplay="true"
                 :autoplaySpeed="false"
                 :autoplayHoverPause="true"
+                animateOut="fadeOut"
             >
                 <template v-for="slide in banners">
                     <div :key="slide.id" class="slide">
@@ -21,7 +22,7 @@
                             <div class="slide-inner__content">
                                 <h1 class="slide__title">
                                     <span>
-                                        {{ slide.title }}
+                                        {{ slide.title.toUpperCase() }}
                                     </span>
                                 </h1>
                                 <router-link
@@ -66,6 +67,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/_vars";
 .slide{
     .slide-inner{
         position: relative;
@@ -90,39 +92,7 @@ export default {
                 }
             }
             .slide__button{
-                display: block;
-                width: auto;
-                max-width: 200px;
-                transition: all .3s;
-                text-align: center;
-                color: black;
-                background-color: transparent;
-                text-decoration: none;
-                font-size: 14px;
-                position: relative;
-                z-index: 1;
-                &:after{
-                    transition: all .3s;
-                    z-index: -1;
-                    position: absolute;
-                    content: '';
-                    background-color: #2ec5c5;
-                    width: 30%;
-                    height: 100%;
-                    left: 0px;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    // border-radius: 100%;
-                }
-                &:hover:after{
-                    width: 100%;
-                    height: 100%;
-                    // border-radius: ;
-                }
-                &:hover{
-                    color: white;
-                }
-                // @include main-button('false');
+                @include simple-button("black","white",#{$main-green});
             }
             @media screen and (min-width: 768px){
                 left: 10%;

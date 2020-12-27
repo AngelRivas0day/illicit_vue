@@ -17,12 +17,13 @@ export default {
         Features
     },
     mounted(){
-        let itemSlug = this.$route.params.slug
-        this.glasses.forEach(glass => {
-            if(itemSlug == glass.slug){
-                this.fetchData(glass.id)
-            }
-        })
+        let itemId = this.$route.params.id
+        console.log(itemId)
+        // this.glasses.forEach(glass => {
+        //     if(itemSlug == glass.slug){
+                this.getGlass(itemId)
+        //     }
+        // })
     },
     data: () => ({
         itemId: null,
@@ -35,7 +36,7 @@ export default {
     },
     methods: {
         ...mapActions('product',{
-            fetchData: 'getGlass'
+            getGlass: 'getGlass'
         })
     }
 }

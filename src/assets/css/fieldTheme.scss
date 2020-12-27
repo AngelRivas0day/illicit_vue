@@ -3,7 +3,7 @@
 @include md-register-theme("default", (
   primary: #dadada, // The primary color of your application
   accent: #2ec5c5, // The accent or secondary color
-  theme: dark // This can be dark or light
+  theme: 'dark' // This can be dark or light
 ));
 
 @import "~vue-material/dist/components/MdField/theme"; // Apply the theme

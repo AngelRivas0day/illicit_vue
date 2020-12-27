@@ -37,6 +37,13 @@
             </div>
             <div class="col-xs-12 col-sm-12">
                 <md-field>
+                    <md-icon class="md-accent">phone</md-icon>
+                    <label>N&uacute;mero de telefono</label>
+                    <md-input v-model="form.model" v-mask="'+## ###-###-####'"></md-input>
+                </md-field>
+            </div>
+            <div class="col-xs-12 col-sm-12">
+                <md-field>
                     <md-icon v-if="!isPasswordValid" class="md-accent">vpn_key</md-icon>
                     <md-icon v-if="isPasswordValid" class="md-accent">done</md-icon>
                     <label>Contrase&ntilde;a</label>
@@ -107,6 +114,7 @@ export default {
             lastName: "",
             email: "",
             password: "",
+            phone: ""
         },
         repeatedPassword: "",
         errors: [],
@@ -268,18 +276,18 @@ export default {
 }
 
 ::v-deep .md-field.md-theme-default label {
-    color: black !important;
+    color: #333333 !important;
 }
 
 ::v-deep .md-field.md-theme-default.md-focused .md-icon {
-    color: #2ec5c5 !important;
+    color: #333333 !important;
 }
 
 ::v-deep .md-field.md-theme-default:after {
-    background-color: black !important;
+    background-color: #333333 !important;
 }
 
 ::v-deep .md-field.md-theme-default:before {
-    background-color: black !important;
+    background-color: #2ec5c5 !important;
 }
 </style>
