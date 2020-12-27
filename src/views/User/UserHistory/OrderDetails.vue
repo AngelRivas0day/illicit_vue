@@ -1,5 +1,10 @@
 <template>
     <div>
+        <md-dialog class="top-dialog" :md-active.sync="showGrad">
+            <md-dialog-content>
+                <img :src="order.specs.graduation" alt="">
+            </md-dialog-content>
+        </md-dialog>
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>
                 <div class="md-title">Detalles de compra</div>
@@ -21,7 +26,10 @@
                         <h3 class="md-title">Resumen de compra</h3> 
                         <p><span>Antirreflejante: </span>{{ order.specs.antireflective ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
                         <p><span>Material: </span>{{ order.specs.material }}</p>
-                        <p><span>Graduaci&oacute;n: </span></p>
+                        <p v-if="order.specs.graduation">
+                            <span>Graduaci&oacute;n: </span>
+                            <a class="clickable" @click="showGrad = true">Ver graduaci&oacute;n</a>
+                        </p>
                         <p><span>Total: </span> ${{ order.specs.price }}</p>
                     </div>
                 </div>
@@ -70,6 +78,9 @@ export default {
             required: true
         }
     },
+    data: () => ({
+        showGrad: false
+    }),
     methods: {
         onClose(){
             this.showDialog = false
@@ -91,6 +102,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.clickable{
+    cursor: pointer;
+    color: black !important;
+    text-decoration: underline;
+}
+.top-dialog{
+    z-index: 999 !important;
+}
 .md-subhead{
     opacity: .54;
     font-size: 14px;
