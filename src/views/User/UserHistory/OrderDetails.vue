@@ -26,6 +26,7 @@
                         <h3 class="md-title">Resumen de compra</h3> 
                         <p><span>Antirreflejante: </span>{{ order.specs.antireflective ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
                         <p><span>Material: </span>{{ order.specs.material }}</p>
+                        <p><span>Diseño: </span>{{order.specs.design.name}}</p>
                         <p v-if="order.specs.graduation">
                             <span>Graduaci&oacute;n: </span>
                             <a class="clickable" @click="showGrad = true">Ver graduaci&oacute;n</a>
@@ -50,10 +51,10 @@
                     <div class="col-12 mt-3">
                         <div class="item-card">
                             <div class="item-card__image">
-                                <img src="http://via.placeholder.com/120x120" alt="Item del pedido">
+                                <img :src="order.specs.design.image" alt="Item del pedido">
                             </div>
                             <div class="item-card__info">
-                                <p>{{ order.specs.name }}</p>
+                                <div class="name">{{ order.specs.name }} - <div :style="'background:' + order.specs.design.hex + ';'" class="color-sample"></div> {{ order.specs.design.name }}</div>
                                 <p class="price">$ {{order.specs.price}}</p>
                             </div>
                         </div>
@@ -148,6 +149,19 @@ export default {
             flex: 1;
             .price{
                 color: red;
+            }
+            .name{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                flex-direction: row;
+            }
+            .color-sample{
+                width: 15px;
+                height: 15px;
+                display: block;
+                border-radius: 100%;
+                margin: 0 5px;
             }
         }
     }

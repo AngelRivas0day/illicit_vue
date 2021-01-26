@@ -15,7 +15,7 @@
             <div class="col-xs-12 col-sm-12 col-md-3">
                 <md-field>
                     <label>ZIP</label>
-                    <md-input v-model="addressForm.zip" required></md-input>
+                    <md-input class="w-100" v-model="addressForm.zip" required></md-input>
                 </md-field>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
@@ -61,7 +61,7 @@
                 </md-field>
             </div>
             <div class="col-12 text-right">
-                <md-button v-if="!isCheckout" @click="showDialog = false" class="mr-2">Cancelar</md-button>
+                <md-button v-if="!isCheckout" @click="showDialog = false" class="md-stroked mr-2">Cancelar</md-button>
                 <md-button v-if="!isCheckout" type="submit" class="md-primary md-raised mr-0">Guardar</md-button>
             </div>
         </form>

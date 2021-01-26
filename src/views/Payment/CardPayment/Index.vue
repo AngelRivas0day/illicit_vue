@@ -52,7 +52,7 @@
                             ref="cardCvc"
                             :stripe="publicKey"
                             :options="stripeOptions"
-                            @change="cvc = $event.complete"
+                            @change="card.cvc = $event.complete"
                         />
                     </div>
                     <div class="col-12 text-right mt-5">

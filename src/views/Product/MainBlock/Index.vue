@@ -91,7 +91,7 @@ export default {
                 image: this.glass.designs[0].mainImage,
                 images: this.glass.designs[0].images
             }
-            this.lenseSpecs.design = this.currentDesign
+            this.lenseSpecs.design = JSON.stringify(this.currentDesign)
         })
     },
     data: ()=>({
@@ -130,7 +130,7 @@ export default {
                     image: design.mainImage,
                     images: design.images
                 }
-                this.lenseSpecs.design = this.currentDesign // vuex binding
+                this.lenseSpecs.design = JSON.stringify(this.currentDesign) // vuex binding
             })
         },
         addFav({id, name}){
@@ -150,8 +150,8 @@ export default {
     watch: {
         glass(){
             this.currentDesign = this.glass.designs[0]
-            // console.log(this.currentDesign)
             this.lenseSpecs = { // vuex binding
+                id: this.glass.id,
                 name: this.glass.name,
                 price: this.glass.price,
                 slug: this.glass.slug,

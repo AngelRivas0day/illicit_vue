@@ -41,6 +41,15 @@
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field class="mt-0">
                     <label>Graduaci&oacute;n</label>
+                    <md-select v-model="withGraduation">
+                        <md-option :value="true">Con graduaci&oacute;n</md-option>
+                        <md-option :value="false">Sin graduaci&oacute;n</md-option>
+                    </md-select>
+                </md-field>
+            </div>
+            <div v-if="withGraduation" class="col-xs-12 col-sm-12 col-md-6">
+                <md-field class="mt-0">
+                    <label>Sube tu graduaci&oacute;n</label>
                     <md-file @change="handleChange"/>
                     <span @click="showHelp = true" class="md-helper-text">
                         <md-icon>help</md-icon>
@@ -55,14 +64,19 @@
                 <div class="row no-gutters ml-0">
                     <div class="col-12">
                         <!-- <md-button @click="showDialog = true" class="md-dense md-primary mb-3 ml-0 md-secondary-button">Nueva direcci&oacute;n</md-button> -->
-                        <button @click="showDialog = true" class="md-secondary-button ml-0 mb-3"><span>Nueva direcci&oacute;n</span></button>
+                        <md-button @click="showDialog = true" class="md-secondary-button md-primary md-stroked ml-0 mb-3">Nueva direcci&oacute;n</md-button>
                     </div>
-                    <div :key="ad.id" v-for="ad in addresses" class="col-12">
-                        <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
-                            {{ `${ad.state}, ${ad.city}. ${ad.street} #${ad.extNumber} ${ad.intNumber ? 'int. ' + ad.intNumber : ''}`}}
-                            &nbsp;
-                            <small>{{ ad.isDefault ? '(Default)' : '' }}</small>
-                        </md-radio>
+                    <div v-if="addresses.length != 0" class="col-12">
+                        <div v-for="ad in addresses" :key="ad.id" class="w-100">
+                            <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
+                                {{ `${ad.state}, ${ad.city}. ${ad.street} #${ad.extNumber} ${ad.intNumber ? 'int. ' + ad.intNumber : ''}`}}
+                                &nbsp;
+                                <small>{{ ad.isDefault ? '(Default)' : '' }}</small>
+                            </md-radio>
+                        </div>
+                    </div>
+                    <div v-else class="col-12">
+                        <p class="text-white text-warning">No hay direcciones registradas</p>
                     </div>
                 </div>
             </div>
@@ -109,7 +123,8 @@ export default {
         ],
         priceMod: 0,
         lensePrice: 0,
-        showHelp: false
+        showHelp: false,
+        withGraduation: false
     }),
     async mounted(){
         let restoredLenseSpecs = this.$cookies.get('lense_specs')
@@ -245,25 +260,18 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/css/_vars";
 
-.call-to-action-1{
-    // @include small-button("white", "black", "white");
-    // @include call-to-action-2;
-    // padding: 8px;
-    // border: none;
-    // min-width: 110px;
-    // text-align: center;
-    // color: black;
-    // background: #dadada;
-    // border-radius: 1px;
-    // text-transform: uppercase;
-    // font-weight: 200;
-    // letter-spacing: 1px;
+.dialog{
+    max-width: 800px;
+    margin: 0 auto;
+    overflow: hidden;
 }
 
 .md-secondary-button{
     // @include secondary-button;
-    @include call-to-action-2(white);
-    text-transform: uppercase;
+    // @include call-to-action-2(white);
+    text-transform: capitalize;
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 4px;
 }
 
 .md-helper-text{
