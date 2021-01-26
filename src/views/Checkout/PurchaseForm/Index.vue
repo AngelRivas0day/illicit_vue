@@ -88,6 +88,19 @@
                 <md-radio v-model="paymentMethod" value="store" class="text-white">En tienda</md-radio>
                 <!-- en tienda solo para optica hehe -->
             </div>
+            <div class="col-12">
+                <h2>C&oacute;digo de descuento</h2>
+            </div>
+            <div class="col-6">
+                <md-field>
+                    <md-icon v-if="isDiscountCodeValid">verified</md-icon>
+                    <label>Si cuentas con uno escr&iacute;belo</label>
+                    <md-input v-mask="'XXX-XXX'" v-model="discountCode"></md-input>
+                </md-field>
+            </div>
+            <div class="col-3">
+                <md-button @click="checkCode()" class="md-primary md-stroked mt-3">Verificar</md-button>
+            </div>
             <div v-if="errorMessage != null" class="col-12">
                 <div class="text-left text-warning">
                     {{errorMessage}}
@@ -124,7 +137,9 @@ export default {
         priceMod: 0,
         lensePrice: 0,
         showHelp: false,
-        withGraduation: false
+        withGraduation: false,
+        // discount code model
+        discountCode: ''
     }),
     async mounted(){
         let restoredLenseSpecs = this.$cookies.get('lense_specs')
@@ -151,7 +166,8 @@ export default {
             lenseSpecs: 'lenseSpecs',
             addressId: 'addressId',
             paymentMethod: 'paymentMethod',
-            isOrderOk: 'isOrderOk'
+            isOrderOk: 'isOrderOk',
+            isDiscountCodeValid: 'isDiscountCodeValid'
         }),
         isMaterialValid(){
             return this.$v.lenseSpecs.material.required ? true : false
@@ -186,7 +202,8 @@ export default {
            getAddresses:'getAddresses'
         }),
         ...mapActions('order',{
-           createOrder:'createOrder'
+           createOrder:'createOrder',
+           checkForDiscountCode: 'checkForDiscountCode'
         }),
         setAddress(addressId){
             if(addressId != ""){
@@ -236,6 +253,10 @@ export default {
                 this.priceMod -= 120
             }
             this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+        },
+        checkCode(){
+            this.checkForDiscountCode(this.discountCode)
+            console.log("Check!")
         }
     },
     validations: {

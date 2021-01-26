@@ -29,7 +29,8 @@ const state = {
     isError: false,
     isOrderOk: false,
     errorMessage: null,
-    paymentStatus: null
+    paymentStatus: null,
+    isDiscountCodeValid: null
 }
 
 const mutations = {
@@ -46,6 +47,9 @@ const mutations = {
     },
     PAYMENT_SUCCESS(state, payload) {
         state.paymentStatus = payload;
+    },
+    SET_VALIDITY(state, payload){
+        state.isDiscountCodeValid = payload
     },
     RESET_INFO(state) {
         state.lenseSpecs = {
@@ -105,6 +109,12 @@ const actions = {
     resetInfo({ commit }) {
         commit("RESET_INFO");
     },
+    async checkForDiscountCode({commit}, code){
+        commit('SET_LOADING', true)
+        console.log("code: ", code)
+        commit('SET_VALIDITY', true)
+        commit('SET_LOADING', false) 
+    }
 }
 
 const getters = {

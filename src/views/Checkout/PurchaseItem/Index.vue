@@ -3,7 +3,7 @@
         <div class="purchase-item">
             <div class="item-card">
                 <div class="card-image mb-3">
-                    <img :src="lenseSpecs.design.image" alt="">
+                    <img :src="design.image" alt="">
                 </div>
                 <div class="card-specs">
                     <ul>
@@ -38,6 +38,13 @@ import {mapState} from 'vuex'
 
 export default {
     name: 'PurchaseItem',
+    mounted(){
+        // this.specs = JSON.parse(this.lenseSpecs)
+        this.design = JSON.parse(this.lenseSpecs.design)
+    },
+    data:()=>({
+        design: {}
+    }),
     computed: {
         ...mapState('order', {
             lenseSpecs: 'lenseSpecs'
