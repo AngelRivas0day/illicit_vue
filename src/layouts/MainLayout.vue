@@ -26,12 +26,12 @@
                         <img src="" alt="" />
                     </div>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
-                        <md-button @click="goToLogin" md-menu-trigger class="mb-2 actions__log md-icon-button md-dense">
+                        <md-button @click="goToLogin" md-menu-trigger class="mb-0 actions__log md-icon-button md-dense">
                             <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
                         </md-button>
                         <md-menu md-size="huge" :md-offset-x="-240" :md-offset-y="1">
                             <md-badge class="mr-0 mr-md-3" :md-content="favorites.length">
-                                <md-button md-menu-trigger class="mb-2 actions__fav md-icon-button md-dense mr-3">
+                                <md-button md-menu-trigger class="mb-0 actions__fav md-icon-button md-dense mr-3">
                                     <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">favorite</md-icon>
                                 </md-button>
                             </md-badge>
@@ -52,6 +52,7 @@
                     </div>
                 </div>
             </div>
+            <EventSnackBar />
             <router-view />
         </md-content>
         <Footer />
@@ -61,11 +62,12 @@
 <script>
 import Footer from "@/components/Footer";
 import Favs from '@/components/Favs'
+import EventSnackBar from '@/components/EventSnackBar'
 import { mapState } from 'vuex'
 
 export default {
     name: "MainLayout",
-    components: { Footer, Favs },
+    components: { Footer, Favs, EventSnackBar },
     data: () => ({
         showNavigation: false,
         menuOptions: [
@@ -161,12 +163,12 @@ export default {
 @import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300");
 .navbar {
     box-sizing: border-box;
-    padding: 10px 50px 0 25px;
+    padding: 0px 50px 0 25px;
     position: fixed;
     width: 100%;
     top: 0;
     left: 0;
-    height: 50px;
+    height: 55px;
     z-index: 200;
     .navbar__container {
         width: 100%;
@@ -174,10 +176,10 @@ export default {
         justify-content: space-between;
         align-items: center;
         flex-direction: row;
-        height: 50px;
+        height: 100%;
     }
     @media #{$break-medium}{
-        padding: 10px 110px 0 25px;
+        padding: 0px 110px 0 25px;
     }
 }
 
@@ -185,7 +187,7 @@ export default {
     display: inline-block;
     position: relative;
     width: 30px;
-    top: inherit;
+    top: 3px;
     left: 20px;
     //   transform: translate(-50%, -50%);
     font-size: 30px;
