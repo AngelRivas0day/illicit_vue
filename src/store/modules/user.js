@@ -66,11 +66,12 @@ const actions = {
         try {
             const { additionalUserInfo, user } = await firebase.auth().signInWithPopup(provider)
             const newUser = {
-                name: additionalUserInfo.profile.first_name,
-                lastName: additionalUserInfo.profile.last_name,
+                name: additionalUserInfo.profile.given_name,
+                lastName: additionalUserInfo.profile.family_name,
                 email: user.email,
                 uid: user.uid
             }
+            console.log(additionalUserInfo, user)
             const { data } = await api.post('clients/login/google', newUser, false)
             localStorage.setItem('token', data.token)
             commit('AUTH_SUCCESS', { userName: data.name, token: data.token})
