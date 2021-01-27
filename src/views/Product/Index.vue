@@ -2,19 +2,22 @@
     <div class="product">
         <MainBlock />
         <Features />
+        <Specs />
     </div>
 </template>
 
 <script>
 import MainBlock from './MainBlock/Index'
 import Features from './Features/Index'
+import Specs from './Specs/Index'
 import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Product',
     components: {
         MainBlock,
-        Features
+        Features,
+        Specs
     },
     mounted(){
         let itemId = this.$route.params.id

@@ -39,14 +39,22 @@
                 </div>
                 <div class="order-details__items row">
                     <div class="col-12">
-                        <tempalte v-if="order.orderStatus == 'PENDIENTE'">
+                        <template v-if="order.orderStatus == 'PENDIENTE'">
                             <h4 class="md-title">Pendiente de entregar</h4>
                             <p>El paquete aún está en el proceso de entrega</p>
-                        </tempalte>
-                        <tempalte v-else>
+                        </template>
+                        <template v-if="order.orderStatus == 'ELABORANDO'">
+                            <h4 class="md-title">El paquete est&aacute; siendo elaborado</h4>
+                            <p>El paquete ha sido entregado en la direcci&oacute;n provista</p> 
+                        </template>
+                        <template v-if="order.orderStatus == 'ENVIADO'">
+                            <h4 class="md-title">El paquete ha sido enviado</h4>
+                            <p>El paquete ha sido entregado en la direcci&oacute;n provista</p> 
+                        </template>
+                        <template v-if="order.orderStatus == 'ENTREGADO'">
                             <h4 class="md-title">El paquete ha sido entregado</h4>
                             <p>El paquete ha sido entregado en la direcci&oacute;n provista</p> 
-                        </tempalte>
+                        </template>
                     </div>
                     <div class="col-12 mt-3">
                         <div class="item-card">
