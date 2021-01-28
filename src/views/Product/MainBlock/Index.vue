@@ -12,7 +12,10 @@
             <div class="main-block__info">
                 <div class="info__body">
                     <div class="d-flex flex-row justify-content-between align-items-center">
-                        <h1 class="info__title">{{glass.name}}</h1>
+                        <div class="mb-2">
+                            <h1 class="info__title mb-0">{{glass.name}}</h1>
+                            <span class="text-muted">{{categories}}</span>
+                        </div>
                         <md-button @click="addFav({id: glass.id, name: glass.name})" class="md-icon-button ml-4">
                             <md-icon :class="{'is-fav': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
                         </md-button>
@@ -76,7 +79,10 @@ export default {
         }),
         ...mapFields('order',{
             lenseSpecs: 'lenseSpecs'
-        })
+        }),
+        categories(){
+            return this.glass.categories ? this.glass.categories.join(', ') : 'Cargando...'
+        }
     },
     mounted(){
         this.favorites.forEach(fav => {

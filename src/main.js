@@ -25,6 +25,7 @@ import './assets/css/fieldTheme.scss'
 import '../node_modules/animate.css/animate.min.css'
 
 Vue.prototype.$store = store
+Vue.material.locale.dateFormat = 'dd/MM/yyyy'
 Vue.$cookies.config('1d')
 
 

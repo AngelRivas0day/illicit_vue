@@ -3,6 +3,7 @@
         <MainBlock />
         <Features />
         <Specs />
+        <FaceMeasure />
     </div>
 </template>
 
@@ -10,33 +11,26 @@
 import MainBlock from './MainBlock/Index'
 import Features from './Features/Index'
 import Specs from './Specs/Index'
-import { mapActions, mapState } from 'vuex'
+import FaceMeasure from './FaceMeasure/Index'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'Product',
     components: {
         MainBlock,
         Features,
-        Specs
+        Specs,
+        FaceMeasure
     },
     mounted(){
         let itemId = this.$route.params.id
-        console.log(itemId)
-        // this.glasses.forEach(glass => {
-        //     if(itemSlug == glass.slug){
-                this.getGlass(itemId)
-        //     }
-        // })
+        // this function sets the glass item inside
+        // the product module e.x state.glass
+        this.getGlass(itemId)
     },
     data: () => ({
         itemId: null,
-        product: {}
     }),
-    computed: {
-        ...mapState('product',{
-            glasses: 'glasses'
-        })
-    },
     methods: {
         ...mapActions('product',{
             getGlass: 'getGlass'

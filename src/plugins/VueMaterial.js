@@ -21,10 +21,12 @@ import {
     MdTooltip,
     MdRipple,
     MdDialogConfirm,
-    MdDivider
+    MdDivider,
+    MdSubheader
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
+
 
 // @include md-register-theme("default", (
 //   primary: md-get-palette-color(white, A200), // The primary color of your application
@@ -54,3 +56,4 @@ Vue.use(MdTooltip)
 Vue.use(MdRipple)
 Vue.use(MdDialogConfirm)
 Vue.use(MdDivider)
+Vue.use(MdSubheader)
