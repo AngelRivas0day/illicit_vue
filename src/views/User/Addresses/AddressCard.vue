@@ -1,5 +1,12 @@
 <template>
     <div>
+        <md-dialog :md-active.sync="showDialog">
+            <md-dialog-title>¿Deseas borrar esta direcci&oacute;n de forma permanente?</md-dialog-title>
+            <md-dialog-actions>
+                <md-button @click="onCancel" class="md-dense md-primary md-stroked">Cancelar</md-button>
+                <md-button @click="onAccept" class="md-accent md-dense md-raised">Si</md-button>
+            </md-dialog-actions>
+        </md-dialog>
         <md-card>
             <md-card-header>
                 <md-card-header-text>
@@ -14,7 +21,7 @@
             <md-card-actions>
                 <md-button
                     v-if="!readOnly"
-                    @click="deleteAddress(address.id)"
+                    @click="onDelete(address.id)"
                     class="md-dense md-primary text-white md-raised"
                 >Borrar</md-button>
                 <md-button
@@ -46,12 +53,27 @@ export default {
             default: false,
         },
     },
+    data: () => ({
+        showDialog: false,
+        addressId: null
+    }),
     methods: {
         ...mapActions('addresses',{
            deleteAddress:'deleteAddress'
         }),
         selectAddress(addressId){
             this.$emit('selected', addressId);
+        },
+        onDelete(id){
+            this.addressId = id
+            this.showDialog = true
+        },
+        onCancel(){
+            this.addressId = null
+            this.showDialog = false
+        },
+        onAccept(){
+            this.deleteAddress(this.addressId)
         }
     }
 };

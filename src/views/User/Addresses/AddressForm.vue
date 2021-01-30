@@ -62,7 +62,7 @@
             </div>
             <div class="col-12 text-right">
                 <md-button v-if="!isCheckout" @click="showDialog = false" class="md-stroked mr-2">Cancelar</md-button>
-                <md-button v-if="!isCheckout" type="submit" class="md-primary md-raised mr-0">Guardar</md-button>
+                <md-button v-if="!isCheckout" type="submit" class="md-primary md-raised md-dense mr-0">Guardar</md-button>
             </div>
         </form>
     </div>

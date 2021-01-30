@@ -166,15 +166,14 @@ const actions = {
             commit('SET_LOADING', false)
         }
     },
-    async getInfo({commit}){
+    async getInfo({commit, dispatch}){
         try {
             commit('SET_LOADING', true)
             const { data } = await api.getAll('clients', true)
             commit('SET_USER_INFO', data)
             return data
         } catch (error) {
-            console.log(error)
-            alert("Error catastrofico, por favor cierre e inicie sesion de nuevo.")
+            dispatch('user/logout', null, {root:true})
         } finally {
             commit('SET_LOADING', false)
         }
