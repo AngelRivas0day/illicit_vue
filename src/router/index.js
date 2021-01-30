@@ -58,11 +58,11 @@ Vue.use(VueRouter)
     name: 'Maps',
     component: () => import(/* webpackChunkName: "Maps" */ '../views/Maps/Index.vue')
   },
-  {
-    path: '/historias',
-    name: 'Stories',
-    component: () => import(/* webpackChunkName: "Stories" */ '../views/Stories/Index.vue')
-  },
+  // {
+  //   path: '/historias',
+  //   name: 'Stories',
+  //   component: () => import(/* webpackChunkName: "Stories" */ '../views/Stories/Index.vue')
+  // },
   {
     path: '/contacto',
     name: 'Contact',
