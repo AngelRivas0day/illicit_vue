@@ -9,8 +9,10 @@
                     <ul>
                         <li><span>Modelo: </span>{{lenseSpecs.name}}</li>
                         <li class="d-flex align-items-center">
-                            <span>Dise&ntilde;o: </span>
-                            <div :style="'background-color:'+lenseSpecs.design.hex+';'" class="circle ml-2"></div>
+                            <span>Dise&ntilde;o: &nbsp;</span>
+                            <div class="ml-1">{{design.name}}</div>
+                            <div class="mx-1">-</div>
+                            <div :style="'background-color:'+design.hex+';'" class="circle"></div>
                         </li>
                         <li><span>Material: </span>{{material}}</li>
                         <li><span>Antirreflejante: </span>{{antireflective}}</li>
