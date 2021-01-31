@@ -78,6 +78,9 @@ import {
 
 export default {
     name: "CardPayment",
+    mounted(){
+        console.log("Mounted")
+    },
     data: () => ({
         publicKey:
             "pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14",
@@ -143,13 +146,13 @@ export default {
             createToken().then(async (data) => {
                 try {
                     await this.createPayment({ stripeToken: data.token.id, total: this.lenseSpecs.price });
+                    this.$socket.client.emit('new_order', {message: 'Se ha registrado una nueva order', type: 'client'})
                     this.$router.push({name: 'PaymentSuccess'})
                 } catch (error) {
                     console.log(error);
                 } finally {
                     this.resetInfo()
                 }
-                
             });
             // this.createToken()
         },

@@ -16,6 +16,7 @@ import './plugins/VueInputMask'
 import './plugins/Firebase'
 import './plugins/VueCookies'
 import './plugins/VueClipboard'
+import './plugins/SocketIO'
 
 // directives
 import './directives'
@@ -44,6 +45,11 @@ router.beforeEach((to, from, next)=>{
 Vue.config.productionTip = false
 
 new Vue({
+  sockets: {
+    connect(){
+      console.log("Socket connected!")
+    }
+  },
   router,
   store,
   render: h => h(App)

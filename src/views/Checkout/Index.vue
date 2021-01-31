@@ -18,6 +18,9 @@ export default {
     components: {
         PurchaseForm,
         PurchaseItem
+    },
+    mounted(){
+        console.log("Mounted!")
     }
 }
 </script>
