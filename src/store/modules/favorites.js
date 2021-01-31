@@ -99,12 +99,11 @@ const actions = {
             });
         }
     },
-    async deleteFavorite({commit, dispatch, rootGetters}, { id, name }){
+    async deleteFavorite({commit, dispatch, rootGetters}, id){
         if(rootGetters['user/isLoggedIn']){
             try {
                 commit('SET_LOADING', true)
-                const { data } = await api.post('clients/favorites/remove', { id, name }, true)
-                commit('SET_FAVORITES', data)
+                await api.delete_('clients/favorites', id, true)
             } catch (error) {
                 commit('SET_ERROR', false)
                 Vue.notify({
