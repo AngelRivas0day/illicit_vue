@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/css/vars";
+@import "@/assets/css/_vars";
 
 .our-products{
     @include flex("column","center","center");

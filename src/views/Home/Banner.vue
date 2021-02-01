@@ -4,12 +4,12 @@
             <carousel
                 class="carousel"
                 :items="1"
-                :nav="false"
+                :nav="true"
                 :dots="true"
                 :loop="true"
-                :mouseDrag="true"
-                :touchDrag="true"
-                :pullDrag="true"
+                :mouseDrag="false"
+                :touchDrag="false"
+                :pullDrag="false"
                 :navSpeed="2000"
                 :autoplay="true"
                 :autoplaySpeed="false"
@@ -102,6 +102,7 @@ export default {
                     margin-bottom: 30px;
                     text-align: left;
                     span{
+                        overflow: hidden;
                         color: white;
                         line-height: 1em;
                         font-weight: bold;
@@ -148,10 +149,6 @@ export default {
     }
     .banner-inner{
         width: 100%;
-        // height: 60%;
-        .main-carousel{
-
-        }
     }
 }
 
@@ -160,55 +157,97 @@ export default {
     margin: 0 !important;
     top: -50px !important;
     left: 0px;
-    ::v-deep .owl-prev, .owl-next{ // these are just to override the main styles of the buttons
+    display: flex;
+    flex-direction: row;
+    .owl-prev, .owl-next{ // these are just to override the main styles of the buttons
         padding: 0 !important;
         margin: 0 !important;
         border-radius: 0px !important;
         background: inherit !important;
-    }
-    ::v-deep .owl-prev.custom, .owl-next.custom{
         width: 50px;
         height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 22px;
+        position: relative;
+        &:after{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translateY(-50%) translateX(-50%);
+            font-size: 29px;
+            font-weight: 100;
+        }
     }
-    ::v-deep .owl-next.custom{
+    .owl-next{
         background-color: white !important;
-        color: black !important;
-    }
-    ::v-deep .owl-prev.custom{
-        background-color: black !important;
         color: white !important;
+        &:after{
+            content: '>';
+            color: black;
+        }
+    }
+    .owl-prev{
+        background-color: black !important;
+        color: black !important;
+        &:after{
+            content: '<';
+            color: white;
+        }
     }
     @media screen and (min-width: 768px){
         left: 20%;
     }
 }
 
-::v-deep .owl-dots{
-    position: absolute;
-    top: -33px;
-    right: 0px;
-    @media screen and (min-width: 768px){
-        right: 20px;
-    }
-}
-
 .carousel{
     .slide__title{
-        transition: all 3s;
+        transition: all 1s;
+        position: relative;
+        // &:after{
+        //     transition: all 1s;
+        //     position: absolute;
+        //     content: '';
+        //     height: 100%;
+        //     left: 0;
+        //     bottom: 0;
+        //     background: #111;
+        // }
+    }
+    ::v-deep .owl-item{
+        animation-duration: 1s !important;
     }
     ::v-deep .owl-item.active{
         .slide__title{
             opacity: 1;
+            // &:after{
+            //     width: 0%;
+            // }
+        }
+    }
+    ::v-deep .owl-item.animated{
+        // background: red !important;
+        .slide__title{
+            opacity: 1;
+            // &:after{
+            //     width: 0%;
+            // }
         }
     }
      ::v-deep .owl-item:not(.active){
         .slide__title{
             opacity: 0;
+            // &:after{
+            //     width: 100%;
+            // }
         }
     }
+}
+
+::v-deep .owl-dots{
+    position: absolute;
+    top: -31px;
+    right: 10px;
 }
 </style>

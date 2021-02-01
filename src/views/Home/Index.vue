@@ -3,17 +3,21 @@
         <Banner />
         <Brands />
         <Products />
+        <Categories />
+        <Contact />
     </div>
 </template>
 
 <script>
-import Banner from './Banner/Index'
-import Products from './Products/Index'
-import Brands from './Brands/Index'
+import Banner from './Banner'
+import Products from './Products'
+import Brands from './Brands'
+import Categories from './Categories'
+import Contact from './Contact'
 
 export default {
     name: 'Home',
-    components: {Banner,Products,Brands}
+    components: {Banner,Products,Brands,Categories,Contact}
 }
 </script>
 

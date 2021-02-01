@@ -9,7 +9,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <div class="filters-container mb-4">
+                        <div class="filters-container mb-0">
                             <md-list class="md-list-filter">
                                 <md-list-item class="md-list-filter-item" :md-ripple="false" md-expand>
                                     <md-icon class="md-list-item-icon">filter_list</md-icon>

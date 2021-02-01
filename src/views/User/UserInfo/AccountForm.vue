@@ -12,23 +12,23 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field>
-                    <md-icon class="md-accent">account_circle</md-icon>
+                    <md-icon>account_circle</md-icon>
                     <label>Nombre</label>
                     <md-input v-model="form.name"></md-input>
                 </md-field>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field>
-                    <md-icon class="md-accent">account_circle</md-icon>
+                    <md-icon>account_circle</md-icon>
                     <label>Apellido</label>
                     <md-input v-model="form.lastName"></md-input>
                 </md-field>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field>
-                    <md-icon class="md-accent">call</md-icon>
+                    <md-icon>call</md-icon>
                     <label>Tel&eacute;fono</label>
-                    <md-input v-model="form.phone" v-mask="'+## ###-###-####'"></md-input>
+                    <md-input v-model="form.phone" v-mask="'+## ## #### ####'"></md-input>
                 </md-field>
             </div>
             <div class="col-12 text-right">

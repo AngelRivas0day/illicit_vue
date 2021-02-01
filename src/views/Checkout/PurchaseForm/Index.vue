@@ -220,7 +220,7 @@ export default {
                         await this.createOrder()
                         this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
                     } catch (error) {
-                        this.$router.push({name: 'Products'})
+                        this.$router.push({name: 'ProductCategories'})
                     }
                 }
             }else{

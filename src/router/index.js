@@ -25,8 +25,13 @@ Vue.use(VueRouter)
   },
   {
     path: '/productos',
+    name: 'ProductCategories',
+    component: () => import(/* webpackChunkName: "Categorias" */ '../views/Categories/Index.vue')
+  },
+  {
+    path: '/productos/:category',
     name: 'Products',
-    component: () => import(/* webpackChunkName: "Products" */ '../views/Products/Index.vue')
+    component: () => import(/* webpackChunkName: "Productos" */'../views/Products/Index.vue')
   },
   {
     path: '/productos/:id/:slug',

@@ -53,7 +53,7 @@
                 </div>
             </div>
             <EventSnackBar />
-            <router-view />
+            <router-view  @click.native="scrollToTop" />
         </md-content>
         <Footer />
     </div>
@@ -106,6 +106,9 @@ export default {
             }else{
                 this.$router.push({name: 'Auth'})
             }
+        },
+        scrollToTop() {
+            window.scrollTo(0,0);
         }
     }
 };
