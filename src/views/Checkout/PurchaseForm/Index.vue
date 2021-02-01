@@ -8,10 +8,10 @@
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
             <AddressForm />
         </md-dialog>
-        <md-dialog :md-fullscreen="false" :md-active.sync="showHelp">
+        <md-dialog class="graduation-dialog" :md-fullscreen="false" :md-active.sync="showHelp">
             <md-dialog-title>¿Cómo subir mi graduación?</md-dialog-title>
             <md-dialog-content>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, fuga.
+                <img src="http://via.placeholder.com/400x300" alt="" class="graduation-image">
             </md-dialog-content>
             <md-dialog-actions>
                 <md-button class="md-primary md-dense md-raised" @click="showHelp = false">Entendido</md-button>
@@ -23,7 +23,7 @@
             </div>
             <div class="col-xs-12 col-sm-12 col-md-6">
                 <md-field class="mt-0">
-                    <label for="material">Material</label>
+                    <label for="material">Selecciona un material</label>
                     <md-select v-model="lenseSpecs.material" name="material" id="material" @md-selected="handleMaterialChange">
                         <md-option v-for="m in materials" :key="m.id" :value="m.name">{{m.name}}</md-option>
                     </md-select>

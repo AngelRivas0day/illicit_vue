@@ -16,7 +16,7 @@
             <div class="col-12" v-else>
                 <div class="row">
                     <div class="col-12 mb-5">
-                        <md-button class="md-accent text-white md-raised ml-0" @click="showDialog = true">A&ntilde;adir direcc&oacute;n</md-button>
+                        <md-button class="md-stroked md-primary ml-0" @click="showDialog = true">A&ntilde;adir direcc&oacute;n</md-button>
                     </div>
                     <div :key="ad.id" v-for="(ad, index) in addresses" class="col-xs-12 col-sm-12 col-md-4">
                         <AddressCard :address="ad" :index="index" />

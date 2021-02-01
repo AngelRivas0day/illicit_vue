@@ -3,8 +3,8 @@
         <md-dialog :md-active.sync="showDialog">
             <md-dialog-title>¿Deseas borrar esta direcci&oacute;n de forma permanente?</md-dialog-title>
             <md-dialog-actions>
-                <md-button @click="onCancel" class="md-dense md-primary md-stroked">Cancelar</md-button>
-                <md-button @click="onAccept" class="md-accent md-dense md-raised">Si</md-button>
+                <md-button @click="onCancel" class="md-dense md-basic md-stroked">Cancelar</md-button>
+                <md-button @click="onAccept" class="md-accent md-dense md-raised">Eliminar</md-button>
             </md-dialog-actions>
         </md-dialog>
         <md-card>
@@ -22,7 +22,7 @@
                 <md-button
                     v-if="!readOnly"
                     @click="onDelete(address.id)"
-                    class="md-dense md-primary text-white md-raised"
+                    class="md-dense md-stroked md-accent"
                 >Borrar</md-button>
                 <md-button
                     v-if="readOnly"

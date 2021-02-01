@@ -340,7 +340,22 @@ $quaternary-color: #FF5E5B;
 .md-stroked{
     border: 1px solid rgba(33, 33, 33, .6) !important;
     border-radius: 3px !important;
+    &.md-basic{
+        color: #222222 !important;
+        border: 1x solid #222222 !important;
+    }
     &.md-primary{
-        border: 1px solid rgba(255, 255, 255, .6) !important;
+        color: #2ec5c5 !important;
+        border: 1px solid #2ec5c5 !important;
+    }
+    &.md-accent{
+        color: #ff5252 !important;
+        border: 1px solid #ff5252 !important;
+    }
+}
+
+.md-raised{
+    &.md-primary{
+        color: white !important;
     }
 }

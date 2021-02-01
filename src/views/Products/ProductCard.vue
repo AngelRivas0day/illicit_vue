@@ -3,7 +3,8 @@
         <div @click="openProduct(product)" class="card__image">
             <img :src="product.designs[designIndex].mainImage" alt="">
             <div class="card__image--hover">
-                <span>{{product.name}}</span>
+                <span class="name">{{product.name}}</span>
+                <span class="price">${{product.price}}</span>
             </div>
         </div>
         <div class="card__colors">
@@ -47,13 +48,15 @@ export default {
 .product__card{ // main card container
     background-color: $gray;
     box-sizing: border-box;
-    padding: 15px;
+    padding: 0 0 15px 0;
     max-width: 370px;
     display: block;
     margin: 0 auto 25px auto;
+    overflow: hidden;
+    background: transparent;
     .card__image{
         position: relative;
-        height: 170px;
+        height: 190px;
         width: 100%;
         // background-color: gray;
         margin-bottom: 12px;
@@ -66,18 +69,46 @@ export default {
             transform: scale(1.6);
         }
         &--hover{
-            display: none;
+            z-index: 999;
+            opacity: 0;
+            display: flex;
             position: absolute;
             height: 100%;
             width: 100%;
             top: 0;
             left: 0;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: ease-in-out .4s all;
             span{
-
+                position: relative;
+                font-weight: 300;
+                letter-spacing: 2px;
+                z-index: 10;
+                &.price{
+                    letter-spacing: inherit;
+                }
+                &.name{
+                    // margin-top: 39px;
+                }
+            }
+           &:after{
+                z-index: -1;
+                position: absolute;
+                content: '';
+                width: 100%;
+                background: rgba(255,255,255,.7);
+                height: calc(100% + 39px);
+                left: 50%;
+                top: 0;
+                transform: translateX(-50%);
             }
         }
         &:hover .card__image--hover{
-            display: block !important;
+            opacity: 1;
+            display: flex !important;
+            transition: ease-in-out .4s all;
         }
     }
     .card__colors{ // colors container
@@ -86,7 +117,6 @@ export default {
             justify-content: center;
             align-items: center;
             flex-direction: row;
-
             list-style: none;
             padding: 0;
             margin: 0;

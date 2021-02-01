@@ -8,6 +8,58 @@
         <div class="products__content">
             <div class="container">
                 <div class="row">
+                    <div class="col-12">
+                        <div class="filters-container mb-4">
+                            <md-list class="md-list-filter">
+                                <md-list-item class="md-list-filter-item" :md-ripple="false" md-expand>
+                                    <md-icon class="md-list-item-icon">filter_list</md-icon>
+                                    <span class="md-list-item-text">Filtros</span>
+                                    <md-list class="md-list-filters" slot="md-expand">
+                                        <md-list-item>
+                                            <div class="filters w-100 row">
+                                                <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
+                                                    <div class="filter-title">Marca</div>
+                                                    <div class="filter-options">
+                                                        <md-chip
+                                                            class="option"
+                                                            v-for="b in brands" 
+                                                            :key="b.value"
+                                                            @click="onChangeBrand(b)"
+                                                            md-clickable
+                                                        >{{b.label}}</md-chip>
+                                                    </div>
+                                                </div>
+                                                 <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
+                                                    <div class="filter-title">Precio</div>
+                                                    <div class="filter-options">
+                                                        <md-chip
+                                                            class="option"
+                                                            v-for="r in ranges" 
+                                                            :key="r.value"
+                                                            @click="onChangeMaterial(r)"
+                                                            md-clickable
+                                                        >{{r.label}}</md-chip>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
+                                                    <div class="filter-title">Material</div>
+                                                    <div class="filter-options">
+                                                        <md-chip
+                                                            class="option"
+                                                            v-for="m in materials"
+                                                            :key="m.value"
+                                                            @click="onChangeRange(m)"
+                                                            md-clickable
+                                                        >{{m.label}}</md-chip>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </md-list-item>
+                                    </md-list>
+                                </md-list-item>
+                            </md-list>
+                        </div>
+                    </div>
                     <template v-if="glasses.length">
                         <template v-for="glass in glasses">
                             <div
@@ -48,10 +100,48 @@ export default {
     mounted(){
         this.getData()
     },
+    data: ()=>({
+        brands: [
+            {value: 'brand_name_1', label: 'Arnette'},
+            {value: 'bvlgari', label: 'Bvlgary'},
+            {value: 'costa', label: 'Costa'},
+            {value: 'armani', label: 'Armani'},
+            {value: 'channel', label: 'Channel'},
+            {value: 'coach', label: 'Coach'},
+            {value: 'giorgo_armany', label: 'Giorgo Armani'},
+            {value: 'burberry', label: 'Burberry'},
+            {value: 'dolce_gabbana', label: 'Dolce Gabbana'}
+        ],
+        materials: [
+            {value: 'poli', label: 'Policarbonato'},
+            {value: 'plas', label: 'Plástico'},
+            {value: 'alum', label: 'Aluminio'}
+        ],
+        ranges: [
+            {value: '200-400', label: '$200 - $400'},
+            {value: '401-600', label: '$401 - $600'},
+            {value: '601-800', label: '$601 - $800'}
+        ],
+        selectedBrand: null,
+        selectedMaterial: null,
+        selectedRange: null
+    }),
     methods: {
         ...mapActions('product',{
             getData: 'getGlasses'
-        })
+        }),
+        onChangeBrand(v){
+            console.log("Value: ", v)
+            this.selectedBrand = v
+        },
+        onChangeMaterial(v){
+            console.log("Value: ", v)
+            this.selectedMaterial = v
+        },
+        onChangeRange(v){
+            console.log("Value: ", v)
+            this.selectedRange = v
+        }
     }
 }
 </script>
@@ -93,6 +183,41 @@ export default {
         .see-more{
             @include call-to-action-2(black);
         }
+        .filters-container{
+            .md-list-filter{
+                background: transparent !important;
+                .md-list-item-icon{
+                    margin-right: 10px !important;
+                }
+                .md-list-filters{
+                    background: transparent !important;
+                    .filters{
+                        .filter-title{
+                            font-size: 16px;
+                            margin: 0 0 4px 10px;
+                        }
+                        .filter-options{
+                            padding: 0;
+                            list-style: none;
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: wrap;
+                            .option{
+                                margin-bottom: 5px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+.md-list-item-expand{
+    border: 0px !important;
+}
+::v-deep .md-list-item-content{
+    &:hover{
+        background: transparent !important;
     }
 }
 </style>

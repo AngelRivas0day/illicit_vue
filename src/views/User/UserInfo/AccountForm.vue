@@ -32,8 +32,8 @@
                 </md-field>
             </div>
             <div class="col-12 text-right">
-                <md-button @click="logout" class="md-dense md-primary md-raised ml-3" type="button">Cerrar sesi&oacute;n</md-button>
-                <md-button class="md-dense md-primary md-raised md-accent" type="submit">Guardar</md-button>
+                <md-button @click="logout" class="md-dense md-basic md-stroked ml-3" type="button">Cerrar sesi&oacute;n</md-button>
+                <md-button class="md-dense md-primary md-raised md-primary" type="submit">Guardar</md-button>
             </div>
         </form>
     </div>

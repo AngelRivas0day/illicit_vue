@@ -22,9 +22,9 @@
         <md-content class="white-content">
             <div class="navbar">
                 <div class="navbar__container">
-                    <div class="navbar__logo">
-                        <img src="" alt="" />
-                    </div>
+                    <router-link to="/" class="navbar__logo">
+                        <img src="@/assets/img/logo.png" width="30" height="30" alt="" />
+                    </router-link>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
                         <md-button @click="goToLogin" md-menu-trigger class="mb-0 actions__log md-icon-button md-dense">
                             <md-icon :style="'color:'+(whiteIcons ? 'white' : '#333333')" class="icon_">face</md-icon>
@@ -63,11 +63,14 @@
 import Footer from "@/components/Footer";
 import Favs from '@/components/Favs'
 import EventSnackBar from '@/components/EventSnackBar'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
     name: "MainLayout",
     components: { Footer, Favs, EventSnackBar },
+    mounted(){
+        if(this.token) this.getFavorites()
+    },
     data: () => ({
         showNavigation: false,
         menuOptions: [
@@ -94,6 +97,9 @@ export default {
         })
     },
     methods: {
+        ...mapActions('favorites',{
+            getFavorites: 'getFavorites'
+        }),
         goToLogin(){
             if(this.token != ''){
                 this.$router.push({name: 'User'})

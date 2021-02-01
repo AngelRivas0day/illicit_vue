@@ -125,17 +125,6 @@ export default {
             return this.card.cvc
         }
     },
-    watch: {
-        number(){
-            console.log("number changed!")
-        },
-        expiry(){
-            console.log("expiry changed!")
-        },
-        cvc(){
-            console.log("cvc changed!")
-        }
-    },
     methods: {
         ...mapActions("order", {
             createPayment: "createPayment",
@@ -154,7 +143,6 @@ export default {
                     this.resetInfo()
                 }
             });
-            // this.createToken()
         },
     },
 };
