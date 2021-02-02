@@ -74,7 +74,8 @@ export default {
         .slide-inner__content{
             position: absolute;
             left: 0;
-            top: 60%;
+            top: 50%;
+            transform: translateY(-50%);
             .slide__title{
                 text-align: left;
                 width: 70%;
@@ -96,7 +97,7 @@ export default {
             }
             @media screen and (min-width: 768px){
                 left: 10%;
-                top: 30%;
+                // top: 30%;
                 .slide__title{
                     width: 70%;
                     margin-bottom: 30px;
