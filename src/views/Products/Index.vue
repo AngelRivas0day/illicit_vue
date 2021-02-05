@@ -157,7 +157,7 @@ export default {
         top: 0;
         left: 0;
         height: 30vh;
-        position: fixed;
+        position: absolute;
         width: 100%;
         z-index: 10;
         overflow: hidden;
@@ -171,7 +171,7 @@ export default {
     }
     &__content {
         min-height: 100vH;
-        margin-top: calc(30vh - 50px);
+        // margin-top: calc(30vh - 50px);
         position: relative;
         z-index: 20;
         background-color: white;

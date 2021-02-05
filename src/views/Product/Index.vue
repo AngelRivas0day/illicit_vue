@@ -1,7 +1,6 @@
 <template>
     <div class="product">
         <MainBlock />
-        <Features />
         <Specs />
         <FaceMeasure />
     </div>
@@ -9,7 +8,6 @@
 
 <script>
 import MainBlock from './MainBlock/Index'
-import Features from './Features/Index'
 import Specs from './Specs/Index'
 import FaceMeasure from './FaceMeasure/Index'
 import { mapActions } from 'vuex'
@@ -18,7 +16,6 @@ export default {
     name: 'Product',
     components: {
         MainBlock,
-        Features,
         Specs,
         FaceMeasure
     },

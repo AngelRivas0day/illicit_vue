@@ -1,9 +1,5 @@
 <template>
     <div class="purchase-form">
-        <!-- <md-dialog-alert
-            :md-active.sync="failedOrder"
-            md-content="Ups! Algo ha salido mal"
-            md-confirm-text="Continuar" /> -->
         <md-dialog class="dialog" :md-active.sync="showDialog" @md-closed="getAddresses">
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
             <AddressForm />
@@ -17,102 +13,143 @@
                 <md-button class="md-primary md-dense md-raised" @click="showHelp = false">Entendido</md-button>
             </md-dialog-actions>
         </md-dialog>
-        <form @submit="goToPay" class="row">
-            <div class="col-12">
-                <h2>Especificaciones del lente</h2>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                <md-field class="mt-0">
-                    <label for="material">Selecciona un material</label>
-                    <md-select v-model="lenseSpecs.material" name="material" id="material" @md-selected="handleMaterialChange">
-                        <md-option v-for="m in materials" :key="m.id" :value="m.name">{{m.name}}</md-option>
-                    </md-select>
-                </md-field>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                <md-field class="mt-0">
-                    <label for="antireflective">Antirreflejante</label>
-                    <md-select v-model="lenseSpecs.antireflective" name="antireflective" id="antireflective" @md-selected="handleAntireflectiveChange">
-                        <md-option :value="false">Sin antirreflejante</md-option>
-                        <md-option :value="true">Con antirreflejante</md-option>
-                    </md-select>
-                </md-field>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-6">
-                <md-field class="mt-0">
-                    <label>Graduaci&oacute;n</label>
-                    <md-select v-model="withGraduation">
-                        <md-option :value="true">Con graduaci&oacute;n</md-option>
-                        <md-option :value="false">Sin graduaci&oacute;n</md-option>
-                    </md-select>
-                </md-field>
-            </div>
-            <div v-if="withGraduation" class="col-xs-12 col-sm-12 col-md-6">
-                <md-field class="mt-0">
-                    <label>Sube tu graduaci&oacute;n</label>
-                    <md-file @change="handleChange"/>
-                    <span @click="showHelp = true" class="md-helper-text">
-                        <md-icon>help</md-icon>
-                        ¿Necesitas ayuda?
-                    </span>
-                </md-field>
-            </div>
-            <div class="col-12 mt-4">
-                <h2>Direcci&oacute;n de env&iacute;o</h2>
-            </div>
-            <div class="col-12 mb-2 mt-0 mb-3">
-                <div class="row no-gutters ml-0">
+        <md-tabs ref="tabs">
+            <md-tab id="tab-first" md-label="Materiales y graduación">
+                <form class="row">
                     <div class="col-12">
-                        <!-- <md-button @click="showDialog = true" class="md-dense md-primary mb-3 ml-0 md-secondary-button">Nueva direcci&oacute;n</md-button> -->
-                        <md-button @click="showDialog = true" class="md-secondary-button md-primary md-stroked ml-0 mb-3">Nueva direcci&oacute;n</md-button>
+                        <h2>Especificaciones del lente</h2>
                     </div>
-                    <div v-if="addresses.length != 0" class="col-12">
-                        <div v-for="ad in addresses" :key="ad.id" class="w-100">
-                            <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
-                                {{ `${ad.state}, ${ad.city}. ${ad.street} #${ad.extNumber} ${ad.intNumber ? 'int. ' + ad.intNumber : ''}`}}
-                                &nbsp;
-                                <small>{{ ad.isDefault ? '(Default)' : '' }}</small>
-                            </md-radio>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label for="lenseMaterial">Material del lente</label>
+                            <md-select v-model="lenseSpecs.lenseMaterial" name="lenseMaterial" id="lenseMaterial" @md-selected="handleLenseMaterialChange">
+                                <md-option v-for="m in glass.lenseMaterial" :key="m" :value="m">{{m}}</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label for="lenseMaterial">Material de la montura</label>
+                            <md-select v-model="lenseSpecs.mounMaterial" name="mountMaterial" id="mountMaterial" @md-selected="handleMountMaterialChange">
+                                <md-option v-for="m in glass.frameMaterial" :key="m" :value="m">{{m}}</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div v-if="glass.antireflective" class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label for="antireflective">Antirreflejante</label>
+                            <md-select v-model="lenseSpecs.antireflective" name="antireflective" id="antireflective" @md-selected="handleAntireflectiveChange">
+                                <md-option :value="true">Con antirreflejante</md-option>
+                                <md-option :value="false">Sin antirreflejante</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div v-if="glass.photochromatic" class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label for="antireflective">Fotocrom&aacute;tico</label>
+                            <md-select v-model="lenseSpecs.photochromatic" name="photochromatic" id="photochromatic" @md-selected="handlePhotochromaticChange">
+                                <md-option :value="true">Con efecto fotocrom&aacute;tico</md-option>
+                                <md-option :value="false">Sin efecto fotocrom&aacute;tico</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label>Graduaci&oacute;n</label>
+                            <md-select v-model="withGraduation">
+                                <md-option :value="true">Con graduaci&oacute;n</md-option>
+                                <md-option :value="false">Sin graduaci&oacute;n</md-option>
+                            </md-select>
+                        </md-field>
+                    </div>
+                    <div v-if="withGraduation" class="col-xs-12 col-sm-12 col-md-6">
+                        <md-field class="mt-0">
+                            <label>Sube tu graduaci&oacute;n</label>
+                            <md-file @change="handleChange"/>
+                            <span @click="showHelp = true" class="md-helper-text">
+                                <md-icon>help</md-icon>
+                                ¿Necesitas ayuda?
+                            </span>
+                        </md-field>
+                    </div>
+                    <div v-if="errorMessage != null" class="col-12">
+                        <div class="text-left text-warning">
+                            {{errorMessage}}
                         </div>
                     </div>
-                    <div v-else class="col-12">
-                        <p class="text-white text-warning">No hay direcciones registradas</p>
+                    <div class="col-12 mt-3 text-right">
+                        <md-button @click.prevent="goToTab('tab-second')" class="md-raised md-primary ml-0 px-2" type="button">
+                            <!-- <span>Siguiente</span> -->
+                            Siguiente
+                        </md-button>
                     </div>
-                </div>
-            </div>
-            <div class="col-12">
-                <h2>M&eacute;todo de pago</h2>
-            </div>
-            <div class="col-12">
-                <md-radio v-model="paymentMethod" value="card" class="text-white">Tarjeta de cr&eacute;dito / d&eacute;bito</md-radio>
-                <md-radio v-model="paymentMethod" value="store" class="text-white">En tienda</md-radio>
-                <!-- en tienda solo para optica hehe -->
-            </div>
-            <div class="col-12">
-                <h2>C&oacute;digo de descuento</h2>
-            </div>
-            <div class="col-6">
-                <md-field>
-                    <md-icon v-if="isDiscountCodeValid">verified</md-icon>
-                    <label>Si cuentas con uno escr&iacute;belo</label>
-                    <md-input v-mask="'XXX-XXX'" v-model="discountCode"></md-input>
-                </md-field>
-            </div>
-            <div class="col-3">
-                <md-button @click="checkCode()" class="md-primary md-stroked mt-3">Verificar</md-button>
-            </div>
-            <div v-if="errorMessage != null" class="col-12">
-                <div class="text-left text-warning">
-                    {{errorMessage}}
-                </div>
-            </div>
-            <div class="col-12 mt-3">
-                <md-button class="md-raised md-primary ml-0 px-2" type="submit">
-                    <!-- <span>Siguiente</span> -->
-                    Siguiente
-                </md-button>
-            </div>
-        </form>
+                </form>
+            </md-tab>
+            <md-tab :md-active="true" id="tab-second" md-label="Información de envío">
+                <form class="row">
+                    <div class="col-12">
+                        <h2>Direcci&oacute;n de env&iacute;o</h2>
+                    </div>
+                    <div class="col-12 mb-2 mt-0 mb-3">
+                        <div class="row no-gutters ml-0">
+                            <div class="col-12">
+                                <!-- <md-button @click="showDialog = true" class="md-dense md-primary mb-3 ml-0 md-secondary-button">Nueva direcci&oacute;n</md-button> -->
+                                <md-button @click="showDialog = true" class="md-secondary-button md-primary md-stroked ml-0 mb-3">Nueva direcci&oacute;n</md-button>
+                            </div>
+                            <div v-if="addresses.length != 0" class="col-12">
+                                <div v-for="ad in addresses" :key="ad.id" class="w-100">
+                                    <md-radio v-model="addressId" :value="ad.id" class="text-white my-2">
+                                        {{ `${ad.state}, ${ad.city}. ${ad.street} #${ad.extNumber} ${ad.intNumber ? 'int. ' + ad.intNumber : ''}`}}
+                                        &nbsp;
+                                        <small>{{ ad.isDefault ? '(Default)' : '' }}</small>
+                                    </md-radio>
+                                </div>
+                            </div>
+                            <div v-else class="col-12">
+                                <p class="text-white text-warning">No hay direcciones registradas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3 text-right">
+                        <md-button @click.prevent="goToTab('tab-third')" class="md-raised md-primary ml-0 px-2" type="button">
+                            <!-- <span>Siguiente</span> -->
+                            Siguiente
+                        </md-button>
+                    </div>
+                </form>
+            </md-tab>
+            <md-tab id="tab-third" md-label="Método de pago">
+                <form @submit.prevent="goToPay" class="row">
+                    <div class="col-12">
+                        <h2>M&eacute;todo de pago</h2>
+                    </div>
+                    <div class="col-12">
+                        <md-radio v-model="paymentMethod" value="card" class="text-white">Tarjeta de cr&eacute;dito / d&eacute;bito</md-radio>
+                        <md-radio v-model="paymentMethod" value="store" class="text-white">En tienda</md-radio>
+                        <!-- en tienda solo para optica hehe -->
+                    </div>
+                    <div class="col-12">
+                        <h2>C&oacute;digo de descuento</h2>
+                    </div>
+                    <div class="col-6">
+                        <md-field>
+                            <md-icon v-if="discountCode">verified</md-icon>
+                            <label>Si cuentas con uno escr&iacute;belo</label>
+                            <md-input v-mask="'XXXXXXXXXX'" v-model="code"></md-input>
+                        </md-field>
+                    </div>
+                    <div class="col-3">
+                        <md-button @click="checkCode()" class="md-primary md-stroked mt-3">Verificar</md-button>
+                    </div>
+                    <div class="col-12 mt-3 text-right">
+                        <md-button class="md-raised md-primary ml-0 px-2" type="submit">
+                            <!-- <span>Siguiente</span> -->
+                            Siguiente
+                        </md-button>
+                    </div>
+                </form>
+            </md-tab>
+        </md-tabs>
     </div>
 </template>
 
@@ -130,16 +167,12 @@ export default {
     data: ()=>({
         selectedFile: null,
         errorMessage: null,
-        materials: [
-            {id: 1, name: "Policarbonato", value: "poli"},
-            {id: 2, name: 'Material 1', value: 'mat_1'}
-        ],
         priceMod: 0,
         lensePrice: 0,
         showHelp: false,
         withGraduation: false,
         // discount code model
-        discountCode: ''
+        code: ''
     }),
     async mounted(){
         let restoredLenseSpecs = this.$cookies.get('lense_specs')
@@ -155,6 +188,9 @@ export default {
         })
     },
     computed: {
+        ...mapState('product',{
+            glass: 'glass'
+        }),
         ...mapState('addresses',{
             addresses: 'addresses'
         }),
@@ -167,7 +203,7 @@ export default {
             addressId: 'addressId',
             paymentMethod: 'paymentMethod',
             isOrderOk: 'isOrderOk',
-            isDiscountCodeValid: 'isDiscountCodeValid'
+            discountCode: 'discountCode'
         }),
         isMaterialValid(){
             return this.$v.lenseSpecs.material.required ? true : false
@@ -210,8 +246,7 @@ export default {
                 this.addressId = addressId
             }
         },
-        async goToPay(e){
-            e.preventDefault()
+        async goToPay(){
             if(this.isFormValid){
                 if(this.paymentMethod == "card"){
                     this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
@@ -233,13 +268,42 @@ export default {
             this.selectedFile = e.target.files[0]
             this.lenseSpecs.graduation = this.selectedFile
         },
-        handleMaterialChange(value){
+        handleLenseMaterialChange(value){
             switch (value) {
-                case "Policarbonato":
-                    this.priceMod = 200
+                case "Mica":
+                    this.priceMod = 300
                     break;
-                case "Material 1":
+                case "Policarbonato":
+                    this.priceMod = 600
+                    break;
+                case "Material Illicit":
+                    this.priceMod = 1200
+                    break;
+                default:
+                    break;
+            }
+            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+        },
+        handleMountMaterialChange(value){
+            console.log("Value: ", value)
+            switch (value) {
+                case "Titanio":
+                    this.priceMod = 300
+                    break;
+                case "Acero":
+                    this.priceMod = 600
+                    break;
+                case "Aluminio":
                     this.priceMod = 100
+                    break;
+                case "Pasta":
+                    this.priceMod = 300
+                    break;
+                case "Acetato":
+                    this.priceMod = 600
+                    break;
+                case "Otros":
+                    this.priceMod = 200
                     break;
                 default:
                     break;
@@ -248,20 +312,36 @@ export default {
         },
         handleAntireflectiveChange(value){
             if(value){
-                this.priceMod += 120
+                this.priceMod += 300
             }else{
-                this.priceMod -= 120
+                this.priceMod -= 300
+            }
+            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+        },
+        handlePhotochromaticChange(value){
+            // handle change
+            console.log("value: ", value)
+            if(value){
+                this.priceMod += 600
+            }else{
+                this.priceMod -= 600
             }
             this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
         },
         checkCode(){
-            this.checkForDiscountCode(this.discountCode)
+            this.checkForDiscountCode(this.code)
             console.log("Check!")
+        },
+        goToTab(tab_id){
+            this.$refs.tabs.setActiveTab(tab_id)
         }
     },
     validations: {
         lenseSpecs: {
-            material: {
+            lenseMaterial: {
+                required
+            },
+            mountMaterial: {
                 required
             },
             antireflective: {
@@ -304,14 +384,12 @@ export default {
 
 .purchase-form{
     padding: 50px 0;
-    background: black;
+    background: black !important;
     height: 100%;
     overflow-y: auto;
     min-height: 725px;
     max-height: 100vH;
     form{
-        max-width: 600px;
-        margin: 0 auto;
         h2{
             color: white;
             font-weight: 200;
@@ -359,6 +437,19 @@ export default {
 
         ::v-deep .md-count{
             color: #fff !important;
+        }
+    }
+    ::v-deep .md-tabs{
+        max-width: 800px;
+        margin: 0 auto;
+        .md-tab-nav-button{
+            color: white !important;
+        } 
+        .md-tabs-navigation{
+            background: transparent !important;
+        }
+        .md-tabs-content{
+            background: transparent !important;
         }
     }
 }

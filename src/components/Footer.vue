@@ -38,6 +38,7 @@ export default {
 @import '@/assets/css/_vars';
 
 .footer{
+    position: relative;
     background: black;
     &-inner{
         padding: 40px 0;

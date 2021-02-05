@@ -22,7 +22,8 @@ import {
     MdRipple,
     MdDialogConfirm,
     MdDivider,
-    MdSubheader
+    MdSubheader,
+    MdSteppers
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
@@ -57,3 +58,4 @@ Vue.use(MdRipple)
 Vue.use(MdDialogConfirm)
 Vue.use(MdDivider)
 Vue.use(MdSubheader)
+Vue.use(MdSteppers)

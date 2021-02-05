@@ -46,20 +46,28 @@
                 </md-tab>
                 <md-tab id="measures" md-label="Medidas">
                     <div class="row">
-                        <div class="col-12">
-                            <img class="measurements-image" src="" alt="">
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 text-center mb-3">
-                            <span class="title">Alto</span><br>
-                            <span class="measure">{{glass.measurements ? glass.measurements.height : 'Cargando...'}} mm</span>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 text-center mb-3">
-                            <span class="title">Ancho</span><br>
-                            <span class="measure">{{glass.measurements ? glass.measurements.width : 'Cargando...'}} mm</span>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-4 text-center mb-3">
-                            <span class="title">Profundo</span><br>
-                            <span class="measure">{{glass.measurements ? glass.measurements.depth : 'Cargando...'}} mm</span>
+                        <div class="col-xs-12 col-sm-12 col-md-10 offset-md-1">
+                            <div class="row">
+                                <div class="col-12">
+                                    <img class="measurements-image" src="@/assets/img/lense_measure.png" alt="">
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
+                                    <span class="title">Largo de la varilla</span><br>
+                                    <span class="measure">{{glass.measurements ? glass.measurements.dipstick_length : 'Cargando...'}} mm</span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
+                                    <span class="title">Ancho del punte</span><br>
+                                    <span class="measure">{{glass.measurements ? glass.measurements.bridge_width : 'Cargando...'}} mm</span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
+                                    <span class="title">Ancho del lente</span><br>
+                                    <span class="measure">{{glass.measurements ? glass.measurements.lense_width : 'Cargando...'}} mm</span>
+                                </div>
+                                <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
+                                    <span class="title">Ancho de la montura</span><br>
+                                    <span class="measure">{{glass.measurements ? glass.measurements.mount_length : 'Cargando...'}} mm</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </md-tab>
@@ -85,8 +93,9 @@ export default {
 <style lang="scss">
 #specs{
     .measurements-image{
-        width: 300px;
-        height: 300px;
+        width: 100%;
+        max-width: 330px;
+        height: 330px;
         object-fit: contain;
         margin: 0 auto 15px auto; 
         display: block;

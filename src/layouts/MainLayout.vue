@@ -53,7 +53,9 @@
                 </div>
             </div>
             <EventSnackBar />
-            <router-view />
+            <transition name="panels" mode="out-in">
+                <router-view></router-view>
+            </transition>
         </md-content>
         <Footer />
     </div>
@@ -234,4 +236,59 @@ export default {
 ::v-deep .md-overlay{
     z-index: 250 !important;
 }
+
+$animation-time: .85s;
+$animation-timing-function: 'ease-in';
+
+.panels-enter-active,
+.panels-leave-active{
+    transition: all $animation-time;
+    transition-timing-function: $animation-timing-function;
+    &::after{
+        transition: width $animation-time;
+        transition-timing-function: $animation-timing-function;
+        position: absolute;
+        z-index: 999;
+        background: #fdfdfd;
+        top: 0;
+        right: 0;
+        height: 100%;
+        width: 0%;
+        content: '';
+    }
+     &::before{
+        transition: width $animation-time;
+        transition-timing-function: $animation-timing-function;
+        position: absolute;
+        z-index: 999;
+        background: #333;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 0%;
+        content: '';
+    }
+}
+
+.panels-enter,
+.panels-leave-to{
+    &::after{
+        width: 50%;
+        content: '';
+    } 
+    &::before{
+        width: 50%;
+        content: '';
+    } 
+}
+
+@keyframes panel-animation {
+    0% { width: 0%; }
+    20% { width: 20%; }
+    40% { width: 30%; }
+    60% { width: 50%; }
+    80% { width: 80%; }
+    100% { width: 100%; }
+}
+
 </style>

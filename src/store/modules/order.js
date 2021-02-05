@@ -18,8 +18,10 @@ const state = {
         name: "",
         price: "",
         design: "",
-        material: "",
+        lenseMaterial: "",
+        mountMaterial: "",
         antireflective: "",
+        photochromatic: "",
         graduation: null,
     },
     addressId: null,
@@ -30,7 +32,7 @@ const state = {
     isOrderOk: false,
     errorMessage: null,
     paymentStatus: null,
-    isDiscountCodeValid: null
+    discountCode: null
 }
 
 const mutations = {
@@ -48,16 +50,24 @@ const mutations = {
     PAYMENT_SUCCESS(state, payload) {
         state.paymentStatus = payload;
     },
-    SET_VALIDITY(state, payload){
-        state.isDiscountCodeValid = payload
+    SET_DISCOUNT_CODE(state, payload){
+        if(payload == null){
+            state.discountCode = null
+        }else{
+            console.log("payload: ", payload)
+            state.discountCode['source'] = payload.source
+            state.discountCode['value'] = payload.value
+        }
     },
     RESET_INFO(state) {
         state.lenseSpecs = {
             name: "",
             price: "",
             design: "",
-            material: "",
+            lenseMaterial: "",
+            mountMaterial: "",
             antireflective: "",
+            photochromatic: "",
             graduation: null,
         };
         state.addressId = "";
@@ -110,10 +120,17 @@ const actions = {
         commit("RESET_INFO");
     },
     async checkForDiscountCode({commit}, code){
-        commit('SET_LOADING', true)
         console.log("code: ", code)
-        commit('SET_VALIDITY', true)
-        commit('SET_LOADING', false) 
+        commit('SET_LOADING', true)
+        try {
+            let {data} = await api.get(`promo-codes/check/${code}`)
+            console.log("Check code: ", data)
+            commit('SET_DISCOUNT_CODE', data)
+        } catch (error) {
+            commit('SET_DISCOUNT_CODE', null)
+        } finally {
+            commit('SET_LOADING', false) 
+        }
     }
 }
 
