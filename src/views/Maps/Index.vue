@@ -7,14 +7,18 @@
                     <span>
                         # {{ currentPin.extNumber }}
                     </span>
-                    <p>
+                    <p class="mb-4">
                         {{ currentPin.description }}
                     </p>
-                    <a :href="currentPin.link" target="_blank">Google maps</a>
+                    <button @click="openGoogleMaps(currentPin.link)" class="maps-button">
+                        <div>GOOGLE MAPS</div>
+                    </button>
                 </div>
                 <div class="map__side-controls">
-                    <button class="controls--prev" @click="setPin(currentPinIndex, true, false)">anterior</button>
-                    <button class="controls--next" @click="setPin(currentPinIndex, false, true)">siguiente</button>
+                    <template v-if="showControls">
+                        <button class="controls--prev" @click="setPin(currentPinIndex, true, false)">anterior</button>
+                        <button class="controls--next" @click="setPin(currentPinIndex, false, true)">siguiente</button>
+                    </template>
                 </div>
             </div>
             <div class="maps__render-map" :class="[isTransition ? 'animate' : 'no-animate']">
@@ -45,7 +49,10 @@ export default {
         ...mapState('maps',{
             pins: 'pins',
             isLoading: 'isLoading'
-        })
+        }),
+        showControls(){
+            return this.pins.length > 1
+        }
     },
     mounted() {
         this.setWhiteIcons()
@@ -281,6 +288,9 @@ export default {
             //     this.currentPin = this.pins[index - 1]
             //     this.currentPinIndex -= 1
             // }
+        },
+        openGoogleMaps(link){
+            window.open(link, '_blank')
         }
     },
 };
@@ -324,6 +334,10 @@ export default {
                 p {
                     margin-top: 15px;
                     color: white;
+                }
+                .maps-button{
+                    // @include secondary-button-br($main-green, $main-green);
+                    @include small-button("white", "black", "white");
                 }
             }
             .map__side-controls {

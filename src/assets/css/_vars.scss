@@ -359,3 +359,125 @@ $quaternary-color: #FF5E5B;
         color: white !important;
     }
 }
+
+@mixin secondary-button-br($bg-color, $text-color){
+    border: 1.5px solid #{$text-color};
+    height: 35px;
+    width: 140px;
+    padding: 0;
+    background-color: transparent;
+    position: relative;
+    border: none !important;
+    &:hover div::before{
+        height: 100%;
+    }
+    &:hover div::after{
+        width: 100%;
+    }
+    div{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        color: $text-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $main-green;
+        &:after, &:before{
+            transition: .2s all;
+            position: absolute;
+            content: '';
+            background: #{$bg-color};
+        }
+        &:after{
+            width: 0%;
+            height: 1px;
+            top: 0;
+            left: 0;
+        }
+        &:before{
+            width: 1px;
+            height: 0%;
+            top: 0;
+            left: 0;
+        }
+    }
+    &:after, &:before{
+        position: absolute;
+        content: '';
+        background: #{$bg-color};
+    }
+    &:after{
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        right: 0;
+    }
+    &:before{
+        width: 1px;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+    }
+}
+
+@mixin secondary-button-bl($bg-color, $text-color){
+    border: 1.5px solid #{$text-color};
+    height: 35px;
+    width: 140px;
+    padding: 0;
+    background-color: transparent;
+    position: relative;
+    border: none !important;
+    &:hover div::before{
+        height: 100%;
+    }
+    &:hover div::after{
+        width: 100%;
+    }
+    div{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        color: $text-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $main-green;
+        &:after, &:before{
+            transition: .2s all;
+            position: absolute;
+            content: '';
+            background: #{$bg-color};
+        }
+        &:after{
+            width: 0%;
+            height: 1px;
+            top: 0;
+            left: 100%;
+        }
+        &:before{
+            width: 1px;
+            height: 0%;
+            top: 0;
+            left: 100%;
+        }
+    }
+    &:after, &:before{
+        position: absolute;
+        content: '';
+        background: #{$bg-color};
+    }
+    &:after{
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+    }
+    &:before{
+        width: 1px;
+        height: 100%;
+        bottom: 0;
+        left: 0;
+    }
+}
