@@ -3,6 +3,7 @@ import * as api from '@/api/api'
 import Vue from 'vue'
 import firebase from 'firebase'
 import router from '@/router'
+import { getField, updateField } from 'vuex-map-fields';
 
 const state = {
     isLoading: false,
@@ -11,10 +12,12 @@ const state = {
     token: localStorage.getItem('token') || null,
     activeTab: 'UserInfo', // UserInfo | UserHistory | UserCoupons
     errMessage: '',
-    user: null
+    user: null,
+    emailSentStatus: null
 }
 
 const mutations = {
+    updateField,
     SET_LOADING(state, paylaod){
         state.isLoading = paylaod
     },
@@ -48,6 +51,12 @@ const mutations = {
         state.userName = ''
         state.success = true
         state.token = null
+    },
+    EMAIL_SENT_CORRECTLY(state, payload){
+        state.emailSentStatus = payload
+    },
+    EMAIL_SENT_ERROR(state, payload){
+        state.emailSentStatus = payload
     }
 }
 
@@ -178,12 +187,24 @@ const actions = {
             commit('SET_LOADING', false)
         }
     },
+    async sendEmail({commit}, emailData){
+        commit('SET_LOADING', true)
+        try {
+           await api.post('clients/contact', emailData)
+           commit('EMAIL_SENT_CORRECTLY', true)
+        } catch (error) {
+           commit('EMAIL_SENT_ERROR', false)
+        } finally {
+            commit('SET_LOADING', false)
+        }
+    },
     setTab({commit}, tab){
         commit('SET_TAB', tab)
     }
 }
 
 const getters = {
+    getField,
     isLoggedIn: state => !!state.token,
 }
 

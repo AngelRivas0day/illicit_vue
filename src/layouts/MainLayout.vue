@@ -261,7 +261,7 @@ $animation-timing-function: 'ease-in';
         transition-timing-function: $animation-timing-function;
         position: absolute;
         z-index: 999;
-        background: #333;
+        background: #222;
         top: 0;
         left: 0;
         height: 100%;

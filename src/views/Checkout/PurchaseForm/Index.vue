@@ -14,44 +14,99 @@
             </md-dialog-actions>
         </md-dialog>
         <md-tabs ref="tabs">
-            <md-tab id="tab-first" md-label="Materiales y graduación">
-                <form class="row">
-                    <div class="col-12">
-                        <h2>Especificaciones del lente</h2>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6">
-                        <md-field class="mt-0">
+            <md-tab id="tab-first" :md-label="windowWidth <= 540 ? 'Materiales' : 'Materiales y graduación'">
+                <form class="row mt-3">
+                    <div class="col-xs-12 col-sm-12 col-md-6 mb-5 d-flex flex-column">
+                        <!-- <md-field class="mt-0">
                             <label for="lenseMaterial">Material del lente</label>
                             <md-select v-model="lenseSpecs.lenseMaterial" name="lenseMaterial" id="lenseMaterial" @md-selected="handleLenseMaterialChange">
                                 <md-option v-for="m in glass.lenseMaterial" :key="m" :value="m">{{m}}</md-option>
                             </md-select>
-                        </md-field>
+                            <span v-if="lenseSpecs.lenseMaterial == 'Material Illicit'" class="md-helper-text">
+                                <md-icon>info</md-icon>
+                                Incluye antirreflejante sin costo extra
+                            </span>
+                        </md-field> -->
+                        <label class="text-white mb-0">Material del lente</label><br>
+                        <template v-for="m in glass.lenseMaterial">
+                            <md-radio :key="m" v-model="lenseSpecs.lenseMaterial" :value="m" @change="handleLenseMaterialChange" class="md-primary text-white py-0 my-0 mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>{{m}}</span>
+                                    <span class="text-right text-white">${{lenseMaterialPrices[m]}}</span>
+                                </div>
+                                <span v-show="m == 'Material Illicit'" class="md-helper-test">
+                                    Incluye antirreflejante sin costo extra
+                                </span>
+                            </md-radio>
+                        </template>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6">
-                        <md-field class="mt-0">
+                    <div class="col-xs-12 col-sm-12 col-md-6 mb-5 d-flex flex-column">
+                        <!-- <md-field class="mt-0">
                             <label for="lenseMaterial">Material de la montura</label>
-                            <md-select v-model="lenseSpecs.mounMaterial" name="mountMaterial" id="mountMaterial" @md-selected="handleMountMaterialChange">
-                                <md-option v-for="m in glass.frameMaterial" :key="m" :value="m">{{m}}</md-option>
+                            <md-select 
+                                v-model="lenseSpecs.mountMaterial" 
+                                name="mountMaterial" 
+                                id="mountMaterial" 
+                                @md-selected="handleMountMaterialChange"
+                                @md-opened="showLabelOne = true"
+                                @md-closed="showLabelOne = false"
+                            >
+                                <template  v-for="m in glass.frameMaterial">
+                                    <md-option :key="m" :value="m">
+                                        <div class="d-flex justify-content-between">
+                                            <span>{{m}}</span>
+                                            <span v-show="showLabelOne" class="text-right">$900</span>
+                                        </div>
+                                    </md-option>
+                                </template>
                             </md-select>
-                        </md-field>
+                        </md-field> -->
+                        <label class="text-white mb-0">Material del la montura</label><br>
+                        <template v-for="m in glass.frameMaterial">
+                            <md-radio :key="m" v-model="lenseSpecs.mountMaterial" :value="m" @change="handleMountMaterialChange" class="md-primary text-white py-0 my-0 mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>{{m}}</span>
+                                    <span class="text-right text-white">$900</span>
+                                </div>
+                            </md-radio>
+                        </template>
                     </div>
-                    <div v-if="glass.antireflective" class="col-xs-12 col-sm-12 col-md-6">
-                        <md-field class="mt-0">
+                    <div v-if="glass.antireflective" class="col-xs-12 col-sm-12 col-md-6 mb-5 d-flex flex-column">
+                        <label class="text-white mb-0">Antirreflejante</label><br>
+                        <md-radio :value="true" v-model="lenseSpecs.antireflective" @change="handleAntireflectiveChange" class="md-primary text-white py-0 my-0 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Antirreflejante</span>
+                                <span class="text-right text-white">$300</span>
+                            </div>
+                        </md-radio>
+                        <!-- <md-field class="mt-0">
                             <label for="antireflective">Antirreflejante</label>
                             <md-select v-model="lenseSpecs.antireflective" name="antireflective" id="antireflective" @md-selected="handleAntireflectiveChange">
                                 <md-option :value="true">Con antirreflejante</md-option>
                                 <md-option :value="false">Sin antirreflejante</md-option>
                             </md-select>
-                        </md-field>
+                        </md-field> -->
                     </div>
-                    <div v-if="glass.photochromatic" class="col-xs-12 col-sm-12 col-md-6">
-                        <md-field class="mt-0">
+                    <div v-if="glass.photochromatic" class="col-xs-12 col-sm-12 col-md-6 mb-5 d-flex flex-column">
+                        <label class="text-white mb-0">Antirreflejante</label><br>
+                        <md-radio :value="true" v-model="lenseSpecs.photochromatic" @change="handlePhotochromaticChange" class="md-primary text-white py-0 my-0 mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>Fotocrom&aacute;tico</span>
+                                <span class="text-right text-white">$500</span>
+                            </div>
+                            <span class="md-helper-text">Incluye antirreflejante sin costo extra</span>
+                        </md-radio>
+                        <!-- <md-field class="mt-0">
                             <label for="antireflective">Fotocrom&aacute;tico</label>
                             <md-select v-model="lenseSpecs.photochromatic" name="photochromatic" id="photochromatic" @md-selected="handlePhotochromaticChange">
                                 <md-option :value="true">Con efecto fotocrom&aacute;tico</md-option>
                                 <md-option :value="false">Sin efecto fotocrom&aacute;tico</md-option>
                             </md-select>
-                        </md-field>
+                            <span v-if="lenseSpecs.photochromatic" class="md-helper-text">
+                                <md-icon>info</md-icon>
+                                Incluye antirreflejante sin costo extra
+                            </span>
+                        </md-field> -->
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <md-field class="mt-0">
@@ -85,8 +140,8 @@
                     </div>
                 </form>
             </md-tab>
-            <md-tab :md-active="true" id="tab-second" md-label="Información de envío">
-                <form class="row">
+            <md-tab :md-active="true" id="tab-second" :md-label="windowWidth <= 540 ? 'Envío' : 'Información de envío'">
+                <form class="row mt-3">
                     <div class="col-12">
                         <h2>Direcci&oacute;n de env&iacute;o</h2>
                     </div>
@@ -118,8 +173,8 @@
                     </div>
                 </form>
             </md-tab>
-            <md-tab id="tab-third" md-label="Método de pago">
-                <form @submit.prevent="goToPay" class="row">
+            <md-tab id="tab-third" :md-label="windowWidth <= 540 ? 'Pago' : 'Método de pago'">
+                <form class="row mt-3">
                     <div class="col-12">
                         <h2>M&eacute;todo de pago</h2>
                     </div>
@@ -133,17 +188,16 @@
                     </div>
                     <div class="col-6">
                         <md-field>
-                            <md-icon v-if="discountCode">verified</md-icon>
+                            <md-icon v-if="discountCode ? discountCode.value != '' : false">verified</md-icon>
                             <label>Si cuentas con uno escr&iacute;belo</label>
-                            <md-input v-mask="'XXXXXXXXXX'" v-model="code"></md-input>
+                            <md-input v-model="code"></md-input>
                         </md-field>
                     </div>
                     <div class="col-3">
                         <md-button @click="checkCode()" class="md-primary md-stroked mt-3">Verificar</md-button>
                     </div>
                     <div class="col-12 mt-3 text-right">
-                        <md-button class="md-raised md-primary ml-0 px-2" type="submit">
-                            <!-- <span>Siguiente</span> -->
+                        <md-button @click="goToPay" class="md-raised md-primary ml-0 px-2" type="submit">
                             Siguiente
                         </md-button>
                     </div>
@@ -161,24 +215,35 @@ import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'PurchaseForm',
     components: {
-        // AddressCard: () => import('@/views/User/Addresses/AddressCard.vue'),
         AddressForm: () => import('@/views/User/Addresses/AddressForm.vue')
     },
     data: ()=>({
         selectedFile: null,
         errorMessage: null,
-        priceMod: 0,
-        lensePrice: 0,
+        mountMaterialCharge: null,
+        mountIndicator: null ,
+        lenseMaterialCharge: null,
+        lenseIndicator: null,
+        photochromaticCharge: null,
+        antireflectiveCharge: null,
+        graduationCharge: null,
         showHelp: false,
         withGraduation: false,
         // discount code model
-        code: ''
+        code: '',
+        // window width
+        windowWidth: window.innerWidth,
+        showLabelOne: false,
+        lenseMaterialPrices: {
+            'Mica': 300,
+            'Policarbonato': 600,
+            'Material Illicit': 1200
+        }
     }),
     async mounted(){
+        this.watchResize()
         let restoredLenseSpecs = this.$cookies.get('lense_specs')
         this.lenseSpecs = restoredLenseSpecs
-        
-        this.lensePrice = this.lenseSpecs.price
         await this.getAddresses()
         this.addresses.forEach(address=>{
             if(address.isDefault){
@@ -186,6 +251,14 @@ export default {
                 return
             }
         })
+    },
+    beforeDestroy(){
+        window.removeEventListener('resize', this.onResize)
+    },
+    watch: {
+        windowWidth(){
+            console.log("new: ", this.windowWidth)
+        }
     },
     computed: {
         ...mapState('product',{
@@ -205,8 +278,11 @@ export default {
             isOrderOk: 'isOrderOk',
             discountCode: 'discountCode'
         }),
-        isMaterialValid(){
-            return this.$v.lenseSpecs.material.required ? true : false
+        isLenseMaterialValid(){
+            return this.$v.lenseSpecs.lenseMaterial.required ? true : false
+        },
+        isMountMaterialValid(){
+            return this.$v.lenseSpecs.mountMaterial.required ? true : false
         },
         isAntireflectiveValid(){
             return this.$v.lenseSpecs.antireflective.required ? true : false
@@ -222,7 +298,12 @@ export default {
         },
         isFormValid(){
             if(
-                this.isMaterialValid && this.isAntireflectiveValid && this.isGraduationValid && this.isAddressValid && this.isPaymentValid
+                this.isLenseMaterialValid && 
+                this.isMountMaterialValid && 
+                this.isAntireflectiveValid && 
+                this.isGraduationValid && 
+                this.isAddressValid && 
+                this.isPaymentValid
             ){
                 return true
             }else{
@@ -246,7 +327,8 @@ export default {
                 this.addressId = addressId
             }
         },
-        async goToPay(){
+        async goToPay(e){
+            e.preventDefault()
             if(this.isFormValid){
                 if(this.paymentMethod == "card"){
                     this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
@@ -260,73 +342,111 @@ export default {
                 }
             }else{
                 this.errorMessage = "Todos los campos son obligatorios"
-                // some warnings
             }
-            // agregar logica para procesar el pago desde aqui cuando es con tarjeta
         },
         handleChange(e){
             this.selectedFile = e.target.files[0]
             this.lenseSpecs.graduation = this.selectedFile
         },
         handleLenseMaterialChange(value){
+            if(this.lenseIndicator){
+                switch (this.lenseIndicator) {
+                    case "Mica":
+                        this.lenseSpecs.price -= 300
+                        break;
+                    case "Policarbonato":
+                        this.lenseSpecs.price -= 600
+                        break;
+                    case "Material Illicit":
+                        this.lenseSpecs.price -= 1200
+                        break;
+                }
+            }
             switch (value) {
                 case "Mica":
-                    this.priceMod = 300
+                    this.lenseMaterialCharge = 300
                     break;
                 case "Policarbonato":
-                    this.priceMod = 600
+                    this.lenseMaterialCharge = 600
                     break;
                 case "Material Illicit":
-                    this.priceMod = 1200
-                    break;
-                default:
+                    this.lenseMaterialCharge = 1200
+                    this.lenseSpecs.antireflective ? this.lenseSpecs.price -= 300 : null
+                    this.lenseSpecs.antireflective = true
                     break;
             }
-            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+            this.lenseIndicator = value
+            this.lenseSpecs.price += this.lenseMaterialCharge
         },
         handleMountMaterialChange(value){
-            console.log("Value: ", value)
+            if(this.mountIndicator){
+               switch (this.mountIndicator) {
+                    case "Titanio":
+                        this.lenseSpecs.price -= 100
+                        break;
+                    case "Acero":
+                        this.lenseSpecs.price -= 200
+                        break;
+                    case "Aluminio":
+                        this.lenseSpecs.price -= 300
+                        break;
+                    case "Pasta":
+                        this.lenseSpecs.price -= 400
+                        break;
+                    case "Acetato":
+                        this.lenseSpecs.price -= 500
+                        break;
+                    case "Otros":
+                        this.lenseSpecs.price -= 600
+                        break;
+                } 
+            }
             switch (value) {
                 case "Titanio":
-                    this.priceMod = 300
+                    this.mountMaterialCharge = 100
                     break;
                 case "Acero":
-                    this.priceMod = 600
+                    this.mountMaterialCharge = 200
                     break;
                 case "Aluminio":
-                    this.priceMod = 100
+                    this.mountMaterialCharge = 300
                     break;
                 case "Pasta":
-                    this.priceMod = 300
+                    this.mountMaterialCharge = 400
                     break;
                 case "Acetato":
-                    this.priceMod = 600
+                    this.mountMaterialCharge = 500
                     break;
                 case "Otros":
-                    this.priceMod = 200
-                    break;
-                default:
+                    this.mountMaterialCharge = 600
                     break;
             }
-            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+            this.mountIndicator = value
+            this.lenseSpecs.price += this.mountMaterialCharge
         },
         handleAntireflectiveChange(value){
-            if(value){
-                this.priceMod += 300
-            }else{
-                this.priceMod -= 300
+            if(this.lenseSpecs.lenseMaterial != 'Material Illicit'){
+                if(value){
+                    this.antireflectiveCharge = 300
+                }else{
+                    this.antireflectiveCharge ? this.antireflectiveCharge = -300 : null
+                }
+                this.lenseSpecs.price += this.antireflectiveCharge
             }
-            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
         },
         handlePhotochromaticChange(value){
-            // handle change
-            console.log("value: ", value)
             if(value){
-                this.priceMod += 600
+                this.photochromaticCharge = 600
             }else{
-                this.priceMod -= 600
+                this.photochromaticCharge ? this.photochromaticCharge = -600 : null
             }
-            this.lenseSpecs.price = parseInt(this.lensePrice) + parseInt(this.priceMod)
+            this.lenseSpecs.price += this.photochromaticCharge
+        },
+        watchResize(){
+            window.addEventListener('resize', this.onResize)
+        },
+        onResize(){
+            this.windowWidth = window.innerWidth
         },
         checkCode(){
             this.checkForDiscountCode(this.code)
@@ -437,6 +557,9 @@ export default {
 
         ::v-deep .md-count{
             color: #fff !important;
+        }
+        ::v-deep .md-radio-label{
+            width: 100% !important;
         }
     }
     ::v-deep .md-tabs{

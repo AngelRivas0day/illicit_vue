@@ -18,14 +18,16 @@
                         <p>{{ order.address.city }}, {{ order.address.state }}, {{ order.address.zip }}</p>
                         <p>Referencias del domicilio: {{ order.address.reference }}</p>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
                         <h3 class="md-title">Estado del pago</h3>
-                        <md-chip :class="{'md-primary': order.paymentStatus == 'SUCCEEDED', 'md-accent': order.paymentStatus != 'SUCCEEDED'}">{{ order.paymentStatus }}</md-chip>
+                        <md-chip :class="{'md-primary': order.paymentStatus == 'SUCCEEDED', 'md-accent': order.paymentStatus != 'SUCCEEDED'}">{{ order.paymentStatus == 'SUCCEEDED' ? 'EXITOSO' : 'OTRO' }}</md-chip>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
                         <h3 class="md-title">Resumen de compra</h3> 
-                        <p><span>Antirreflejante: </span>{{ order.specs.antireflective ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
-                        <p><span>Material: </span>{{ order.specs.material }}</p>
+                        <p><span>Antirreflejante: </span>{{ order.specs.antireflective == "true" ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
+                        <p><span>Fotocrom&aacute;tico: </span>{{ order.specs.photochromatic == "true" ? 'Con efecto fotocromático' : 'Sin efecto fotocromático' }}</p>
+                        <p><span>Lente: </span>{{ order.specs.lenseMaterial }}</p>
+                        <p><span>Mountura: </span>{{ order.specs.mountMaterial}}</p>
                         <p><span>Diseño: </span>{{order.specs.design.name}}</p>
                         <p v-if="order.specs.graduation">
                             <span>Graduaci&oacute;n: </span>

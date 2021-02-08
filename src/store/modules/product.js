@@ -28,7 +28,7 @@ const mutations = {
     },
     SET_GLASSES(state, payload) {
         state.success = true
-        state.start = payload.length - 1
+        state.start = payload.length 
         state.end = payload.length + pagination
         state.glasses = [...payload]
     }

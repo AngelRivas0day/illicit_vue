@@ -4,7 +4,33 @@
             <h1 v-title>CON<br>TACTO</h1>
         </div>
         <div class="contact__form">
-            <div class="form-inner">
+            <div v-if="emailSentStatus == true" class="form-success">
+                <div class="row">
+                    <div class="col-12">
+                        <md-empty-state
+                        class="text-white"
+                        md-icon="mark_email_read"
+                        md-label="Mensaje envíado"
+                        md-description="Tu opinión nos importa. Te contestaremos en menos de 48 horas.">
+                            <md-button to="/" class="md-primary md-raised text-decoration-none">Volver al inicio</md-button>
+                        </md-empty-state>
+                    </div>
+                </div>
+            </div>
+            <div v-if="emailSentStatus == false" class="form-error">
+                <div class="row">
+                    <div class="col-12">
+                        <md-empty-state
+                        class="text-white"
+                        md-icon="mark_email_read"
+                        md-label="Error al envíar mensaje"
+                        md-description="Ha ocurrido un error. Por favor inténtalo más tarde. Tu opinión nos importa.">
+                            <md-button to="/" class="md-primary md-raised text-decoration-none">Volver al inicio</md-button>
+                        </md-empty-state>
+                    </div>
+                </div>
+            </div>
+            <div v-if="emailSentStatus == null" class="form-inner">
                 <form class="form-row">
                     <div class="col-xs-12 col-sm-12">
                         <md-field>
@@ -54,7 +80,10 @@
                     </ul>
                 </div>
                 <div class="action__send">
-                    <button class="send-button" @click="sendEmail">ENVIAR</button>
+                    <button class="send-button" @click="onSubmit">
+                        <span v-if="!isLoading">ENVIAR</span>
+                        <span v-else>ENVIANDO...</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -62,15 +91,17 @@
 </template>
 
 <script>
-import store from '@/store'
+import { mapActions } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 
 export default {
     name: 'Contact',
     mounted() {
-        store.dispatch('background/setWhiteIcons', null, { root: true });
+        this.setWhiteIcons()
     },
     destroyed(){
-        store.dispatch('background/unsetWhiteIcons', null, { root: true });
+        this.unsetWhiteIcons()
+        this.emailSentStatus = null
     },
     data: () => ({
         form: {
@@ -80,9 +111,31 @@ export default {
             message: ''
         }
     }),
+    computed:{
+        ...mapFields('user', {
+            isLoading: 'isLoading',
+            emailSentStatus: 'emailSentStatus'
+        })
+    },
     methods: {
-        sendEmail(){
-            console.log(this.form);
+        ...mapActions('user',{
+            sendEmail: 'sendEmail'
+        }),
+        ...mapActions('background',{
+           setWhiteIcons: 'setWhiteIcons',
+           unsetWhiteIcons: 'unsetWhiteIcons' 
+        }),
+        async onSubmit(){
+            await this.sendEmail(this.form)
+            this.resetForm()
+        },
+        resetForm(){
+           this.form = {
+                fullName: '',
+                matter: '',
+                email: '',
+                message: ''
+            } 
         }
     }
 }
@@ -102,7 +155,7 @@ export default {
         ,url("../../assets/img/contacto_bg.jpg");
         background-size: cover;
         h1{
-            margin: 30px;
+            margin: 55px 30px;
             position: relative;
             color: white;
             font-weight: 100;
@@ -124,7 +177,7 @@ export default {
         position: relative;
         @include flex("row","center","center");
         .form-inner{
-            width: 70%;
+            width: 100%;
             padding: 0 25px;
             display: block;
             margin: 0 auto;
@@ -148,8 +201,6 @@ export default {
                         i{
                             width: 30px;
                         }
-                        span{
-                        }
                     }
                 }
             }
@@ -171,6 +222,11 @@ export default {
                         width: 70%;
                     }
                 }
+            }
+        }
+        .form-success{
+            ::v-deep .md-empty-state-icon{
+                color: rgba(223,223,223,.8) !important;
             }
         }
     }

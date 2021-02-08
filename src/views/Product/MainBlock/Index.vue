@@ -141,7 +141,7 @@ export default {
         },
         addFav({id, name}){
             if(this.isFavorite){
-                this.deleteFavorite({id, name})
+                this.deleteFavorite(id)
                     .then(()=>{
                         this.isFavorite = false
                     })

@@ -2,7 +2,10 @@
     <div class="products">
         <div class="products__header">
             <div class="header-inner">
-            <img src="https://source.unsplash.com/1600x900?glasses,white" alt="">
+                <img src="https://source.unsplash.com/1600x900?glasses,white" alt="">
+                <div class="header-content">
+                    <h2 class="header-title">{{category}}</h2>
+                </div>
             </div>
         </div>
         <div class="products__content">
@@ -97,8 +100,9 @@ export default {
             isLoading: 'isLoading'
         })
     },
-    mounted(){
-        this.getData()
+    async mounted(){
+        this.category = this.$route.params.category
+        await this.getData()
     },
     data: ()=>({
         brands: [
@@ -124,7 +128,8 @@ export default {
         ],
         selectedBrand: null,
         selectedMaterial: null,
-        selectedRange: null
+        selectedRange: null,
+        category: null
     }),
     methods: {
         ...mapActions('product',{
@@ -156,16 +161,35 @@ export default {
     &__header {
         top: 0;
         left: 0;
-        height: 30vh;
-        position: absolute;
+        height: 80vh;
+        position: relative;
         width: 100%;
         z-index: 10;
         overflow: hidden;
         .header-inner {
+            height: 100%;
+            background: rgba(33,33,33,.5);
             img {
+                position: relative;
+                z-index: -1;
                 height: 100%;
                 width: 100%;
                 object-fit: cover;
+            }
+            .header-content{
+                position: absolute;
+                z-index: 99;
+                left: 20px;
+                top: calc(80vH / 2);
+                transform: translateY(-50%);
+                .header-title{
+                    font-size: 40px;
+                    text-transform: uppercase;
+                    color: $main-green;
+                    @media #{$break-medium}{
+                        font-size: 80px;
+                    }
+                }
             }
         }
     }

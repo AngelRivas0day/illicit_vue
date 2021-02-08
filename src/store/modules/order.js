@@ -51,13 +51,9 @@ const mutations = {
         state.paymentStatus = payload;
     },
     SET_DISCOUNT_CODE(state, payload){
-        if(payload == null){
-            state.discountCode = null
-        }else{
-            console.log("payload: ", payload)
-            state.discountCode['source'] = payload.source
-            state.discountCode['value'] = payload.value
-        }
+        console.log("payload: ", payload)
+        state.discountCode['source'] = payload.source
+        state.discountCode['value'] = payload.value
     },
     RESET_INFO(state) {
         state.lenseSpecs = {
