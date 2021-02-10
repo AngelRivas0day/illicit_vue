@@ -4,7 +4,7 @@
             <div class="header-inner">
                 <img src="https://source.unsplash.com/1600x900?glasses,white" alt="">
                 <div class="header-content">
-                    <h2 class="header-title">{{category}}</h2>
+                    <h2 class="header-title">{{category ? category : 'Cargando...'}}</h2>
                 </div>
             </div>
         </div>
@@ -20,6 +20,16 @@
                                     <md-list class="md-list-filters" slot="md-expand">
                                         <md-list-item>
                                             <div class="filters w-100 row">
+                                                <div class="col-12">
+                                                    <md-button @click="clearFilters" class="md-stroked md-dense md-primary ml-0">Limpiar filtros</md-button>
+                                                </div>
+                                                <div class="col-12">
+                                                    <md-field>
+                                                        <md-icon>search</md-icon>
+                                                        <label>Buscar</label>
+                                                        <md-input @blur="onChangeSearch" v-model="filters.query"></md-input>
+                                                    </md-field>
+                                                </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
                                                     <div class="filter-title">Marca</div>
                                                     <div class="filter-options">
@@ -39,19 +49,31 @@
                                                             class="option"
                                                             v-for="r in ranges" 
                                                             :key="r.value"
-                                                            @click="onChangeMaterial(r)"
+                                                            @click="onChangeRange(r)"
                                                             md-clickable
                                                         >{{r.label}}</md-chip>
                                                     </div>
                                                 </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
-                                                    <div class="filter-title">Material</div>
+                                                    <div class="filter-title">Material del lente</div>
                                                     <div class="filter-options">
                                                         <md-chip
                                                             class="option"
-                                                            v-for="m in materials"
+                                                            v-for="m in lenseMaterials"
                                                             :key="m.value"
-                                                            @click="onChangeRange(m)"
+                                                            @click="onChangeLenseMaterial(m)"
+                                                            md-clickable
+                                                        >{{m.label}}</md-chip>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
+                                                    <div class="filter-title">Material de la montura</div>
+                                                    <div class="filter-options">
+                                                        <md-chip
+                                                            class="option"
+                                                            v-for="m in frameMaterials"
+                                                            :key="m.value"
+                                                            @click="onChangeFrameMaterial(m)"
                                                             md-clickable
                                                         >{{m.label}}</md-chip>
                                                     </div>
@@ -89,15 +111,17 @@
 
 <script>
 import ProductCard from './ProductCard'
-import { mapActions, mapState } from 'vuex'
+import { mapActions } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 
 export default {
     name: 'Products',
     components: {ProductCard},
     computed: {
-        ...mapState('product',{
+        ...mapFields('product',{
             glasses: 'glasses',
-            isLoading: 'isLoading'
+            isLoading: 'isLoading',
+            filters: 'filters'
         })
     },
     async mounted(){
@@ -116,36 +140,51 @@ export default {
             {value: 'burberry', label: 'Burberry'},
             {value: 'dolce_gabbana', label: 'Dolce Gabbana'}
         ],
-        materials: [
-            {value: 'poli', label: 'Policarbonato'},
-            {value: 'plas', label: 'Plástico'},
-            {value: 'alum', label: 'Aluminio'}
+        lenseMaterials: [
+            {value: 'Mica', label: 'Mica'},
+            {value: 'Policarbonato', label: 'Policarbonato'},
+            {value: 'Material Illicit', label: 'Material Illicit'}
+        ],
+        frameMaterials: [
+            {value: 'Titanio', label: 'Policarbonato'},
+            {value: 'Acero', label: 'Plástico'},
+            {value: 'Aluminio', label: 'Aluminio'},
+            {value: 'Pasta', label: 'Pasta'},
+            {value: 'Acetato', label: 'Acetato'},
+            {value: 'Otros', label: 'Otros'},
         ],
         ranges: [
             {value: '200-400', label: '$200 - $400'},
             {value: '401-600', label: '$401 - $600'},
             {value: '601-800', label: '$601 - $800'}
-        ],
-        selectedBrand: null,
-        selectedMaterial: null,
-        selectedRange: null,
-        category: null
+        ]
     }),
     methods: {
         ...mapActions('product',{
-            getData: 'getGlasses'
+            getData: 'getGlasses',
+            clearFilters: 'clearFilters'
         }),
-        onChangeBrand(v){
-            console.log("Value: ", v)
-            this.selectedBrand = v
+        async onChangeBrand(v){
+            console.log("v: ", v)
+            this.filters.brand = v.value
+            await this.getData()
         },
-        onChangeMaterial(v){
-            console.log("Value: ", v)
-            this.selectedMaterial = v
+        async onChangeLenseMaterial(v){
+            this.filters.lenseMaterial = v.value
+            await this.getData()
         },
-        onChangeRange(v){
-            console.log("Value: ", v)
-            this.selectedRange = v
+        async onChangeFrameMaterial(v){
+            this.filters.frameMaterial = v.value
+            await this.getData()
+        },
+        async onChangeRange(v){
+            let limits = v.value.split('-')
+            this.filters.min = limits[0]
+            this.filters.max = limits[1]
+            await this.getData()
+        },
+        async onChangeSearch(){
+            await this.getData()
         }
     }
 }
@@ -232,6 +271,36 @@ export default {
                         }
                     }
                 }
+            }
+
+            ::v-deep .md-field.md-theme-default {
+                color: black !important;
+                input {
+                    -webkit-text-fill-color: #333333 !important;
+                }
+                i:after {
+                    height: 0px !important;
+                }
+            }
+
+            ::v-deep .md-field.md-theme-default label {
+                color: #333333 !important;
+            }
+
+            ::v-deep .md-field.md-theme-default.md-focused label {
+                color: #2ec5c5 !important;
+            }
+
+            ::v-deep .md-field.md-theme-default.md-focused .md-icon {
+                color: #2ec5c5 !important;
+            }
+
+            ::v-deep .md-field.md-theme-default:after {
+                background-color: #333333 !important;
+            }
+
+            ::v-deep .md-field.md-theme-default:before {
+                background-color: #2ec5c5 !important;
             }
         }
     }

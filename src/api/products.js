@@ -4,11 +4,30 @@ const base_url = 'http://localhost:3000/'
 const resource = 'glasses'
 const request_url = `${base_url}${resource}`
 
-function getGlasses(start, limit){
+function getGlasses(filters){
+    let {
+        start, 
+        end, 
+        category, 
+        max, 
+        min, 
+        lenseMaterial, 
+        frameMaterial, 
+        query,
+        brand
+    } = filters
+    console.log("filters: ", filters)
     const config = {
         params: {
+            query,
             start,
-            limit
+            end,
+            category,
+            max,
+            min,
+            lenseMaterial,
+            frameMaterial,
+            brand
         }
     }
     return get(`${request_url}`, config)
