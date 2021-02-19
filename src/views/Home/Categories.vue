@@ -40,7 +40,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/css/_vars";
 .categories{
-    background: #fff;
+    background: #f7f7f7;
     padding: 80px 0;
     .see-more{
         @include call-to-action-2(black);
