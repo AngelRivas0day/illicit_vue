@@ -49,12 +49,12 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Payment" */ '../views/Payment/Index.vue')
   },
   {
-    path: '/productos/payment/done',
+    path: '/payment/success',
     name: 'PaymentSuccess',
     component: () => import(/* webpackChunkName: "PaymentSuccess" */ '../views/Payment/PaymentSuccess/Index.vue')
   },
   {
-    path: '/productos/payment/error',
+    path: '/payment/error',
     name: 'PaymentError',
     component: () => import(/* webpackChunkName: "PaymentError" */ '../views/Payment/Error.vue')
   },

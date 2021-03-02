@@ -41,7 +41,7 @@
                             </div>
                         </md-tab>
                         <md-tab id="tab-fourth" :md-label="windowWidth <= 540 ? 'Extras' : 'Extras'">
-                            <Extras />
+                            <Extras v-if="activeTab == 'tab-fourth'" />
                             <div class="d-block w-100 text-right">
                                 <md-button @click="lastStep = true" class="md-primary md-raised md-dense">Siguiente</md-button>
                             </div>
@@ -51,8 +51,8 @@
             </div>
         </div>
         <div v-if="lastStep" class="container-fluid checkout__last-step">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 offset-md-4 col-md-8">
+            <div class="row no-gutters">
+                <div class="col-xs-12 col-sm-12 col-md-8">
                     <div class="row last-step--inner">
                         <div class="col-12 mb-5">
                             <button @click="lastStep = false" class="go-back">
@@ -64,11 +64,6 @@
                         </div>
                         <div class="col-12">
                             <Final />
-                        </div>
-                        <div class="col-12 text-right">
-                            <md-button class="md-primary md-dense md-raised">
-                                Ir a checkout
-                            </md-button>
                         </div>
                     </div>
                 </div>
@@ -96,7 +91,8 @@ export default {
         showHelp: false,
         withGraduation: false,
         windowWidth: window.innerWidth,
-        lastStep: false
+        lastStep: false,
+        activeTab: null
     }),
     async mounted(){
         this.watchResize()
@@ -135,7 +131,7 @@ export default {
             paymentMethod: 'paymentMethod',
             isOrderOk: 'isOrderOk',
             discountCode: 'discountCode'
-        }),
+        })
     },
     methods: {
         ...mapActions('addresses',{
@@ -174,6 +170,7 @@ export default {
         // },
         goToTab(tab_id){
             this.$refs.tabs.setActiveTab(tab_id)
+            this.activeTab = tab_id
         }
     },
     validations: {
@@ -225,8 +222,9 @@ export default {
 
 .checkout-main{
     padding: 60px 0;
+    box-sizing: border-box;
     background-color: #222222;
-    min-height: 100vH;
+    min-height: calc(100vH - 120px);
     .checkout__container{
         width: 100%;
         ::v-deep .md-tabs{
@@ -251,10 +249,15 @@ export default {
             .step-image{
                 width: 350px;
                 height: 350px;
+                object-fit: contain;
             }
         }
     }
     .checkout__last-step{
+        padding: 60px 0;
+        box-sizing: border-box;
+        background-color: #222222;
+        min-height: calc(100vH - 120px);
         .last-step--inner{
             max-width: 800px;
         }

@@ -12,6 +12,7 @@
 <script>
 import PurchaseForm from './PurchaseForm/Index'
 import PurchaseItem from './PurchaseItem/Index'
+import { mapActions } from 'vuex'
 
 export default {
     name: 'Checkout',
@@ -21,6 +22,14 @@ export default {
     },
     mounted(){
         console.log("Mounted!")
+    },
+    beforeDestroy(){
+        this.resetInfo()
+    },
+    methods: {
+        ...mapActions('order',{
+            resetInfo: 'resetInfo'
+        })
     }
 }
 </script>

@@ -10,15 +10,18 @@
                                 <div class="py-5 px-5 border" @dragover="dragover" @dragleave="dragleave" @drop="drop">
                                     <input type="file" multiple name="fields[assetsFieldHandle][]" id="assetsFieldHandle" 
                                     class="d-none" @change="onChange" ref="file" accept=".pdf,.jpg,.jpeg,.png" />
-                                    <label for="assetsFieldHandle" class="d-block cursor-pointer">
+                                    <label v-if="this.filelist.length == 0" for="assetsFieldHandle" class="d-block cursor-pointer">
                                         <div class="text-white">
                                             Explain to our users they can drop files in here 
                                             or <u style="cursor: pointer;">click here</u> to upload their files
                                         </div>
                                     </label>
-                                    <ul class="mt-4 list-style-none" v-if="this.filelist.length" v-cloak>
-                                        <li class="text-white" v-for="file in filelist" :key="file">
-                                            {{ file.name }}<button type="button" @click="remove(filelist.indexOf(file))" title="Remove file">x</button>
+                                    <ul class="unstyled-list m-0 p-0" v-if="this.filelist.length" v-cloak>
+                                        <li class="text-white d-flex flex-row align-items-center justify-content-center" v-for="file in filelist" :key="file.name">
+                                            {{ file.name }}
+                                            <md-button @click="remove(filelist.indexOf(file))" class="md-icon-button">
+                                                <md-icon class="text-white">clear</md-icon>
+                                            </md-button>
                                         </li>
                                     </ul>
                                 </div>
@@ -26,12 +29,22 @@
                         </div>
                         <p class="mt-2 text-white help-text">¿Necesitas ayuda?</p>
                     </div>
-                    <div class="col-xs-12 col-sm-12 col-md-7">
+                    <div class="col-xs-12 col-sm-12 col-md-10">
                         <md-field>
                             <label>Comentarios adicionales</label>
                             <md-textarea></md-textarea>
                         </md-field>
                     </div>
+                    <div class="col-12 text-right m-3">
+                        <md-button @click="goToCheckout" class="md-primary md-dense md-raised text-white m-0">
+                            Ir a checkout
+                        </md-button>
+                    </div>
+                    <StripeCheckout 
+                        ref="checkoutRef"
+                        :pk="stripe_key"
+                        :session-id="session_id"
+                    />
                 </div>
             </div>
         </div>
@@ -39,13 +52,30 @@
 </template>
 
 <script>
+import { StripeCheckout } from '@vue-stripe/vue-stripe';
+import { mapActions, mapState } from 'vuex'
+
 export default {
     name: 'Final',
     delimiters: ['${', '}'], // Avoid Twig conflicts
+    components: {StripeCheckout},
+    mounted(){
+        this.generateCheckoutSession()
+    },
     data: () => ({
-        filelist: [] 
+        filelist: [],
+        stripe_key: 'pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14'
     }),
+    computed: {
+        ...mapState('order',{
+            session_id: 'session_id',
+            lenseSpecs: 'lenseSpecs'
+        })
+    },
     methods: {
+        ...mapActions('order',{
+            createSession: 'createSession'
+        }),
         onChange() {
             this.filelist = [...this.$refs.file.files];
         },
@@ -72,6 +102,22 @@ export default {
             // Clean up
             event.currentTarget.classList.add('bg-gray-100');
             event.currentTarget.classList.remove('bg-green-300');
+        },
+        async generateCheckoutSession(){
+            console.log("Session id generated!")
+            let design = JSON.parse(this.lenseSpecs.design)
+            await this.createSession({
+                amount: `${this.lenseSpecs.price}00`,
+                product_name: this.lenseSpecs.name,
+                product_description: 'This is a desc',
+                images: design.images
+            })
+            // create checkout session using a backend endpoint
+
+        },
+        goToCheckout(){
+            // refirect to stripe checkout onClick
+            this.$refs.checkoutRef.redirectToCheckout();
         }
     }
 }

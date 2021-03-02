@@ -30,13 +30,13 @@
                 <md-tooltip md-direction="right">El precio de envio viene dado por la direcci&oacute;n de env&iacute;o</md-tooltip>
             </div>
             
-            <p><span>Subtotal: </span>${{lenseSpecs.price}}</p>
+            <p><span>Subtotal: </span>${{finalPrice}}</p>
         </div>
     </div>
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapFields} from 'vuex-map-fields'
 
 export default {
     name: 'PurchaseItem',
@@ -44,12 +44,18 @@ export default {
         // this.specs = JSON.parse(this.lenseSpecs)
         this.design = JSON.parse(this.lenseSpecs.design)
     },
+    beforeDestroy(){
+        this.lenseSpecs.price = this.finalPrice
+    },
     data:()=>({
         design: {}
     }),
     computed: {
-        ...mapState('order', {
-            lenseSpecs: 'lenseSpecs'
+        ...mapFields('order', {
+            lenseSpecs: 'lenseSpecs',
+            lenseMaterialCurrentPrice: 'lenseMaterialCurrentPrice',
+            graduationCurrentPrice: 'graduationCurrentPrice',
+            extrasCurrentPrice: 'extrasCurrentPrice'
         }),
         material(){
             return this.lenseSpecs.material ? this.lenseSpecs.material : 'Selecciona uno'
@@ -59,6 +65,9 @@ export default {
         },
         graduation(){
             return this.lenseSpecs.graduation != null ? 'Guardada' : 'Sin guardar'
+        },
+        finalPrice(){
+            return this.lenseSpecs.price + this.lenseMaterialCurrentPrice + this.graduationCurrentPrice + this.extrasCurrentPrice
         }
     }
 }

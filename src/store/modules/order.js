@@ -19,11 +19,13 @@ const state = {
         price: "",
         design: "",
         lenseMaterial: "",
-        mountMaterial: "",
         antireflective: "",
         photochromatic: "",
-        graduation: null,
+        graduation_type: "",
+        graduation_image: null,
+        extra: ""
     },
+    basePrice: null,
     addressId: null,
     orderStatus: "PENDING",
     paymentMethod: null,
@@ -32,7 +34,13 @@ const state = {
     isOrderOk: false,
     errorMessage: null,
     paymentStatus: null,
-    discountCode: null
+    discountCode: null,
+    // price mods
+    lenseMaterialCurrentPrice: 0,
+    graduationCurrentPrice: 0,
+    extrasCurrentPrice: 0,
+    // checkout session
+    session_id: null
 }
 
 const mutations = {
@@ -55,6 +63,12 @@ const mutations = {
         state.discountCode['source'] = payload.source
         state.discountCode['value'] = payload.value
     },
+    SET_SESSION_ID(state, id){
+        state.session_id = id
+    },
+    ERROR_SET_ID(state){
+        state.session_id = null
+    },
     RESET_INFO(state) {
         state.lenseSpecs = {
             name: "",
@@ -64,7 +78,9 @@ const mutations = {
             mountMaterial: "",
             antireflective: "",
             photochromatic: "",
-            graduation: null,
+            graduation_type: "",
+            graduation_image: null,
+            extra: ""
         };
         state.addressId = "";
         state.orderStatus = "PENDING";
@@ -73,6 +89,9 @@ const mutations = {
         state.isError = false;
         state.isOrderOk = false;
         state.errorMessage = null;
+        state.lenseMaterialCurrentPrice = 0;
+        state.graduationCurrentPrice = 0;
+        state.extrasCurrentPrice = 0;
     }
 }
 
@@ -112,11 +131,19 @@ const actions = {
             commit("SET_LOADING", false);
         }
     },
+    async createSession({commit},{amount, product_name}){
+        commit('SET_LOADING', true)
+        try {
+            let {data}  = await api.post('orders/create-session', {amount, product_name}, true)
+            commit('SET_SESSION_ID', data.sessionId)
+        } catch (error) {
+            commit('ERROR_SET_ID')
+        }
+    },
     resetInfo({ commit }) {
-        commit("RESET_INFO");
+        commit("RESET_INFO")
     },
     async checkForDiscountCode({commit}, code){
-        console.log("code: ", code)
         commit('SET_LOADING', true)
         try {
             let {data} = await api.get(`promo-codes/check/${code}`)

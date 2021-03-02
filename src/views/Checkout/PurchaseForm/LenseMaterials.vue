@@ -5,7 +5,7 @@
                 <div class="row no-gutters">
                     <template v-for="gd in lense_materials">
                         <div :key="gd.value" class="col-12">
-                            <md-radio class="md-primary" v-model="mock_model" :value="gd.value">
+                            <md-radio @change="onChange(gd)" class="md-primary" v-model="lense_material" :value="gd.value">
                                 <div class="d-flex-column justify-content-between">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-white custom-radio-label">{{gd.label}}</span>
@@ -23,8 +23,13 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
+
 export default {
     name: 'LenseMaterials',
+    mounted(){
+        this.lense_material = this.lenseSpecs.lenseMaterial
+    },
     data: () => ({
         lense_materials: [
             {
@@ -46,8 +51,20 @@ export default {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             }
         ],
-        mock_model: null
-    })
+        lense_material: null
+    }),
+    computed: {
+        ...mapFields('order',{
+            lenseMaterialCurrentPrice: 'lenseMaterialCurrentPrice',
+            lenseSpecs: 'lenseSpecs'
+        })
+    },
+    methods: {
+        onChange(value){
+            this.lenseMaterialCurrentPrice = value.price == 'GRATIS' ? 0 : value.price
+            this.lenseSpecs.lenseMaterial = value.value
+        }
+    }
 }
 </script>
 

@@ -5,11 +5,12 @@
                 <div class="row no-gutters">
                     <template v-for="gd in extras">
                         <div :key="gd.value" class="col-12">
-                            <md-radio class="md-primary" v-model="mock_model" :value="gd.value">
+                            <md-radio @change="onChange(gd)" class="md-primary" v-model="extra" :value="gd.value">
                                 <div class="d-flex-column justify-content-between">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-white custom-radio-label">{{gd.label}}</span>
-                                        <span class="text-right text-white custom-radio-price">{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</span>
+                                        <span v-if="gd.value == 'Antirreflejante' && (lenseSpecs.lenseMaterial == 'Poliverga' || lenseSpecs.graduation_type == 'Neutros')" class="text-right text-white custom-radio-price"><del>{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</del> GRATIS</span>
+                                        <span v-else class="text-right text-white custom-radio-price">{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</span>
                                     </div>
                                     <span class="f-100 md-helper-text text-white custom-radio-helper">{{gd.text}}</span>
                                 </div>
@@ -23,6 +24,8 @@
 </template>
 
 <script>
+import { mapFields } from 'vuex-map-fields'
+
 export default {
     name: 'Extras',
     data: () => ({
@@ -40,8 +43,30 @@ export default {
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             }
         ],
-        mock_model: null
-    })
+        extra: null
+    }),
+    mounted(){
+        console.log("Mounted extras!")
+        this.extra = this.lenseSpecs.extra
+    },
+    computed: {
+        ...mapFields('order',{
+            extrasCurrentPrice: 'extrasCurrentPrice',
+            lenseSpecs: 'lenseSpecs'
+        }),
+    },
+    methods: {
+        onChange(value){
+            if(this.lenseSpecs.lenseMaterial == 'Poliverga' || this.lenseSpecs.graduation_type == 'Neutros'){
+                if(value.value == 'Antirreflejante'){
+                    this.extrasCurrentPrice = 0
+                }
+            }else{
+                this.extrasCurrentPrice = value.price == 'GRATIS' ? 0 : value.price
+            }
+            this.lenseSpecs.extra = value.value
+        }
+    }
 }
 </script>
 
