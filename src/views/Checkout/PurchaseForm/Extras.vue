@@ -9,7 +9,7 @@
                                 <div class="d-flex-column justify-content-between">
                                     <div class="d-flex justify-content-between mb-2">
                                         <span class="text-white custom-radio-label">{{gd.label}}</span>
-                                        <span v-if="gd.value == 'Antirreflejante' && (lenseSpecs.lenseMaterial == 'Poliverga' || lenseSpecs.graduation_type == 'neutros')" class="text-right text-white custom-radio-price"><del>{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</del> GRATIS</span>
+                                        <span v-if="gd.value == 'antireflective' && (lenseSpecs.lenseMaterial == 'poliverga' || lenseSpecs.graduation_type == 'neutros')" class="text-right text-white custom-radio-price"><del>{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</del> GRATIS</span>
                                         <span v-else class="text-right text-white custom-radio-price">{{gd.price == 'GRATIS' ? 'GRATIS' : '$'+gd.price}}</span>
                                     </div>
                                     <span class="f-100 md-helper-text text-white custom-radio-helper">{{gd.text}}</span>
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         onChange(value){
-            if(this.lenseSpecs.lenseMaterial == 'Poliverga' || this.lenseSpecs.graduation_type == 'neutros'){
+            if(this.lenseSpecs.lenseMaterial == 'poliverga' || this.lenseSpecs.graduation_type == 'neutros'){
                 if(value.value == 'antireflective'){
                     this.extrasCurrentPrice = 0
                 }else{

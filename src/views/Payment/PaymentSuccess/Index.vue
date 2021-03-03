@@ -2,7 +2,7 @@
     <div>
         <div class="payment-success">
             <div class="payment-success__title mb-4">Compra exitosa</div>
-            <div class="payment-success__message mb-3">Los detalles han sido enviados a tu WhatsApp o tambi&eacute;n puedes consultarlos aqu&iacute;n:</div>
+            <div class="payment-success__message mb-3">Los detalles han sido enviados a tu WhatsApp o tambi&eacute;n puedes consultarlos aqu&iacute;:</div>
             <div class="from-top fancy-button" @click="goToOrders">Ver detalles</div>
         </div>
     </div>

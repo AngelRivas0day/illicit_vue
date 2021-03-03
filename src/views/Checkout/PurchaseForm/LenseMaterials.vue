@@ -33,19 +33,19 @@ export default {
     data: () => ({
         lense_materials: [
             {
-                value: 'Mica',
+                value: 'mica',
                 label: 'Mica',
                 price: 'GRATIS',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             },
             {
-                value: 'Policarbonato',
+                value: 'policarbonato',
                 label: 'Policarbonato',
                 price: 300,
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             },
             {
-                value: 'Poliverga',
+                value: 'poliverga',
                 label: 'Poliverga',
                 price: 1000,
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',

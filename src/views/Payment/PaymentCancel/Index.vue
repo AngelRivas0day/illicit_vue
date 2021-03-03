@@ -1,8 +1,8 @@
 <template>
     <div>
         <div class="payment-cancel">
-            <div class="payment-cancel__title mb-4">Pago cancelado :(</div>
-            <div class="payment-cancel__message mb-3">Parece que has cancelado tu compra. Puedes volver a intentarlo cuando desees.</div>
+            <div class="payment-cancel__title mb-4">Compra cancelada :(</div>
+            <div class="payment-cancel__message mb-3">Parece que has cancelado tu compra. Nos encantar&iacute;a que nos cuentes que te hizo cambiar de opini&oacute;n.</div>
             <div class="from-top fancy-button" @click="goToHome">Volver al inicio</div>
         </div>
     </div>
