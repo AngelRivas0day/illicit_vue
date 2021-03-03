@@ -9,9 +9,20 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
     name: 'PaymentCancel',
+    async mounted(){
+        let { order_id } = this.$route.query
+        if(order_id){
+            await this.cancelPayment(order_id)
+        }
+    },
     methods: {
+        ...mapActions('order',{
+            cancelPayment: 'cancelPayment'
+        }),
         goToHome(){
             this.$router.push({name:'Home'})
         }

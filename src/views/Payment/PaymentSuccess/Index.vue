@@ -14,7 +14,6 @@ import { mapActions } from 'vuex'
 export default {
     name: 'PaymentSuccess',
     async mounted(){
-        console.log("Mounted!")
         let { order_id } = this.$route.query
         if(order_id){
             await this.confirm(order_id)
