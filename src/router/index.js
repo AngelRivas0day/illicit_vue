@@ -54,6 +54,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "PaymentSuccess" */ '../views/Payment/PaymentSuccess/Index.vue')
   },
   {
+    path: '/payment/cancel',
+    name: 'PaymentSuccess',
+    component: () => import(/* webpackChunkName: "PaymentSuccess" */ '../views/Payment/PaymentCancel/Index.vue')
+  },
+  {
     path: '/payment/error',
     name: 'PaymentError',
     component: () => import(/* webpackChunkName: "PaymentError" */ '../views/Payment/Error.vue')

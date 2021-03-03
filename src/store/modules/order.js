@@ -131,14 +131,34 @@ const actions = {
             commit("SET_LOADING", false);
         }
     },
-    async createSession({commit},{amount, product_name}){
+    async createSession({commit},payload){
         commit('SET_LOADING', true)
         try {
-            let {data}  = await api.post('orders/create-session', {amount, product_name}, true)
+            let {data}  = await api.Post('orders/create-session', payload, true, true)
             commit('SET_SESSION_ID', data.sessionId)
         } catch (error) {
             commit('ERROR_SET_ID')
         }
+    },
+    async confirmPayment({commit}, orderId){
+        commit('SET_LOADING', true)
+        try {
+            await api.patch('orders/confirm-order',orderId, {}, true)
+        } catch (error) {
+            console.log("Error while confirming the payment: ", error)
+        } finally {
+            commit('SET_LOADING', false) 
+        }
+    },
+    async cancelPayment({commit}, orderId){
+       commit('SET_LOADING', true)
+       try {
+           await api.patch('orders/cancel-order',orderId, {}, true)
+       } catch (error) {
+           console.log("Error while cancelling the payment: ", error)
+       } finally {
+           commit('SET_LOADING', false) 
+       } 
     },
     resetInfo({ commit }) {
         commit("RESET_INFO")

@@ -14,17 +14,27 @@ const base_url = 'http://localhost:3000'
 
 function setHeaders(contentType, token = null){
     let config = {}
+    let content = (value) => {
+        switch (value){
+            case 'json':
+                return 'application/json'
+            case 'x-www-form-urlencoded':
+                return 'application/x-www-form-urlencoded'
+            case 'form-data':
+                return 'multipart/form-data'
+        }
+    }
     if(token){
         config = {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': `application/${contentType}`
+                'Content-Type': content(contentType)
             }
         }
     }else{
         config = {
             headers: {
-                'Content-Type': `application/${contentType}`
+                'Content-Type': content(contentType)
             }
         }
     }
@@ -51,12 +61,12 @@ function getAll(endpoint, isToken = false){
     return Axios.get(`${base_url}/${endpoint}`, config)
 }
 
-function patch(endpoint, id = null, data, isToken = false){
+function patch(endpoint, id = null, data, isToken = false, form_data = false){
     var config;
     if(isToken == true){
-        config = setHeaders('json', localStorage.getItem('token'))
+        config = setHeaders(form_data ? 'form-data' : 'json', localStorage.getItem('token'))
     }else{
-        config = setHeaders('json')
+        config = setHeaders(form_data ? 'form-data' : 'json')
     }
     if(id){
         return Axios.patch(`${base_url}/${endpoint}/${id}`, data, config)
@@ -95,11 +105,33 @@ function get(endpoint, isToken = false){
     return Axios.get(`${base_url}/${endpoint}`, config) 
 }
 
+const Post = (endpoint, data, useToken = false, formData = false) => {
+    var config;
+    if(useToken == true){
+        config = setHeaders(formData ? 'form-data' : 'json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders(formData ? 'form-data' : 'json')
+    }
+    return Axios.post(`${base_url}/${endpoint}`, data, config)
+}
+
+const  Patch = (endpoint, data, useToken = false, formData = false) => {
+    var config;
+    if(useToken == true){
+        config = setHeaders(formData ? 'form-data' : 'json', localStorage.getItem('token'))
+    }else{
+        config = setHeaders(formData ? 'form-data' : 'json')
+    }
+    return Axios.patch(`${base_url}/${endpoint}`, data, config)
+}
+
 export {
     getOne,
     getAll,
     patch,
     post,
     delete_,
-    get
+    get,
+    Patch,
+    Post
 }

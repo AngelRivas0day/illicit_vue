@@ -30,13 +30,13 @@ export default {
     data: () => ({
         graduation_options: [
             {
-                value: 'Monofocal',
+                value: 'monofocal',
                 label: 'Monofocal',
                 price: 'GRATIS',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             },
             {
-                value: 'Neutros',
+                value: 'neutros',
                 label: 'Neutros',
                 price: 'GRATIS',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',

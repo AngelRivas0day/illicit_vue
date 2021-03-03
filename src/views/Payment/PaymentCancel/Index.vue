@@ -1,46 +1,26 @@
 <template>
     <div>
-        <div class="payment-success">
-            <div class="payment-success__title mb-4">Compra exitosa</div>
-            <div class="payment-success__message mb-3">Los detalles han sido enviados a tu WhatsApp o tambi&eacute;n puedes consultarlos aqu&iacute;n:</div>
-            <div class="from-top fancy-button" @click="goToOrders">Ver detalles</div>
+        <div class="payment-cancel">
+            <div class="payment-cancel__title mb-4">Pago cancelado :(</div>
+            <div class="payment-cancel__message mb-3">Parece que has cancelado tu compra. Puedes volver a intentarlo cuando desees.</div>
+            <div class="from-top fancy-button" @click="goToHome">Volver al inicio</div>
         </div>
     </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
-    name: 'PaymentSuccess',
-    async mounted(){
-        console.log("Mounted!")
-        let { order_id } = this.$route.query
-        if(order_id){
-            await this.confirm(order_id)
-        }
-    },
+    name: 'PaymentCancel',
     methods: {
-        ...mapActions('user',{
-            setTab: 'setTab'
-        }),
-        ...mapActions('order',{
-            confirmPayment: 'confirmPayment'
-        }),
-        goToOrders(){
-            this.setTab('UserHistory')
-            this.$router.push({name: 'User'})
-        },
-        async confirm(order_id){
-            console.log("order id: ", order_id)
-            await this.confirmPayment(order_id)
+        goToHome(){
+            this.$router.push({name:'Home'})
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.payment-success{
+.payment-cancel{
     box-shadow: inset 2px 0px 300px -121px rgba(0,0,0,0.75);
     display: flex;
     flex-direction: column;

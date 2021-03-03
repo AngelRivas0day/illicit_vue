@@ -42,13 +42,15 @@ export default {
     name: 'PurchaseItem',
     mounted(){
         // this.specs = JSON.parse(this.lenseSpecs)
-        this.design = JSON.parse(this.lenseSpecs.design)
+        this.design = this.lenseSpecs.design ? JSON.parse(this.lenseSpecs.design) : {}
+        this.initalPrice = this.lenseSpecs.price
     },
     beforeDestroy(){
         this.lenseSpecs.price = this.finalPrice
     },
     data:()=>({
-        design: {}
+        design: {},
+        initalPrice: 0
     }),
     computed: {
         ...mapFields('order', {
@@ -67,7 +69,13 @@ export default {
             return this.lenseSpecs.graduation != null ? 'Guardada' : 'Sin guardar'
         },
         finalPrice(){
-            return this.lenseSpecs.price + this.lenseMaterialCurrentPrice + this.graduationCurrentPrice + this.extrasCurrentPrice
+            return this.initalPrice + this.lenseMaterialCurrentPrice + this.graduationCurrentPrice + this.extrasCurrentPrice
+        }
+    },
+    watch: {
+        finalPrice(){
+            console.log("fnial price: ", this.finalPrice)
+            this.lenseSpecs.price = this.finalPrice
         }
     }
 }
