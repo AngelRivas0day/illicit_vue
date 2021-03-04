@@ -45,7 +45,6 @@ export default {
         graduation_type: null
     }),
     mounted(){
-        console.log("Mounted grad!")
         this.graduation_type = this.lenseSpecs.graduation_type
     },
     computed: {

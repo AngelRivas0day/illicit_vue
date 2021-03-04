@@ -3,7 +3,7 @@
         <div class="mount-materials-step">
             <div class="container-fluid">
                 <div class="row no-gutters">
-                    <template v-for="m in materials">
+                    <template v-for="m in displayedMaterials">
                         <div :key="m.label" class="col-12 mb-1">
                             <div class="material d-flex flex-column text-white">
                                 <div class="material-label mb-2 md-font">{{m.label}}</div>
@@ -18,24 +18,58 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
     name: 'MountMaterials',
     data: () => ({
         materials: [
             {
-                label: 'Material 1',
+                value: 'Titanio',
+                label: 'Titanio1',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             },
             {
-                label: 'Materal 2',
+                value: 'Acero',
+                label: 'Acero',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             },
             {
-                label: 'Material 3',
+                value: 'Aluminio',
+                label: 'Aluminio',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
+            },
+            {
+                value: 'Pasta',
+                label: 'Pasta',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
+            },
+            {
+                value: 'Acetato',
+                label: 'Acetato',
+                text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
+            },
+            {
+                value: 'Otros',
+                label: 'Acetato',
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla lobortis, augue vel vehicula condimentum, mauris mauris pellentesque nulla.',
             }
-        ]
-    })
+        ],
+        displayedMaterials: []
+    }),
+    mounted(){
+        this.renderMaterials()
+    },
+    computed: {
+        ...mapState('product',{
+            glass: 'glass'
+        })
+    },
+    methods: {
+        renderMaterials(){
+            this.displayedMaterials = this.materials.filter(({value})=>this.glass.frameMaterial.includes(value))
+        }
+    }
 }
 </script>
 

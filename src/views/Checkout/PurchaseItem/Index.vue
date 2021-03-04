@@ -74,7 +74,6 @@ export default {
     },
     watch: {
         finalPrice(){
-            console.log("fnial price: ", this.finalPrice)
             this.lenseSpecs.price = this.finalPrice
         }
     }

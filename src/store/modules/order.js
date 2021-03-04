@@ -14,6 +14,7 @@ function toFormData(formValue) {
 }
 
 const state = {
+    // order data start
     lenseSpecs: {
         name: "",
         price: "",
@@ -25,9 +26,11 @@ const state = {
         graduation_image: null,
         extra: ""
     },
+    extraComments: null,
     basePrice: null,
     addressId: null,
     orderStatus: "PENDING",
+    // order datea end
     paymentMethod: null,
     isLoading: false,
     isError: false,

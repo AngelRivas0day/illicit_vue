@@ -37,13 +37,14 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/css/_vars';
 .checkout{
-    // @include flex('column','center','center');
-    @media #{$break-medium}{
+    width: 100vW;
+    @include flex('column','stretch','center');
+    @media #{$break-large}{
         @include flex('row','stretch','center');
     }
     &-item{
         height: auto;
-        @media #{$break-medium}{
+        @media #{$break-large}{
             flex: 1;
             width: 250px;
             min-width: 250px;
@@ -52,6 +53,9 @@ export default {
     }
     &-specs{
         flex: 3;
+         @media #{$break-large}{
+            width: calc(100vH - 250px);
+        }
     }
 }
 </style>

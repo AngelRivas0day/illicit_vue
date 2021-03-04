@@ -55,11 +55,11 @@
                     <div class="col-xs-12 col-sm-12 col-md-10">
                         <md-field>
                             <label>Comentarios adicionales</label>
-                            <md-textarea></md-textarea>
+                            <md-textarea v-model="extraComments"></md-textarea>
                         </md-field>
                     </div>
                     <div class="col-12 text-right m-3">
-                        <md-button :disabled="loading" @click="goToCheckout" class="md-primary md-dense md-raised text-white m-0">
+                        <md-button :disabled="loading" @click="goToCheckout" class="md-primary md-dense md-raised text-white m-0 mr-3">
                             {{loading ? 'Redireccionando...' : 'Ir a checkout'}}
                         </md-button>
                     </div>
@@ -101,7 +101,8 @@ export default {
             lenseSpecs: 'lenseSpecs',
         }),
         ...mapFields('order',{
-            addressId: 'addressId'
+            addressId: 'addressId',
+            extraComments: 'extraComments'
         }),
         ...mapState('addresses',{
             addresses: 'addresses'
@@ -115,7 +116,6 @@ export default {
            getAddresses:'getAddresses'
         }),
         onChangeAddress(value){
-            console.log("address",value)
             this.addressId = value
         },
         onChange() {
@@ -147,50 +147,51 @@ export default {
         },
         async goToCheckout(){
             // refirect to stripe checkout onClick
-            this.loading = true
-            try {
-                let form_data = new FormData()
-                let design = JSON.parse(this.lenseSpecs.design)
-                let { id } = this.$route.params
-                let graduation = this.filelist[0]
-                let data = {
-                    id: id,
-                    // checkout session data start
-                    name: this.lenseSpecs.name,
-                    product_description: `Estás por comprar los lentes ${this.lenseSpecs.name}. Es una buena elección.`,
-                    price: this.lenseSpecs.price,
-                    images: design.images,
-                    // checkout sesion data end
-                    design: {
-                        // only this props are needed from the design
-                        image: design.image,
-                        hex: design.hex,
-                        name: design.name
-                    },
-                    lenseMaterial: this.lenseSpecs.lenseMaterial,
-                    // only one of these can be true
-                    antireflective: this.lenseSpecs.extra == 'antireflective' ? true : false,
-                    photochromatic: this.lenseSpecs.extra == 'photochromatic' ? true : false,
-                    graduationType: this.lenseSpecs.graduation_type,
-                    graduation: graduation || null,
-                    addressId: this.addressId
+            if(this.addressId != undefined){
+                this.loading = true
+                try {
+                    let form_data = new FormData()
+                    let design = JSON.parse(this.lenseSpecs.design)
+                    let { id } = this.$route.params
+                    let graduation = this.filelist[0]
+                    let data = {
+                        id: id,
+                        // checkout session data start
+                        name: this.lenseSpecs.name,
+                        product_description: `Estás por comprar los lentes ${this.lenseSpecs.name}. Es una buena elección.`,
+                        price: this.lenseSpecs.price,
+                        images: design.images,
+                        // checkout sesion data end
+                        design: {
+                            // only this props are needed from the design
+                            image: design.image,
+                            hex: design.hex,
+                            name: design.name
+                        },
+                        lenseMaterial: this.lenseSpecs.lenseMaterial,
+                        // only one of these can be true
+                        antireflective: this.lenseSpecs.extra == 'antireflective' ? true : false,
+                        photochromatic: this.lenseSpecs.extra == 'photochromatic' ? true : false,
+                        graduationType: this.lenseSpecs.graduation_type,
+                        graduation: graduation || null,
+                        addressId: this.addressId,
+                        extraComments: this.extraComments
+                    }
+                    for(var key in data){
+                        let value = data[key]
+                        if(typeof value == "object" && key != 'graduation')
+                            form_data.append(key, JSON.stringify(data[key]))
+                        else
+                            form_data.append(key, value)
+                    }
+                    await this.createSession(form_data)
+                    this.$refs.checkoutRef.redirectToCheckout();
+                } catch (error) {
+                    console.log("Error: ", error)
+                } finally {
+                    this.loading = false
                 }
-                for(var key in data){
-                    let value = data[key]
-                    if(typeof value == "object" && key != 'graduation')
-                        form_data.append(key, JSON.stringify(data[key]))
-                    else
-                        form_data.append(key, value)
-                }
-                await this.createSession(form_data)
-                this.$refs.checkoutRef.redirectToCheckout();
-            } catch (error) {
-                console.log("Error: ", error)
-            } finally {
-                this.loading = false
             }
-            
-            
         }
     }
 }

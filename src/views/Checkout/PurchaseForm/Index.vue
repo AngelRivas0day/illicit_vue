@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-8">
-                    <md-tabs ref="tabs">
+                    <md-tabs @md-changed="onTabChange" ref="tabs">
                         <md-tab id="tab-first" :md-label="windowWidth <= 540 ? 'Graduación' : 'Graduación'">
                             <Graduation />
                             <div class="d-block w-100 text-right">
@@ -43,7 +43,7 @@
                         <md-tab id="tab-fourth" :md-label="windowWidth <= 540 ? 'Extras' : 'Extras'">
                             <Extras v-if="activeTab == 'tab-fourth'" />
                             <div class="d-block w-100 text-right">
-                                <md-button @click="lastStep = true" class="md-primary md-raised md-dense">Siguiente</md-button>
+                                <md-button @click="goToTab('last')" class="md-primary md-raised md-dense">Siguiente</md-button>
                             </div>
                         </md-tab>
                     </md-tabs>
@@ -109,11 +109,6 @@ export default {
     beforeDestroy(){
         window.removeEventListener('resize', this.onResize)
     },
-    watch: {
-        windowWidth(){
-            console.log("new: ", this.windowWidth)
-        }
-    },
     computed: {
         ...mapState('product',{
             glass: 'glass'
@@ -141,23 +136,6 @@ export default {
            createOrder:'createOrder',
            checkForDiscountCode: 'checkForDiscountCode'
         }),
-        async goToPay(e){
-            e.preventDefault()
-            // if(this.isFormValid){
-            //     if(this.paymentMethod == "card"){
-            //         this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
-            //     }else if(this.paymentMethod == "store"){
-            //         try {
-            //             await this.createOrder()
-            //             this.$router.push({name: 'Payment', params: {slug: this.lenseSpecs.slug}})
-            //         } catch (error) {
-            //             this.$router.push({name: 'ProductCategories'})
-            //         }
-            //     }
-            // }else{
-            //     this.errorMessage = "Todos los campos son obligatorios"
-            // }
-        },
         watchResize(){
             window.addEventListener('resize', this.onResize)
         },
@@ -169,8 +147,46 @@ export default {
         //     console.log("Check!")
         // },
         goToTab(tab_id){
-            this.$refs.tabs.setActiveTab(tab_id)
-            this.activeTab = tab_id
+            this.validateTab(tab_id)
+        },
+        onTabChange(e){
+            this.validateTab(e)
+        },
+        validateTab(value){
+            let valid = false
+            switch(value){
+                case "tab-second":
+                    valid = this.lenseSpecs.graduation_type != undefined
+                    break;
+                case "tab-fourth":
+                    valid = this.lenseSpecs.lenseMaterial != undefined
+                    break;
+                case 'last':
+                    valid = this.lenseSpecs.extra != undefined 
+                    break;
+                default:
+                    valid = true
+                    break;
+            }
+            if(valid){
+                if(value == 'last'){
+                    this.lastStep = true
+                }else{
+                    this.$refs.tabs.setActiveTab(value)
+                    this.activeTab = value
+                }
+            }else{
+                switch(value){
+                    case 'tab-second':
+                        this.$refs.tabs.setActiveTab('tab-first') 
+                        this.activeTab = 'tab-first'
+                        break;
+                    case 'tab-fourth':
+                        this.$refs.tabs.setActiveTab('tab-third') 
+                        this.activeTab = 'tab-third'
+                        break;
+                }
+            }
         }
     },
     validations: {
@@ -221,20 +237,28 @@ export default {
 
 
 .checkout-main{
-    padding: 60px 0;
+    padding: 0;
     box-sizing: border-box;
     background-color: #222222;
     min-height: calc(100vH - 120px);
+    @media #{$break-large}{ 
+        padding: 60px 0;
+        min-height: initial;
+    }
     .checkout__container{
         width: 100%;
         ::v-deep .md-tabs{
             max-width: 800px;
+            //  @media #{$break-large}{ 
+            //     max-width: 600px;
+            // }
             // margin: 0 auto;
             .md-tab-nav-button{
                 color: white !important;
             } 
             .md-tabs-navigation{
                 background: transparent !important;
+                // pointer-events: none !important;
             }
             .md-tabs-content{
                 background: transparent !important;
@@ -243,8 +267,8 @@ export default {
         .image-container{
             height: auto;
             padding: 20px 0;
-            @media #{$break-medium}{
-                min-height: 800px;
+            @media #{$break-large}{
+                min-height: calc(100vH - 120px);
             }
             .step-image{
                 width: 350px;
