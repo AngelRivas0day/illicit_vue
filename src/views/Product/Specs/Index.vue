@@ -6,7 +6,7 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-4">
                             <md-list>
-                                <md-subheader>Materiales disponibles para el marco</md-subheader>
+                                <md-subheader>Materiales del marco</md-subheader>
                                 <template v-if="glass">
                                     <md-list-item v-for="fM in glass.frameMaterial" :key="fM">
                                         <span class="spec-item">{{fM}}</span>

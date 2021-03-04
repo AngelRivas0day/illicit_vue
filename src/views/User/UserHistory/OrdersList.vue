@@ -8,17 +8,16 @@
             <md-table v-model="orders" @md-selected="onSelect">
                 <md-table-row slot="md-table-row" slot-scope="{ item }" @click="onSelect(item)" >
                     <md-table-cell md-label="Producto" md-sort-by="Producto" >{{item.specs.name}}</md-table-cell>
-                    <md-table-cell md-label="Material" md-sort-by="Material" >{{item.specs.material}}</md-table-cell>
                     <md-table-cell md-label="Antirreflejante" md-sort-by="Antirreflejante" >{{item.specs.antireflective == "true" ? 'Si' : 'No'}}</md-table-cell>
                     <md-table-cell md-label="Precio" md-sort-by="Precio" >$ {{item.specs.price}}</md-table-cell>
                     <md-table-cell md-label="Envio" md-sort-by="Envio">
                         <span :class="{
-                            'text-success' : item.orderStatus == 'SUCCEEDED',
-                            'text-warning': item.orderStatus == 'PENDING'
+                            'text-success' : item.orderStatus == 'ENTREGADO',
+                            'text-warning': item.orderStatus == 'PENDIENTE'
                         }">{{item.orderStatus}}</span>
                     </md-table-cell>
                     <md-table-cell md-label="Pago" md-sort-by="Pago">
-                        <span :class="{'text-success' : item.paymentStatus == 'SUCCEEDED'}">{{item.paymentStatus}}</span>
+                        <span :class="{'text-success' : item.paymentStatus == 'PAGADO'}">{{item.paymentStatus}}</span>
                     </md-table-cell>
                 </md-table-row>
             </md-table>
