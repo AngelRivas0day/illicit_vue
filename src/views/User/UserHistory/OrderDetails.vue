@@ -20,20 +20,25 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
                         <h3 class="md-title">Estado del pago</h3>
-                        <md-chip :class="{'md-primary': order.paymentStatus == 'SUCCEEDED', 'md-accent': order.paymentStatus != 'SUCCEEDED'}">{{ order.paymentStatus == 'SUCCEEDED' ? 'EXITOSO' : 'OTRO' }}</md-chip>
+                        <md-chip :class="{'md-primary': order.paymentStatus == 'PAGADO', 'md-accent': order.paymentStatus != 'PAGADO'}">{{ order.paymentStatus == 'PAGADO' ? 'PAGADO' : 'PENDIENTE' }}</md-chip>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
                         <h3 class="md-title">Resumen de compra</h3> 
-                        <p><span>Antirreflejante: </span>{{ order.specs.antireflective == "true" ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
-                        <p><span>Fotocrom&aacute;tico: </span>{{ order.specs.photochromatic == "true" ? 'Con efecto fotocromático' : 'Sin efecto fotocromático' }}</p>
+                        <p><span>Antirreflejante: </span>{{ order.specs.antireflective == true ? 'Con antirrflejante' : 'Sin antirreflejante' }}</p>
+                        <p><span>Fotocrom&aacute;tico: </span>{{ order.specs.photochromatic == true ? 'Con efecto fotocromático' : 'Sin efecto fotocromático' }}</p>
                         <p><span>Lente: </span>{{ order.specs.lenseMaterial }}</p>
-                        <p><span>Mountura: </span>{{ order.specs.mountMaterial}}</p>
+                        <p><span>Mountura: </span>{{ glass.frameMaterial.join(', ') }}</p>
                         <p><span>Diseño: </span>{{order.specs.design.name}}</p>
+                        <p><span>Tipo de graduaci&oacute;n: </span>{{order.specs.graduationType}}</p>
                         <p v-if="order.specs.graduation">
-                            <span>Graduaci&oacute;n: </span>
+                            <span>Graduaci&oacute;n (imagen): </span>
                             <a class="clickable" @click="showGrad = true">Ver graduaci&oacute;n</a>
                         </p>
                         <p><span>Total: </span> ${{ order.specs.price }}</p>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6">
+                        <h3 class="md-title">Comentarios extras</h3>
+                        <p>{{order.extraComments}}</p>
                     </div>
                 </div>
                 <div class="w-100 px-0 my-2">
@@ -80,6 +85,7 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'OrderDetails',
@@ -92,12 +98,21 @@ export default {
     data: () => ({
         showGrad: false
     }),
+    mounted(){
+        this.getGlass(this.order.specs.id)
+    },
     methods: {
+        ...mapActions('product',{
+            getGlass: 'getGlass'
+        }),
         onClose(){
             this.showDialog = false
         }
     },
-    computed: {
+    computed:{ 
+        ...mapState('product',{
+            glass: 'glass'
+        }),
         ...mapFields('orders',{
             showDialog: 'showDialog'
         }),
@@ -113,6 +128,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/css/_vars";
 .clickable{
     cursor: pointer;
     color: black !important;
@@ -129,6 +145,12 @@ export default {
 }
 #order-details{
     .order-details__resume, .order-details__items{
+        [class*="col-"]{
+            margin-bottom: 20px;
+            @media #{$break-medium}{
+                margin-bottom: 0px;
+            }
+        }
         h3{
             margin-bottom: 2px;
             font-size: 19px;
