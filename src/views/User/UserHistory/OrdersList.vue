@@ -10,6 +10,7 @@
                     <md-table-cell md-label="Producto" md-sort-by="Producto" >{{item.specs.name}}</md-table-cell>
                     <md-table-cell md-label="Antirreflejante" md-sort-by="Antirreflejante" >{{item.specs.antireflective == "true" ? 'Si' : 'No'}}</md-table-cell>
                     <md-table-cell md-label="Precio" md-sort-by="Precio" >$ {{item.specs.price}}</md-table-cell>
+                    <md-table-cell md-label="Fecha" md-sort-by="Fecha" >{{item.createdAt}}</md-table-cell>
                     <md-table-cell md-label="Envio" md-sort-by="Envio">
                         <span :class="{
                             'text-success' : item.orderStatus == 'ENTREGADO',
@@ -34,13 +35,14 @@ export default {
         OrderDetails: () => import('./OrderDetails.vue')
     },
     async mounted(){
-        console.log("mounted")
-        try {
-            await this.getOrders()
-            console.log(this.orders)
-        } catch (error) {
-            console.log(error)
-        }
+        await this.getOrders()
+        this.orders
+        .sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
+        .map((order)=>{
+            order.createdAt = this.formatDate(order.createdAt)
+            return order
+        })
+        console.log(this.orders)
     },
     data: () => ({
         currentOrder: null
@@ -49,6 +51,13 @@ export default {
         ...mapActions('orders',{
             getOrders:'getOrders'
         }),
+        formatDate(date){
+            let d = new Date(date)
+            const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
+            const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
+            const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
+            return `${da}/${mo}/${ye}`
+        },
         onSelect(item){
             if(item){
                 this.currentOrder = item
