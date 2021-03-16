@@ -34,6 +34,7 @@ export default{
                 const response = await api.getAll('clients/addresses', true)
                 commit('SET_ADDRESSES', response.data)
             }catch(error){
+                Vue.$sentry.captureException(error)
                 commit('SET_ERROR', true)
             }finally{
                 commit('SET_LOADING', false)
@@ -50,6 +51,7 @@ export default{
                     type: 'success'
                 });
             }catch(error){
+                Vue.$sentry.captureException(error)
                 Vue.notify({
                     group: 'user',
                     title: 'Error al guardar',
@@ -72,6 +74,7 @@ export default{
                     type: 'success'
                 });
             }catch(error){
+                Vue.$sentry.captureException(error)
                 Vue.notify({
                     group: 'user',
                     title: 'Error al eliminar dirección',

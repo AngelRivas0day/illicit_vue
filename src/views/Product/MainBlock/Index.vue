@@ -70,7 +70,8 @@ export default {
     mixins: [transition],
     computed: {
         ...mapState('product',{
-            glass: 'glass'
+            glass: 'glass',
+            isLoading: 'isLoading'
         }),
         ...mapState('favorites',{
             favorites: 'favorites'
@@ -91,10 +92,6 @@ export default {
                 this.isFavorite = true
             }
         })
-        if(this.glass.offer){
-            this.hasOffer = true
-            this.offerPrice = this.glass.price - this.glass.offer.value
-        }
         this.transition(()=>{
             this.currentDesign = {
                 name: this.glass.designs[0].name,
@@ -104,6 +101,10 @@ export default {
             }
             this.lenseSpecs.design = JSON.stringify(this.currentDesign)
         })
+        if(this.glass.offer){
+            this.hasOffer = true
+            this.offerPrice = this.glass.price - this.glass.offer.value
+        }
     },
     data: ()=>({
         currentDesign: null,

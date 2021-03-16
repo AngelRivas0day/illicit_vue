@@ -87,6 +87,7 @@ const actions = {
             router.push({name: 'User'})
             dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('AUTH_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
@@ -108,6 +109,7 @@ const actions = {
             router.push({name: 'User'})
             dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('AUTH_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
@@ -121,6 +123,7 @@ const actions = {
             commit('AUTH_SUCCESS', {userName: data.name, token: data.token})
             dispatch('user/checkIfOrigin', null, {root:true})
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('AUTH_ERROR', error.response.data)
         } finally {
             commit('SET_LOADING', false)
@@ -132,6 +135,7 @@ const actions = {
             const { data } = await api.post('clients', user)
             commit('REGISTER_SUCCESS', data)
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('REGISTER_ERROR', error.response.data)
         } finally {
             commit('SET_LOADING', false)
@@ -145,6 +149,7 @@ const actions = {
             commit('LOGOUT_SUCCESS')
             router.push({name: 'Auth'})
         } catch (error) {
+            Vue.$sentry.captureException(error)
             console.log("Sesion cerrada por seguridad a pesar de haber un error en el request.")
             localStorage.removeItem('token')
             commit('LOGOUT_SUCCESS')
@@ -164,6 +169,7 @@ const actions = {
                 type: 'success'
             })
         } catch (error) {
+            Vue.$sentry.captureException(error)
             Vue.notify({
                 group: 'user',
                 title: 'Eror al actualizar información',
@@ -182,6 +188,7 @@ const actions = {
             commit('SET_USER_INFO', data)
             return data
         } catch (error) {
+            Vue.$sentry.captureException(error)
             dispatch('user/logout', null, {root:true})
         } finally {
             commit('SET_LOADING', false)
@@ -193,6 +200,7 @@ const actions = {
            await api.post('clients/contact', emailData)
            commit('EMAIL_SENT_CORRECTLY', true)
         } catch (error) {
+            Vue.$sentry.captureException(error)
            commit('EMAIL_SENT_ERROR', false)
         } finally {
             commit('SET_LOADING', false)

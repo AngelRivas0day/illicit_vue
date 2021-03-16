@@ -1,8 +1,13 @@
 <template>
     <div class="product">
-        <MainBlock />
-        <Specs />
-        <FaceMeasure />
+        <template v-if="isLoading">
+            <SkeletonProduct />
+        </template>
+        <template v-else>
+            <MainBlock />
+            <Specs />
+            <FaceMeasure />
+        </template>
     </div>
 </template>
 
@@ -10,27 +15,33 @@
 import MainBlock from './MainBlock/Index'
 import Specs from './Specs/Index'
 import FaceMeasure from './FaceMeasure/Index'
-import { mapActions } from 'vuex'
+import SkeletonProduct from './SkeletonProduct'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Product',
     components: {
         MainBlock,
         Specs,
-        FaceMeasure
+        FaceMeasure,
+        SkeletonProduct
     },
-    mounted(){
-        let itemId = this.$route.params.id
-        // this function sets the glass item inside
-        // the product module e.x state.glass
-        this.getGlass(itemId)
+    async mounted(){
+        let { id } = this.$route.params
+        await this.getGlass(id)
     },
-    data: () => ({
-        itemId: null,
-    }),
+    beforeDestroy(){
+        this.clearData()
+    },
+    computed: {
+        ...mapState('product',{
+            isLoading: 'isLoading'
+        })
+    },
     methods: {
         ...mapActions('product',{
-            getGlass: 'getGlass'
+            getGlass: 'getGlass',
+            clearData: 'clearData'
         })
     }
 }

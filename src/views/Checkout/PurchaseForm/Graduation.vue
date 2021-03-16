@@ -57,6 +57,7 @@ export default {
         onChange(value){
             this.graduationCurrentPrice = value.price == 'GRATIS' ? 0 : value.price
             this.lenseSpecs.graduation_type = value.value
+            this.$forceUpdate()
         }
     }
 }

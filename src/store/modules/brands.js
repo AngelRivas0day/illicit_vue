@@ -1,4 +1,5 @@
 import * as api from '@/api/api'
+import Vue from 'vue'
 
 const state = {
     brands: [],
@@ -25,6 +26,7 @@ const actions = {
             const { data } = await api.getAll('brands', false)
             commit('SET_BRANDS', data)
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('SET_ERROR', error)
         } finally {
             commit('TOGGLE_LOADING')

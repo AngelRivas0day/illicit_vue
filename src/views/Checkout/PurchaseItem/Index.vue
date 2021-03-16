@@ -7,16 +7,17 @@
                 </div>
                 <div class="card-specs">
                     <ul>
-                        <li><span>Modelo: </span>{{lenseSpecs.name}}</li>
                         <li class="d-flex align-items-center">
                             <span>Dise&ntilde;o: &nbsp;</span>
                             <div class="ml-1">{{design.name}}</div>
                             <div class="mx-1">-</div>
                             <div :style="'background-color:'+design.hex+';'" class="circle"></div>
                         </li>
-                        <li><span>Material: </span>{{material}}</li>
+                        <li><span>Tipo de graduaci&oacute;n: </span> {{lenseSpecs.graduation_type}}</li>
                         <li><span>Antirreflejante: </span>{{antireflective}}</li>
-                        <li><span>Graduaci&oacute;n: </span>{{graduation}}</li>
+                        <li><span>Fotocrom&aacute;tico: </span> test</li>
+                        <li><span>Lente: </span> lente material</li>
+                        <li><span>Mountura: </span> montura</li>
                     </ul>
                 </div>
             </div>
@@ -58,6 +59,7 @@ export default {
         design: {},
         initalPrice: 0,
         hasOffer: false,
+        offerPrice: 0
     }),
     computed: {
         ...mapFields('order', {
@@ -76,7 +78,7 @@ export default {
             return this.lenseSpecs.antireflective == true ? 'Con antirreflejante' : 'Sin antirreflejante'
         },
         graduation(){
-            return this.lenseSpecs.graduation != null ? 'Guardada' : 'Sin guardar'
+            return this.lenseSpecs.graduation_type ? this.lenseSpecs.graduation_type : 'Selecciona una'
         },
         finalPrice(){
             return this.initalPrice + this.lenseMaterialCurrentPrice + this.graduationCurrentPrice + this.extrasCurrentPrice

@@ -1,4 +1,5 @@
 import * as api from '@/api/api'
+import Vue from 'vue'
 
 const state = {
     banners: [],
@@ -25,6 +26,7 @@ const actions = {
             const { data } = await api.getAll('banners')
             commit('SET_BANNERS', data)
         }catch(error){
+            Vue.$sentry.captureException(error)
             commit('SET_ERROR', error.response)
         }finally{
             commit('SET_LOADING', false)

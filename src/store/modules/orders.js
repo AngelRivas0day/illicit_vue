@@ -1,5 +1,6 @@
 import * as api from '@/api/api'
 import { getField, updateField } from 'vuex-map-fields';
+import Vue from 'vue'
 
 const state = {
     orders: [],
@@ -27,9 +28,9 @@ const actions = {
         try{
             const { data } = await api.getAll('orders/me', true)
             commit('SET_ORDERS', data)
-        }catch(err){
-            console.log(err.response)
-            commit('SET_ERROR', err.response)
+        }catch(error){
+            Vue.$sentry.captureException(error)
+            commit('SET_ERROR', error.response)
         }finally{
             commit('SET_LOADING', false)
         }

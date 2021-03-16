@@ -1,4 +1,5 @@
 import * as api from '@/api/api'
+import Vue from 'vue'
 
 const state = {
     pins: [],
@@ -26,6 +27,7 @@ const actions = {
             const { data } = await api.getAll('pins')
             commit('SET_PINS', data)
         } catch (error) {
+            Vue.$sentry.captureException(error)
             commit('SET_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
