@@ -72,6 +72,7 @@ export default {
     components: { Footer, Favs, EventSnackBar },
     mounted(){
         if(this.token) this.getFavorites()
+        // this.checkForEvents()
     },
     data: () => ({
         showNavigation: false,
@@ -108,7 +109,7 @@ export default {
             }else{
                 this.$router.push({name: 'Auth'})
             }
-        },
+        }
     }
 };
 </script>

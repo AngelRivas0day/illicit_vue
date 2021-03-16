@@ -137,7 +137,11 @@ const actions = {
     async createSession({commit},payload){
         commit('SET_LOADING', true)
         try {
-            let {data}  = await api.Post('orders/create-session', payload, true, true)
+            let {data}  = await api.Post({
+                endpoint: 'orders/create-session', 
+                data: payload, 
+                useToken: true
+            })
             commit('SET_SESSION_ID', data.sessionId)
         } catch (error) {
             commit('ERROR_SET_ID')

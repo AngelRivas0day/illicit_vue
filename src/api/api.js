@@ -105,24 +105,45 @@ function get(endpoint, isToken = false){
     return Axios.get(`${base_url}/${endpoint}`, config) 
 }
 
-const Post = (endpoint, data, useToken = false, formData = false) => {
-    var config;
-    if(useToken == true){
-        config = setHeaders(formData ? 'form-data' : 'json', localStorage.getItem('token'))
+function Get({endpoint, useToken, contentType = 'json'}){
+    var config
+    if(useToken){
+        config = setHeaders(contentType, localStorage.getItem('token'))
     }else{
-        config = setHeaders(formData ? 'form-data' : 'json')
+        config = setHeaders(contentType)
+    }
+    return Axios.get(`${base_url}/${endpoint}`, config)
+}
+
+function Post({endpoint, data, useToken, contentType = 'json'}){
+    var config
+    if(useToken){
+        config = setHeaders(contentType, localStorage.getItem('token'))
+    }else{
+        config = setHeaders(contentType)
     }
     return Axios.post(`${base_url}/${endpoint}`, data, config)
 }
 
-const  Patch = (endpoint, data, useToken = false, formData = false) => {
-    var config;
-    if(useToken == true){
-        config = setHeaders(formData ? 'form-data' : 'json', localStorage.getItem('token'))
+function Patch({endpoint, data, useToken, contentType = 'json'}){
+    var config
+    if(useToken){
+        config = setHeaders(contentType, localStorage.getItem('token'))
     }else{
-        config = setHeaders(formData ? 'form-data' : 'json')
+        config = setHeaders(contentType)
     }
     return Axios.patch(`${base_url}/${endpoint}`, data, config)
+}
+
+
+function Delete({endpoint, useToken, contentType = 'json'}){
+    var config
+    if(useToken){
+        config = setHeaders(contentType, localStorage.getItem('token'))
+    }else{
+        config = setHeaders(contentType)
+    }
+    return Axios.delete(`${base_url}/${endpoint}`, config)
 }
 
 export {
@@ -133,5 +154,7 @@ export {
     delete_,
     get,
     Patch,
-    Post
+    Post,
+    Get,
+    Delete
 }

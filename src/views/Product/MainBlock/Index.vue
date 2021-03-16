@@ -20,7 +20,8 @@
                             <md-icon :class="{'is-fav': isFavorite, 'not-fav': !isFavorite}" class="md-fav">favorite</md-icon>
                         </md-button>
                     </div>
-                    <span class="info__price">${{glass.price}}</span>
+                    <span v-if="hasOffer" class="info__price"><div class="text-muted text-decoration-line-through">${{glass.price}}</div> ${{offerPrice}}</span>
+                    <span v-else class="info__price">${{glass.price}}</span>
                     <ul class="info__colors-selector">
                         <template v-for="c in glass.designs">
                             <li @click="setDesign(c)" :key="c.name" :style="'background-color:'+c.color.hex+';'"></li>
@@ -90,6 +91,10 @@ export default {
                 this.isFavorite = true
             }
         })
+        if(this.glass.offer){
+            this.hasOffer = true
+            this.offerPrice = this.glass.price - this.glass.offer.value
+        }
         this.transition(()=>{
             this.currentDesign = {
                 name: this.glass.designs[0].name,
@@ -103,7 +108,9 @@ export default {
     data: ()=>({
         currentDesign: null,
         isFavorite: false,
-        showDialog: false
+        showDialog: false,
+        hasOffer: false,
+        offerPrice: 0
     }),
     methods: {
         ...mapActions('favorites',{
@@ -195,9 +202,13 @@ export default {
                     color: rgba(33,33,33,.3) !important;
                 }
             }
-            // .info__price{
-
-            // }
+            .info__price{
+                display: flex;
+                flex-direction: row;
+                div{
+                    margin-right: 10px;
+                }
+            }
             .info__colors-selector{
                 list-style: none;
                 padding: 0;

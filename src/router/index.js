@@ -34,6 +34,11 @@ Vue.use(VueRouter)
     component: () => import(/* webpackChunkName: "Productos" */'../views/Products/Index.vue')
   },
   {
+    path: '/evento/productos',
+    name: 'EventProducts',
+    component: () => import(/* webpackChunkName: "EventProducts" */ '../views/Products/Event.vue')
+  },
+  {
     path: '/productos/:id/:slug',
     name: 'Product',
     component: () => import(/* webpackChunkName: "Product" */ '../views/Product/Index.vue')

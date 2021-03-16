@@ -4,7 +4,8 @@
             <img :src="product.designs[designIndex].mainImage" alt="">
             <div class="card__image--hover">
                 <span class="name">{{product.name}}</span>
-                <span class="price">${{product.price}}</span>
+                <span v-if="hasOffer" class="price"><div class="text-muted text-decoration-line-through">${{product.price}}</div> ${{offerPrice}}</span>
+                <span v-else class="price">${{product.price}}</span>
             </div>
         </div>
         <div class="card__colors">
@@ -26,8 +27,16 @@ export default {
             required: true
         }
     },
+    mounted(){
+        if(typeof this.product.offer != "undefined"){
+            this.hasOffer = true
+            this.offerPrice = this.product.price - this.product.offer.value
+        }
+    },
     data: () => ({
-        designIndex: 0
+        designIndex: 0,
+        hasOffer: false,
+        offerPrice: 0
     }),
     methods: {
         openProduct(product){

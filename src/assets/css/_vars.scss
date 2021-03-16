@@ -360,6 +360,10 @@ $quaternary-color: #FF5E5B;
     }
 }
 
+.text-decoration-line-through{
+    text-decoration: line-through !important;
+}
+
 @mixin secondary-button-br($bg-color, $text-color){
     border: 1.5px solid #{$text-color};
     height: 35px;

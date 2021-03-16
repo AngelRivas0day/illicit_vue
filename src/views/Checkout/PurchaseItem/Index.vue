@@ -44,13 +44,20 @@ export default {
         // this.specs = JSON.parse(this.lenseSpecs)
         this.design = this.lenseSpecs.design ? JSON.parse(this.lenseSpecs.design) : {}
         this.initalPrice = this.lenseSpecs.price
+        if(this.glass.offer){
+            this.hasOffer = true
+            this.initalPrice = this.glass.price - this.glass.offer.value
+        }else{
+           this.initalPrice = this.lenseSpecs.price 
+        }
     },
     beforeDestroy(){
         this.lenseSpecs.price = this.finalPrice
     },
     data:()=>({
         design: {},
-        initalPrice: 0
+        initalPrice: 0,
+        hasOffer: false,
     }),
     computed: {
         ...mapFields('order', {
@@ -58,6 +65,9 @@ export default {
             lenseMaterialCurrentPrice: 'lenseMaterialCurrentPrice',
             graduationCurrentPrice: 'graduationCurrentPrice',
             extrasCurrentPrice: 'extrasCurrentPrice'
+        }),
+        ...mapFields('product',{
+            glass: 'glass'
         }),
         material(){
             return this.lenseSpecs.material ? this.lenseSpecs.material : 'Selecciona uno'
