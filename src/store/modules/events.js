@@ -1,5 +1,4 @@
 import * as api from '@/api/api'
-import Vue from 'vue'
 
 const state = {
     event: null,
@@ -46,7 +45,7 @@ const actions = {
                 commit('SET_ACTIVE_EVENT', true)
             }
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_ERROR', error)
         } finally {
             commit('TOGGLE_LOADING')
@@ -61,7 +60,7 @@ const actions = {
             console.log("offers: ", data)
             commit('SET_OFFERS', data)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_ERROR', error)
         }
     },
@@ -78,7 +77,7 @@ const actions = {
             }))
             commit('SET_PRODUCTS', products)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_ERROR', error)
         } finally {
             commit('TOGGLE_LOADING')

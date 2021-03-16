@@ -17,8 +17,8 @@ import './plugins/Firebase'
 import './plugins/VueCookies'
 import './plugins/VueClipboard'
 import './plugins/SocketIO'
-import './plugins/Sentry'
 import './plugins/Skeleton'
+import './plugins/Sentry'
 
 // directives
 import './directives'

@@ -1,7 +1,6 @@
 import * as api from "@/api/api";
 import { getField, updateField } from "vuex-map-fields";
 import router from "@/router";
-import Vue from 'vue'
 
 function toFormData(formValue) {
     const formData = new FormData();
@@ -107,7 +106,7 @@ const actions = {
             commit("PAYMENT_SUCCESS", data.chargeStatus);
             dispatch("order/createOrder", null, { root: true });
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit("SET_ERROR", {
                 isError: true,
                 errorMessage: error.response.data.error,
@@ -131,7 +130,7 @@ const actions = {
             // commit("RESET_INFO")
             // router.push({ name: "PaymentSuccess" })
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit("ORDER_SUCCESS", false);
         } finally {
             commit("SET_LOADING", false);
@@ -147,7 +146,7 @@ const actions = {
             })
             commit('SET_SESSION_ID', data.sessionId)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('ERROR_SET_ID')
         }
     },
@@ -156,7 +155,7 @@ const actions = {
         try {
             await api.patch('orders/confirm-order',orderId, {}, true)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             console.log("Error while confirming the payment: ", error)
         } finally {
             commit('SET_LOADING', false) 
@@ -167,7 +166,7 @@ const actions = {
        try {
            await api.patch('orders/cancel-order',orderId, {}, true)
        } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
            console.log("Error while cancelling the payment: ", error)
        } finally {
            commit('SET_LOADING', false) 
@@ -183,7 +182,7 @@ const actions = {
             console.log("Check code: ", data)
             commit('SET_DISCOUNT_CODE', data)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_DISCOUNT_CODE', null)
         } finally {
             commit('SET_LOADING', false) 

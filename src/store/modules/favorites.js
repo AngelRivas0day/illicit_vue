@@ -52,7 +52,7 @@ const actions = {
                 })
                 commit('SET_FAVORITES', favorites)
             } catch (error) {
-                Vue.$sentry.captureException(error)
+                this._vm.$sentry.captureException(error)
                 commit('SET_ERROR', false)
             } finally {
                 commit('SET_LOADING', false)            
@@ -72,7 +72,7 @@ const actions = {
                 });
                 commit('SET_FAVORITES', data)
             } catch (error) {
-                Vue.$sentry.captureException(error)
+                this._vm.$sentry.captureException(error)
                 Vue.notify({
                     group: 'user',
                     title: 'Error al agregar',

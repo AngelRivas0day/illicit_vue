@@ -1,7 +1,6 @@
 /* eslint-disable */
 import * as api from '@/api/products'
 import { getField, updateField } from 'vuex-map-fields';
-import Vue from 'vue'
 
 const pagination = 10
 
@@ -72,7 +71,7 @@ const actions = {
             const { data } = await api.getGlass(id)
             commit('SET_GLASS', data)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)
@@ -84,7 +83,7 @@ const actions = {
             const { data } = await api.getGlasses(state.filters)
             commit('SET_GLASSES', data)
         } catch (error) {
-            Vue.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error)
             commit('SET_ERROR', error.response)
         } finally {
             commit('SET_LOADING', false)

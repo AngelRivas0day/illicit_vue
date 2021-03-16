@@ -7,14 +7,14 @@
                 Lorem ipsum dolor sit amet, consectetur adipis
                 Lorem ipsum dolor sit amet, consectetur adipis
             </md-dialog-content>
-            <md-dialog-action class="text-right">
+            <md-dialog-actions class="text-right">
                 <md-button  @click="show = !show" class="md-primary md-stroked md-dense">
                     Cerrar
                 </md-button>
                 <md-button @click="goToEvent" class="md-primary md-raised md-dense">
                     Ver m&aacute;s
                 </md-button>
-            </md-dialog-action>
+            </md-dialog-actions>
         </md-dialog>
     </div>
 </template>
