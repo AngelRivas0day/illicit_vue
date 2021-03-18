@@ -34,7 +34,7 @@ export default {
         this.checkForEvents()
     },
     data: () => ({
-        show: true
+        show: false
     }),
     methods: {
         ...mapActions('events',{
@@ -42,11 +42,12 @@ export default {
         }),
         async checkForEvents(){
             await this.getCurrentEvent()
-            if(localStorage.getItem('view_event')){
+            if(this.$cookies.get('view_event')){
                 this.show = false
             }
-            if(!localStorage.getItem('view_event')){
-                localStorage.setItem('view_event', true)
+            if(!this.$cookies.get('view_event')){
+                this.show = true
+                this.$cookies.set('view_event', 'true')
             }
         },
         goToEvent(){

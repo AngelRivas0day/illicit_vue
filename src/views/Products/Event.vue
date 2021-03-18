@@ -3,6 +3,7 @@
         <div class="event && isActive" v-if="event">
             <div class="event__hero">
                 <div class="hero--inner">
+                <img :src="event.image" alt="">
                     <div class="hero__content">
                         <div class="hero__title">{{event.name}}</div>
                     </div>
@@ -83,13 +84,13 @@ export default {
         .hero--inner {
             height: 100%;
             background: rgba(33,33,33,.5);
-            // img {
-            //     position: relative;
-            //     z-index: -1;
-            //     height: 100%;
-            //     width: 100%;
-            //     object-fit: cover;
-            // }
+            img {
+                position: relative;
+                z-index: -1;
+                height: 100%;
+                width: 100%;
+                object-fit: cover;
+            }
             .hero__content{
                 position: absolute;
                 z-index: 99;

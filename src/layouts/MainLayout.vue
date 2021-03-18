@@ -6,7 +6,9 @@
                     <img src="https://source.unsplash.com/110x50" alt="" class="menu-content__logo" />
                     <ul class="menu-content__menu">
                         <template v-for="mo in menuOptions">
-                            <li :key="mo.name" @click="showNavigation = false"><router-link :to="mo.url">{{mo.name.toUpperCase()}}</router-link></li>
+                            <li :key="mo.name" @click="showNavigation = false">
+                                <router-link :class="mo.class" :to="mo.url">{{mo.name.toUpperCase()}}</router-link>
+                            </li>
                         </template>
                     </ul>
                 </div>
@@ -70,17 +72,19 @@ import { mapState, mapActions } from 'vuex'
 export default {
     name: "MainLayout",
     components: { Footer, Favs, EventSnackBar },
-    mounted(){
+    async mounted(){
         if(this.token) this.getFavorites()
+        await this.getCurrentEvent()
+        if(this.event) this.addEventMenuOption()
         // this.checkForEvents()
     },
     data: () => ({
         showNavigation: false,
         menuOptions: [
-            { name: 'inicio', url: '/' },
-            { name: 'productos', url: '/productos' },
-            { name: 'ubicaciones', url: '/ubicaciones' },
-            { name: 'contacto', url: '/contacto' }
+            { name: 'inicio', url: '/', class: '' },
+            { name: 'productos', url: '/productos', class: '' },
+            { name: 'ubicaciones', url: '/ubicaciones', class: '' },
+            { name: 'contacto', url: '/contacto', class: '' }
         ],
         socialMedia: [
             { name: 'facebook', url: '/', icon: 'fab fa-facebook-f' },
@@ -97,11 +101,17 @@ export default {
         }),
         ...mapState('favorites',{
             favorites: 'favorites'
+        }),
+        ...mapState('events',{
+            event: 'event'
         })
     },
     methods: {
         ...mapActions('favorites',{
             getFavorites: 'getFavorites'
+        }),
+        ...mapActions('events',{
+            getCurrentEvent: 'getCurrentEvent'
         }),
         goToLogin(){
             if(this.token != ''){
@@ -109,12 +119,25 @@ export default {
             }else{
                 this.$router.push({name: 'Auth'})
             }
+        },
+        addEventMenuOption(){
+            let item = {
+                name: this.event.name,
+                url: `/evento/productos?event_id=${this.event.id}`,
+                class: 'event'
+            }
+            this.insertAt(this.menuOptions, 2, item)
+        },
+        insertAt(array, index, ...elementsArray) {
+            array.splice(index, 0, ...elementsArray);
+            console.log("array: ", array)
         }
     }
 };
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300");
 @import "../assets/css/vars";
 
 .md-drawer__{
@@ -139,15 +162,18 @@ export default {
             padding: 0;
             margin: 0;
             li{
-            text-align: right;
-            margin-bottom: 25px;
-            a{
-                color: black;
-                font-size: 18px;
-                letter-spacing: .05rem;
-                text-decoration: none !important;
-                outline: transparent !important;
-            }
+                .event{
+                    color: $main-green !important;
+                }
+                text-align: right;
+                margin-bottom: 25px;
+                a{
+                    color: black;
+                    font-size: 18px;
+                    letter-spacing: .05rem;
+                    text-decoration: none !important;
+                    outline: transparent !important;
+                }
             }
         }
         .menu-content__social{
@@ -169,7 +195,6 @@ export default {
         max-width: 300px;
     }
 }
-@import url("https://fonts.googleapis.com/css?family=Josefin+Sans:300");
 .navbar {
     box-sizing: border-box;
     padding: 0px 50px 0 25px;
