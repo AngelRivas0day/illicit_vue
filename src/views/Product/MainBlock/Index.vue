@@ -87,6 +87,7 @@ export default {
         }
     },
     mounted(){
+        this.currentDesign = this.glass.designs[0]
         this.favorites.forEach(fav => {
             if(fav.id == this.glass.id){
                 this.isFavorite = true
@@ -158,18 +159,6 @@ export default {
                     .then(()=>{
                         this.isFavorite = true
                     })
-            }
-        }
-    },
-    watch: {
-        glass(){
-            this.currentDesign = this.glass.designs[0]
-            this.lenseSpecs = { // vuex binding
-                id: this.glass.id,
-                name: this.glass.name,
-                price: this.glass.price,
-                slug: this.glass.slug,
-                magnification: 'test'
             }
         }
     }

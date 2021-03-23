@@ -81,7 +81,7 @@ export default {
             return this.lenseSpecs.graduation_type ? this.lenseSpecs.graduation_type : 'Selecciona una'
         },
         finalPrice(){
-            return this.initalPrice + this.lenseMaterialCurrentPrice + this.graduationCurrentPrice + this.extrasCurrentPrice
+            return parseInt(this.initalPrice) + parseInt(this.lenseMaterialCurrentPrice) + parseInt(this.graduationCurrentPrice) + parseInt(this.extrasCurrentPrice)
         }
     },
     watch: {

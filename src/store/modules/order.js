@@ -62,7 +62,6 @@ const mutations = {
         state.paymentStatus = payload;
     },
     SET_DISCOUNT_CODE(state, payload){
-        console.log("payload: ", payload)
         state.discountCode['source'] = payload.source
         state.discountCode['value'] = payload.value
     },
@@ -156,7 +155,6 @@ const actions = {
             await api.patch('orders/confirm-order',orderId, {}, true)
         } catch (error) {
             this._vm.$sentry.captureException(error)
-            console.log("Error while confirming the payment: ", error)
         } finally {
             commit('SET_LOADING', false) 
         }
@@ -167,7 +165,6 @@ const actions = {
            await api.patch('orders/cancel-order',orderId, {}, true)
        } catch (error) {
             this._vm.$sentry.captureException(error)
-           console.log("Error while cancelling the payment: ", error)
        } finally {
            commit('SET_LOADING', false) 
        } 
@@ -179,7 +176,6 @@ const actions = {
         commit('SET_LOADING', true)
         try {
             let {data} = await api.get(`promo-codes/check/${code}`)
-            console.log("Check code: ", data)
             commit('SET_DISCOUNT_CODE', data)
         } catch (error) {
             this._vm.$sentry.captureException(error)

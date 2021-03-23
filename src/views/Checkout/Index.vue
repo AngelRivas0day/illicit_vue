@@ -12,24 +12,12 @@
 <script>
 import PurchaseForm from './PurchaseForm/Index'
 import PurchaseItem from './PurchaseItem/Index'
-import { mapActions } from 'vuex'
 
 export default {
     name: 'Checkout',
     components: {
         PurchaseForm,
         PurchaseItem
-    },
-    mounted(){
-        console.log("Mounted!")
-    },
-    beforeDestroy(){
-        this.resetInfo()
-    },
-    methods: {
-        ...mapActions('order',{
-            resetInfo: 'resetInfo'
-        })
     }
 }
 </script>

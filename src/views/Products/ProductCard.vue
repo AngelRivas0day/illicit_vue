@@ -39,9 +39,7 @@ export default {
         offerPrice: 0
     }),
     methods: {
-        openProduct(product){
-            let slug = product.slug
-            let id = product.id
+        openProduct({id, slug}){
             this.$router.push({
                 name: 'Product',
                 params: { id, slug }

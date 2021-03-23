@@ -133,12 +133,15 @@ export default {
                 password: this.form.password,
             };
             this.register(user)
-                .then((resp) => {
-                    console.log(resp);
+                .then()
+                .catch(() => {
+                    this.$notify({
+                        group: 'user',
+                        title: 'Ha habido un error',
+                        text: 'Ha habido un error al registrarte. Por favor inténtalo más tarse.',
+                        type: 'warn'
+                    })
                 })
-                .catch((err) => {
-                    console.log(err);
-                });
         },
         changeForm(){
             this.$emit('clicked', 'Login')

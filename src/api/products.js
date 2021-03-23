@@ -16,7 +16,6 @@ function getGlasses(filters){
         query,
         brand
     } = filters
-    console.log("filters: ", filters)
     const config = {
         params: {
             query,

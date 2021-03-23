@@ -57,7 +57,6 @@ const actions = {
                 endpoint: `events/${eventId}/offers/active`,
                 useToken: false
             })
-            console.log("offers: ", data)
             commit('SET_OFFERS', data)
         } catch (error) {
             this._vm.$sentry.captureException(error)

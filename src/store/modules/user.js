@@ -63,11 +63,8 @@ const mutations = {
 const actions = {
     checkIfOrigin(){
         if(Vue.$cookies.get('origin-url')){
-            console.log(Vue.$cookies.get('origin-url'))
             router.push(Vue.$cookies.get('origin-url'))
             Vue.$cookies.remove('origin-url')
-        }else{
-            console.log("no hay origin URL")
         }
     },
     async googleLogin({commit, dispatch}){
@@ -80,7 +77,6 @@ const actions = {
                 email: user.email,
                 uid: user.uid
             }
-            console.log(additionalUserInfo, user)
             const { data } = await api.post('clients/login/google', newUser, false)
             localStorage.setItem('token', data.token)
             commit('AUTH_SUCCESS', { userName: data.name, token: data.token})
@@ -150,7 +146,6 @@ const actions = {
             router.push({name: 'Auth'})
         } catch (error) {
             this._vm.$sentry.captureException(error)
-            console.log("Sesion cerrada por seguridad a pesar de haber un error en el request.")
             localStorage.removeItem('token')
             commit('LOGOUT_SUCCESS')
             router.push({name: 'Auth'})

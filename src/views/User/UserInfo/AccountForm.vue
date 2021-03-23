@@ -49,13 +49,9 @@ export default {
         TransparentLoading
     },
     async mounted(){
-        try {
-            const data = await this.getInfo()
-            this.form = data
-            this.userCode = data.code
-        } catch (error) {
-            console.log("Error")   
-        }
+        const data = await this.getInfo()
+        this.form = data
+        this.userCode = data.code
     },
     computed: {
         ...mapState('user',{

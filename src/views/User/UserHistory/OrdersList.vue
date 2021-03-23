@@ -42,7 +42,6 @@ export default {
             order.createdAt = this.formatDate(order.createdAt)
             return order
         })
-        console.log(this.orders)
     },
     data: () => ({
         currentOrder: null

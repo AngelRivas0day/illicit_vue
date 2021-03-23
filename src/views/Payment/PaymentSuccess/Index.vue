@@ -31,7 +31,6 @@ export default {
             this.$router.push({name: 'User'})
         },
         async confirm(order_id){
-            console.log("order id: ", order_id)
             await this.confirmPayment(order_id)
         }
     }

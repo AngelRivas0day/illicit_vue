@@ -16,7 +16,6 @@ export default {
         BaseLoading: () => import('@/components/BaseLoading.vue')
     },
     mounted(){
-        console.log(this.paymentMethod)
         if(this.paymentMethod == "store"){
             this.activeComponent = 'StorePayment'
         }else if(this.paymentMethod == "card"){

@@ -46,7 +46,6 @@ export default {
         extra: null
     }),
     mounted(){
-        console.log("Mounted extras!")
         this.extra = this.lenseSpecs.extra
     },
     computed: {

@@ -96,8 +96,8 @@ export default {
     }),
     async mounted(){
         this.watchResize()
-        let restoredLenseSpecs = this.$cookies.get('lense_specs')
-        this.lenseSpecs = restoredLenseSpecs
+        // let restoredLenseSpecs = this.$cookies.get('lense_specs')
+        // this.lenseSpecs = restoredLenseSpecs
         await this.getAddresses()
         this.addresses.forEach(address=>{
             if(address.isDefault){
@@ -144,7 +144,6 @@ export default {
         },
         // checkCode(){
         //     this.checkForDiscountCode(this.code)
-        //     console.log("Check!")
         // },
         goToTab(tab_id){
             this.validateTab(tab_id)

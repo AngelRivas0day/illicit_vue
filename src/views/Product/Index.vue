@@ -17,6 +17,7 @@ import Specs from './Specs/Index'
 import FaceMeasure from './FaceMeasure/Index'
 import SkeletonProduct from './SkeletonProduct'
 import { mapActions, mapState } from 'vuex'
+import { mapFields } from 'vuex-map-fields';
 
 export default {
     name: 'Product',
@@ -29,19 +30,28 @@ export default {
     async mounted(){
         let { id } = this.$route.params
         await this.getGlass(id)
-    },
-    beforeDestroy(){
-        this.clearData()
+        this.lenseSpecs = { // vuex binding
+            id: this.glass.id,
+            name: this.glass.name,
+            slug: this.glass.slug,
+        }
+        if(this.glass.offer)
+            this.lenseSpecs.price = parseInt(this.glass.price) - parseInt(this.glass.offer.value)
+        else
+            this.lenseSpecs.price = parseInt(this.glass.price) 
     },
     computed: {
         ...mapState('product',{
-            isLoading: 'isLoading'
+            isLoading: 'isLoading',
+            glass: 'glass'
+        }),
+        ...mapFields('order',{
+            lenseSpecs: 'lenseSpecs'
         })
     },
     methods: {
         ...mapActions('product',{
             getGlass: 'getGlass',
-            clearData: 'clearData'
         })
     }
 }

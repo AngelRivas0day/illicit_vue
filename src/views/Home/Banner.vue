@@ -51,7 +51,6 @@ export default {
     name: "Banner",
     mounted(){
         this.getData()
-        console.log(this.banners)
     },
     computed: {
         ...mapState('banners',{

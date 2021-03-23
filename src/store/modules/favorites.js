@@ -67,7 +67,7 @@ const actions = {
                 Vue.notify({
                     group: 'user',
                     title: 'Agregado a favoritos',
-                    text: 'Elemento agregar a favoritos, podrás acceder a el rápidamente.',
+                    text: 'Elemento agregado a favoritos, podrás acceder a el rápidamente.',
                     type: 'success'
                 });
                 commit('SET_FAVORITES', data)
@@ -76,7 +76,7 @@ const actions = {
                 Vue.notify({
                     group: 'user',
                     title: 'Error al agregar',
-                    text: 'Hubo un error al eliminar agregar el elemento, intenta más tarde',
+                    text: 'Hubo un error al agregar el elemento, intenta más tarde',
                     type: 'warn'
                 });
                 commit('SET_ERROR', false)

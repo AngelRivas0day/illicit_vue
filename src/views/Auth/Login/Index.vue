@@ -87,12 +87,16 @@ export default {
                 email: this.form.email,
                 password: this.form.password
             })
-            .then(resp=>{
-                console.log(resp)
+            .then(()=>{
                 this.$router.push({name: 'User'})
             })
-            .catch(err=>{
-                console.log(err)
+            .catch(()=>{
+                this.$notify({
+                    group: 'user',
+                    title: 'Ha habido un error',
+                    text: 'Ha habido un error al iniciar sesión. Por favor inténtalo más tarse.',
+                    type: 'warn'
+                })
             })
         },
         changeForm(){

@@ -186,8 +186,13 @@ export default {
                     }
                     await this.createSession(form_data)
                     this.$refs.checkoutRef.redirectToCheckout();
-                } catch (error) {
-                    console.log("Error: ", error)
+                } catch {
+                    this.$notify({
+                        group: 'user',
+                        title: 'Ha habido un error',
+                        text: 'Ha habido un error al crear tu order. Por favor inténtalo más tarse.',
+                        type: 'warn'
+                    })
                 } finally {
                     this.loading = false
                 }

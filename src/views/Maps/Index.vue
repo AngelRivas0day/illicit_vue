@@ -269,7 +269,6 @@ export default {
         setFirstPin(){
             this.currentPin = this.pins[0]
             this.currentPinIndex = this.pins.findIndex(x => x.id === this.currentPin.id)
-            console.log(this.currentPin)
         },
         setPin(index, prev = false, next = false){
             this.transition(() => {
