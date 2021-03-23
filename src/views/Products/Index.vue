@@ -157,7 +157,8 @@ export default {
             {value: '200-400', label: '$200 - $400'},
             {value: '401-600', label: '$401 - $600'},
             {value: '601-800', label: '$601 - $800'}
-        ]
+        ],
+        category: null
     }),
     methods: {
         ...mapActions('product',{

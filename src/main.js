@@ -30,9 +30,9 @@ import './assets/css/fieldTheme.scss'
 import '../node_modules/animate.css/animate.min.css'
 
 // helpers
-// import interceptorSetup from './helpers/interceptor'
+import interceptorSetup from './helpers/interceptor'
 
-// interceptorSetup()
+interceptorSetup()
 Vue.prototype.$store = store
 Vue.material.locale.dateFormat = 'dd/MM/yyyy'
 Vue.$cookies.config('1d')
