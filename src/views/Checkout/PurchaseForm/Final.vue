@@ -52,6 +52,9 @@
                         </div>
                         <p class="mt-2 text-white help-text">¿Necesitas ayuda?</p>
                     </div>
+                    <div class="col-12">
+                        <Coupons />
+                    </div>
                     <div class="col-xs-12 col-sm-12 col-md-10">
                         <md-field>
                             <label>Comentarios adicionales</label>
@@ -84,7 +87,8 @@ export default {
     delimiters: ['${', '}'], // Avoid Twig conflicts
     components: {
         StripeCheckout,
-        AddressForm: () => import('@/views/User/Addresses/AddressForm.vue')
+        AddressForm: () => import('@/views/User/Addresses/AddressForm.vue'),
+        Coupons: () => import('./Coupons.vue')
     },
     async mounted(){
         await this.getAddresses()
