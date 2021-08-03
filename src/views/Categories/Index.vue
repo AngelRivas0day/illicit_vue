@@ -26,12 +26,12 @@ export default {
     components:{CategoryItem},
     data: () => ({
         categories: [
-            {category: 'ellos', label: 'Ellos', img: 'http://via.placeholder.com/200x200'},
-            {category: 'ellas', label: 'Ellas', img: 'http://via.placeholder.com/200x200'},
-            {category: 'solares', label: 'solares', img: 'http://via.placeholder.com/200x200'},
-            {category: 'unisex', label: 'unisex', img: 'http://via.placeholder.com/200x200'},
-            {category: 'deportivo', label: 'deportivo', img: 'http://via.placeholder.com/200x200'},
-            {category: 'infantil', label: 'infantil', img: 'http://via.placeholder.com/200x200'},
+            {category: 'ellos', label: 'Ellos', img: 'https://source.unsplash.com/200x200/?glasses,male'},
+            {category: 'ellas', label: 'Ellas', img: 'https://source.unsplash.com/200x200/?glasses,female'},
+            {category: 'solares', label: 'solares', img: 'https://source.unsplash.com/200x200/?glasses,solar'},
+            {category: 'unisex', label: 'unisex', img: 'https://source.unsplash.com/200x200/?glasses'},
+            {category: 'deportivo', label: 'deportivo', img: 'https://source.unsplash.com/200x200/?glasses,sports'},
+            {category: 'infantil', label: 'infantil', img: 'https://source.unsplash.com/200x200/?glasses,child'},
         ]
     }),
 }

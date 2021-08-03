@@ -66,7 +66,8 @@ export default {
             lenseSpecs: 'lenseSpecs',
             lenseMaterialCurrentPrice: 'lenseMaterialCurrentPrice',
             graduationCurrentPrice: 'graduationCurrentPrice',
-            extrasCurrentPrice: 'extrasCurrentPrice'
+            extrasCurrentPrice: 'extrasCurrentPrice',
+            discountPrice: 'discountPrice'
         }),
         ...mapFields('product',{
             glass: 'glass'
@@ -81,7 +82,7 @@ export default {
             return this.lenseSpecs.graduation_type ? this.lenseSpecs.graduation_type : 'Selecciona una'
         },
         finalPrice(){
-            return parseInt(this.initalPrice) + parseInt(this.lenseMaterialCurrentPrice) + parseInt(this.graduationCurrentPrice) + parseInt(this.extrasCurrentPrice)
+            return parseInt(this.initalPrice) + parseInt(this.lenseMaterialCurrentPrice) + parseInt(this.graduationCurrentPrice) + parseInt(this.extrasCurrentPrice) + parseInt(this.discountPrice)
         }
     },
     watch: {

@@ -56,7 +56,7 @@
                                     <span class="measure">{{glass.measurements ? glass.measurements.dipstick_length : 'Cargando...'}} mm</span>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
-                                    <span class="title">Ancho del punte</span><br>
+                                    <span class="title">Ancho del puente</span><br>
                                     <span class="measure">{{glass.measurements ? glass.measurements.bridge_width : 'Cargando...'}} mm</span>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-3 text-center mb-3">
@@ -71,7 +71,7 @@
                         </div>
                     </div>
                 </md-tab>
-                <md-tab id="lorem" md-label="Lorem"></md-tab>
+                <!-- <md-tab id="lorem" md-label="Lorem"></md-tab> -->
             </md-tabs>
         </div>
     </div>

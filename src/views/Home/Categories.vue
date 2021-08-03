@@ -26,9 +26,12 @@ export default {
     components:{CategoryItem},
     data: ()=>({
         categories: [
-            {category: 'ellos', label: 'Ellos', img: 'http://via.placeholder.com/200x200'},
-            {category: 'ellas', label: 'Ellas', img: 'http://via.placeholder.com/200x200'},
-            {category: 'solares', label: 'Solares', img: 'http://via.placeholder.com/200x200'},
+            // {category: 'ellos', label: 'Ellos', img: 'http://via.placeholder.com/200x200'},
+            // {category: 'ellas', label: 'Ellas', img: 'http://via.placeholder.com/200x200'},
+            // {category: 'solares', label: 'Solares', img: 'http://via.placeholder.com/200x200'},
+            {category: 'ellos', label: 'Ellos', img: 'https://source.unsplash.com/200x200/?glasses,male'},
+            {category: 'ellas', label: 'Ellas', img: 'https://source.unsplash.com/200x200/?glasses,female'},
+            {category: 'solares', label: 'solares', img: 'https://source.unsplash.com/200x200/?glasses,solar'},
         ]
     }),
     methods: {

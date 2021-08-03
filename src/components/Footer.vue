@@ -5,8 +5,7 @@
                 <div class="row">
                     <div class="col-xs-12 col-sm-6 col-md-4">
                         <router-link to="/" class="d-flex flex-row align-items-center justify-content-start text-decoration-none mb-5">
-                            <img src="@/assets/img/logo.png" class="mr-2" width="35" height="35" alt="" />
-                            <h3 class="text-white my-0 py-0">ILLICIT</h3>
+                            <img src="@/assets/img/v2/white_logo.png" height="35" width="160" class="mr-2" alt="" />
                         </router-link>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-4">

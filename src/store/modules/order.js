@@ -30,18 +30,20 @@ const state = {
     basePrice: null,
     addressId: null,
     orderStatus: "PENDING",
-    // order datea end
+    // order data end
     paymentMethod: null,
     isLoading: false,
     isError: false,
     isOrderOk: false,
     errorMessage: null,
     paymentStatus: null,
-    discountCode: null,
+    discountCode: {},
+    validDiscountCode: false,
     // price mods
     lenseMaterialCurrentPrice: 0,
     graduationCurrentPrice: 0,
     extrasCurrentPrice: 0,
+    discountPrice: 0,
     // checkout session
     session_id: null
 }
@@ -62,8 +64,11 @@ const mutations = {
         state.paymentStatus = payload;
     },
     SET_DISCOUNT_CODE(state, payload){
-        state.discountCode['source'] = payload.source
-        state.discountCode['value'] = payload.value
+        if(payload != null){
+            state.validDiscountCode = true
+            state.discountCode['source'] = payload.source
+            state.discountCode['value'] = payload.value
+        }else state.validDiscountCode = false
     },
     SET_SESSION_ID(state, id){
         state.session_id = id
@@ -175,9 +180,13 @@ const actions = {
     async checkForDiscountCode({commit}, code){
         commit('SET_LOADING', true)
         try {
-            let {data} = await api.get(`promo-codes/check/${code}`)
+            let {data} = await api.Get({
+                endpoint: `promo-codes/check/${code}`,
+                useToken: true
+            })
             commit('SET_DISCOUNT_CODE', data)
         } catch (error) {
+            console.log("error: ", error)
             this._vm.$sentry.captureException(error)
             commit('SET_DISCOUNT_CODE', null)
         } finally {

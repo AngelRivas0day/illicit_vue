@@ -6,7 +6,6 @@
         <template v-else>
             <MainBlock />
             <Specs />
-            <FaceMeasure />
         </template>
     </div>
 </template>
@@ -14,7 +13,6 @@
 <script>
 import MainBlock from './MainBlock/Index'
 import Specs from './Specs/Index'
-import FaceMeasure from './FaceMeasure/Index'
 import SkeletonProduct from './SkeletonProduct'
 import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields';
@@ -24,7 +22,6 @@ export default {
     components: {
         MainBlock,
         Specs,
-        FaceMeasure,
         SkeletonProduct
     },
     async mounted(){

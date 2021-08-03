@@ -3,7 +3,7 @@
         <md-drawer class="md-drawer__ md-right md-fixed" :md-active.sync="showNavigation" md-swipeable>
             <div class="sidenav__menu-content">
                 <div class="group">
-                    <img src="https://source.unsplash.com/110x50" alt="" class="menu-content__logo" />
+                    <img src="@/assets/img/v2/large_logo.png" alt="Illicit logo letters" class="menu-content__logo" />
                     <ul class="menu-content__menu">
                         <template v-for="mo in menuOptions">
                             <li :key="mo.name" @click="showNavigation = false">
@@ -25,7 +25,8 @@
             <div class="navbar">
                 <div class="navbar__container">
                     <router-link to="/" class="navbar__logo">
-                        <img src="@/assets/img/logo.png" width="30" height="30" alt="" />
+                        <img v-if="!whiteIcons" src="@/assets/img/v2/small_logo.png" width="30" height="30" alt="Small black ILLICIT logo" />
+                        <img v-else src="@/assets/img/v2/white_small_logo.png" width="30" height="30" alt="Small white ILLICIT logo"  />
                     </router-link>
                     <div class="navbar__actions d-flex flex-row justify-content-center align-items-center">
                         <md-button @click="goToLogin" md-menu-trigger class="mb-0 actions__log md-icon-button md-dense">
@@ -152,7 +153,7 @@ export default {
         img.menu-content__logo{
             width: 200px;
             height: 65px;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
             margin: 0 0 70px auto;
         }

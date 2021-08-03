@@ -2,7 +2,11 @@
     <div>
         <md-dialog class="dialog" :md-active.sync="showDialog" @md-closed="getAddresses">
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
-            <AddressForm />
+            <AddressForm ref="form" :isCheckout="true" />
+            <md-dialog-actions>
+                <md-button @click="showDialog = false" class="md-stroked md-basic md-dense mr-2">Cancelar</md-button>
+                <md-button @click="submitChildForm" type="submit" class="md-primary md-raised md-dense mr-0">Guardar</md-button>
+            </md-dialog-actions>
         </md-dialog>
         <div class="final-step">
             <div class="container-fluid">
@@ -26,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="lenseSpecs.graduation_type == 'monofocal'" class="col-12 mb-5">
+                    <div v-if="lenseSpecs.graduation_type == 'monofocal'" class="col-12 mb-3">
                         <p class="mb-2 text-white">Recuerda actualizar tu graduaci&oacute;n por lo menos una vez al a&ntilde;o</p>
                         <div>
                             <div class="ml-0 d-flex align-items-center justify-content-start w-100 text-center" id="app">
@@ -110,7 +114,7 @@ export default {
         }),
         ...mapState('addresses',{
             addresses: 'addresses'
-        }),
+        })
     },
     methods: {
         ...mapActions('order',{
@@ -201,6 +205,10 @@ export default {
                     this.loading = false
                 }
             }
+        },
+        async submitChildForm(){
+            await this.$refs.form.onSubmit(null)
+            this.showDialog = false
         }
     }
 }

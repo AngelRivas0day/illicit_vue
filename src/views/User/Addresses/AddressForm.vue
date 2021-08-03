@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form @submit="onSubmit" :class="{'address-form' : !isCheckout}" class="mx-0 form row pb-3">
+        <form @submit="onSubmit" class="mx-0 form row pb-3 address-form">
             <div v-if="!isCheckout" class="col-xs-12 col-sm-12">
                 <md-switch v-model="addressForm.isDefault">
                     Direcci&oacute;n de env&iacute;o por defecto
@@ -108,9 +108,9 @@ export default {
         ...mapActions('addresses',{
             createAddress:'createAddress'
         }),
-        onSubmit(e){
-            e.preventDefault()
-            this.createAddress(this.addressForm)
+        async onSubmit(e){
+            if(e) e.preventDefault()
+            await this.createAddress(this.addressForm)
         },
         handleStateChange(state){
             if(this.addressForm.city != ''){
