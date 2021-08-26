@@ -29,13 +29,13 @@ function setHeaders(contentType, token = null){
         config = {
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': content(contentType)
+                'Content-Type': content(contentType),
             }
         }
     }else{
         config = {
             headers: {
-                'Content-Type': content(contentType)
+                'Content-Type': content(contentType),
             }
         }
     }
