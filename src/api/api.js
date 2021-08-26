@@ -1,5 +1,5 @@
 import * as Axios from 'axios'
-const base_url = 'https://illicit-api.herokuapp.com'
+const base_url = process.env.VUE_APP_API_URL
 // const base_url = 'http://localhost:3000'
 
 // function toSimpleFormData(data){
