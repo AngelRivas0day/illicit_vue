@@ -14,7 +14,7 @@
     "@sentry/vue": "^6.2.2",
     "@vue-stripe/vue-stripe": "^4.1.5",
     "animate.css": "^4.1.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.5",
     "firebase": "^7.18.0",
     "skeleton-loader-vue": "^1.0.8",
