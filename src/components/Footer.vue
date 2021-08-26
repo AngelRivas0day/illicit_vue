@@ -27,7 +27,7 @@
                                  <router-link class="footer-link" to="/contacto">Contacto</router-link>
                             </li>
                             <li>
-                                 <router-link class="footer-link" to="/privacidad">Aviso de privacidad</router-link>
+                                <div class="footer-link cursor-pointer" @click="goToPrivacy">Aviso de privacidad</div>
                             </li>
                         </ul>
                     </div>
@@ -47,7 +47,12 @@ export default {
     name: 'Footer',
     data: () => ({
         year: new Date().getFullYear()
-    })
+    }),
+    methods: {
+        goToPrivacy(){
+            window.open('https://www.iubenda.com/privacy-policy/79149079', '_blank')
+        }
+    }
 }
 </script>
 
