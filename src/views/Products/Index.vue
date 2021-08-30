@@ -238,7 +238,7 @@ export default {
         position: relative;
         z-index: 20;
         background-color: white;
-        box-shadow: inset 2px 0px 300px -121px rgba(0, 0, 0, 0.75);
+        //box-shadow: inset 2px 0px 300px -121px rgba(0, 0, 0, 0.75);
         padding: 50px 0;
         // box-sizing: content-box;
         .see-more{

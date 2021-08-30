@@ -25,6 +25,7 @@ export default {
         SkeletonProduct
     },
     async mounted(){
+        this.unsetWhiteIcons()
         let { id } = this.$route.params
         await this.getGlass(id)
         this.lenseSpecs = { // vuex binding
@@ -49,6 +50,9 @@ export default {
     methods: {
         ...mapActions('product',{
             getGlass: 'getGlass',
+        }),
+        ...mapActions('background', {
+            unsetWhiteIcons: 'unsetWhiteIcons'
         })
     }
 }

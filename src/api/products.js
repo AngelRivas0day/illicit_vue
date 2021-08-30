@@ -3,7 +3,7 @@ import { get } from 'axios'
 const base_url = process.env.VUE_APP_API_URL
 // const base_url = 'http://localhost:3000/'
 const resource = 'glasses'
-const request_url = `${base_url}${resource}`
+const request_url = `${base_url}/${resource}`
 
 function getGlasses(filters){
     let {
