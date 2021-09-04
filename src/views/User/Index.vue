@@ -17,6 +17,7 @@ export default {
         }),
     },
     mounted() {
+        document.title = 'Illicit Óptica - Cuenta'
         if(!localStorage.getItem('token')){
             this.$router.push({name:'Auth'})
         }

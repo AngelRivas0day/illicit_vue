@@ -23,6 +23,9 @@ export default {
         Login: () => import(/* webpackChunkName: "LoginComponent" */'./Login/Index'),
         Register: () => import(/* webpackChunkName: "RegisterComponent" */'./Register/Index')
     },
+    mounted() {
+        document.title = 'Illicit Óptica'
+    },
     computed: {
         ...mapState('user',{
             isLoading: 'isLoading'

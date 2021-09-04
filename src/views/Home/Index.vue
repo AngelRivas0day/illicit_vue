@@ -17,7 +17,10 @@ import Contact from './Contact'
 
 export default {
     name: 'Home',
-    components: {Banner,Products,Brands,Categories,Contact}
+    components: {Banner,Products,Brands,Categories,Contact},
+    mounted() {
+        document.title = 'Illicit Óptica - Inicio'
+    }
 }
 </script>
 

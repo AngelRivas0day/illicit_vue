@@ -15,6 +15,9 @@ import PurchaseItem from './PurchaseItem/Index'
 
 export default {
     name: 'Checkout',
+    mounted() {
+        document.title = 'Illicit Óptica - Pago'
+    },
     components: {
         PurchaseForm,
         PurchaseItem

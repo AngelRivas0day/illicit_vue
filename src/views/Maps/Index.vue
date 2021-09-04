@@ -55,6 +55,7 @@ export default {
         }
     },
     mounted() {
+        document.title = 'Illicit Óptica - Ubicaciones'
         this.setWhiteIcons()
         this.getPins()
             .finally(()=>{

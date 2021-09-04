@@ -126,6 +126,7 @@ export default {
     },
     async mounted(){
         this.category = this.$route.params.category
+        document.title = `Illicit Óptica - Categorías - ${this.category.charAt(0).toUpperCase() + this.category.substring(1)}`
         await this.getData()
     },
     data: ()=>({

@@ -24,6 +24,9 @@ import CategoryItem from '@/components/CategoryItem'
 export default {
     name: 'Categories',
     components:{CategoryItem},
+    mounted() {
+        document.title = 'Illicit Óptica - Categorías'
+    },
     data: () => ({
         categories: [
             {category: 'ellos', label: 'Ellos', img: 'https://source.unsplash.com/200x200/?glasses,male'},

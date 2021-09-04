@@ -25,6 +25,7 @@ export default {
         SkeletonProduct
     },
     async mounted(){
+        document.title = 'Illicit Óptica - Cargando...'
         this.unsetWhiteIcons()
         let { id } = this.$route.params
         await this.getGlass(id)
@@ -36,7 +37,8 @@ export default {
         if(this.glass.offer)
             this.lenseSpecs.price = parseInt(this.glass.price) - parseInt(this.glass.offer.value)
         else
-            this.lenseSpecs.price = parseInt(this.glass.price) 
+            this.lenseSpecs.price = parseInt(this.glass.price)
+        document.title = `Illicit Óptica - ${this.glass.name}`
     },
     computed: {
         ...mapState('product',{

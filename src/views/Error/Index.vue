@@ -12,6 +12,9 @@
 <script>
 export default {
     name: 'Error',
+    mounted() {
+        document.title = 'Illicit Óptica - Error'
+    },
     methods: {
         goToHome(){
             this.$router.push({name: 'Home'})

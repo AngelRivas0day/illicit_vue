@@ -97,6 +97,7 @@ import { mapFields } from 'vuex-map-fields'
 export default {
     name: 'Contact',
     mounted() {
+        document.title = 'Illicit Óptica - Contacto'
         this.setWhiteIcons()
     },
     destroyed(){

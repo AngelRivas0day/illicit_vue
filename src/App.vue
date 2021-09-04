@@ -9,7 +9,10 @@
 import MainLayout from '@/layouts/MainLayout'
 export default {
     name: 'app',
-    components: {MainLayout}
+    components: {MainLayout},
+    mounted(){
+        document.title = "Illicit Óptica - Inicio"
+    }
 };
 </script>
 
