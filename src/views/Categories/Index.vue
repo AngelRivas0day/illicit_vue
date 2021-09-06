@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="categories.length !== 0">
         <div class="categories">
             <div class="container">
                 <div class="row">
@@ -16,6 +16,16 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <div class="categories-empty-state">
+            <div class="empty-state-text">
+                No hay categor&iacute;as disponibles :(
+            </div>
+            <div class="emtpy-state-subtext">
+                Est&aacute;mos trabajando en ello.
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -26,9 +36,9 @@ export default {
     name: 'Categories',
     components:{CategoryItem},
     async mounted() {
+        this.unsetWhiteIcons()
         document.title = 'Illicit Óptica - Categorías'
         await this.getCategories()
-        console.log('data: ', this.categories)
     },
     computed: {
         ...mapState('category',{
@@ -38,6 +48,9 @@ export default {
     methods: {
         ...mapActions('category',{
             getCategories: 'getCategories'
+        }),
+        ...mapActions('background', {
+            unsetWhiteIcons: 'unsetWhiteIcons'
         })
     }
 }
@@ -45,6 +58,34 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/css/_vars";
+
+.categories-empty-state {
+    height: 100vh;
+    width: 100%;
+    background: white;
+    @include flex("column","center","center");
+    .empty-state-text {
+        color: #333;
+        font-size: 1.7rem;
+        text-align: center;
+        padding: 0 20px;
+        line-height: normal;
+        @media #{$break-medium} {
+            font-size: 2.2rem;
+        }
+    }
+    .empty-state-subtext {
+        color: #333;
+        font-size: 1.2rem;
+        text-align: center;
+        padding: 0 20px;
+        line-height: normal;
+        @media #{$break-medium} {
+            font-size: 1.7rem;
+        }
+    }
+}
+
 .categories{
     padding: 100px 0;
     background: #f7f7f7;
