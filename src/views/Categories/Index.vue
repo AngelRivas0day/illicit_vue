@@ -20,23 +20,26 @@
 
 <script>
 import CategoryItem from '@/components/CategoryItem'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Categories',
     components:{CategoryItem},
-    mounted() {
+    async mounted() {
         document.title = 'Illicit Óptica - Categorías'
+        await this.getCategories()
+        console.log('data: ', this.categories)
     },
-    data: () => ({
-        categories: [
-            {category: 'ellos', label: 'Ellos', img: 'https://source.unsplash.com/200x200/?glasses,male'},
-            {category: 'ellas', label: 'Ellas', img: 'https://source.unsplash.com/200x200/?glasses,female'},
-            {category: 'solares', label: 'solares', img: 'https://source.unsplash.com/200x200/?glasses,solar'},
-            {category: 'unisex', label: 'unisex', img: 'https://source.unsplash.com/200x200/?glasses'},
-            {category: 'deportivo', label: 'deportivo', img: 'https://source.unsplash.com/200x200/?glasses,sports'},
-            {category: 'infantil', label: 'infantil', img: 'https://source.unsplash.com/200x200/?glasses,child'},
-        ]
-    }),
+    computed: {
+        ...mapState('category',{
+            categories: 'categories'
+        })
+    },
+    methods: {
+        ...mapActions('category',{
+            getCategories: 'getCategories'
+        })
+    }
 }
 </script>
 

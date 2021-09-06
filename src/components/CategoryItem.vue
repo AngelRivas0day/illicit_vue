@@ -1,8 +1,8 @@
 <template>
     <div class="category-item">
-        <img @click="goToCategory(category)" :src="category.img" alt="" class="item-image">
+        <img @click="goToCategory(category)" :src="category.image" alt="" class="item-image">
         <div @click="goToCategory(category)" class="item-label text-center">
-            <div>{{category.label}}</div>
+            <div>{{category.name}}</div>
         </div>
     </div>
 </template>
@@ -19,8 +19,9 @@ export default {
         }
     },
     methods:{
-        goToCategory({category}){
-            this.$router.push({name: 'Products', params: {category: category}})
+        goToCategory({name}){
+            name = name.toLowerCase()
+            this.$router.push({name: 'Products', params: {category: name}})
         }
     }
 }

@@ -20,21 +20,23 @@
 
 <script>
 import CategoryItem from '@/components/CategoryItem'
+import { mapActions, mapState } from 'vuex'
 
 export default {
     name: 'Categories',
     components:{CategoryItem},
-    data: ()=>({
-        categories: [
-            // {category: 'ellos', label: 'Ellos', img: 'http://via.placeholder.com/200x200'},
-            // {category: 'ellas', label: 'Ellas', img: 'http://via.placeholder.com/200x200'},
-            // {category: 'solares', label: 'Solares', img: 'http://via.placeholder.com/200x200'},
-            {category: 'ellos', label: 'Ellos', img: 'https://source.unsplash.com/200x200/?glasses,male'},
-            {category: 'ellas', label: 'Ellas', img: 'https://source.unsplash.com/200x200/?glasses,female'},
-            {category: 'solares', label: 'solares', img: 'https://source.unsplash.com/200x200/?glasses,solar'},
-        ]
-    }),
+    async mounted(){
+        await this.getCategories()
+    },
+    computed: {
+        ...mapState('category', {
+            categories: 'categories'
+        })
+    },
     methods: {
+        ...mapActions('category', {
+            getCategories: 'getCategories'
+        }),
         seeMore(){ this.$router.push({name: 'ProductCategories'}) }
     }
 }

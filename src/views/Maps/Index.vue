@@ -1,6 +1,6 @@
 <template>
-    <div class="maps">
-        <div class="maps-inner">
+    <div v-if="pins.length != 0" class="maps">
+        <div  class="maps-inner">
             <div class="maps__side" :class="[isTransition ? 'animate' : 'no-animate']">
                 <div class="map__side-inner">
                     <h1>{{ currentPin.street }}</h1>
@@ -34,6 +34,11 @@
                     ></gmap-marker>
                 </gmap-map>
             </div>
+        </div>
+    </div>
+    <div v-else class="maps-emtpy-state">
+        <div class="empty-state-text">
+            A&uacute;n no hay ubicaciones disponibles :(
         </div>
     </div>
 </template>
@@ -302,6 +307,16 @@ export default {
 @include transition-common('.maps__side', 'white');
 @include transition-common('.maps__render-map', 'white');
 
+.maps-emtpy-state {
+    height: 100vh;
+    width: 100%;
+    background: black;
+    @include flex("row","center","center");
+    .empty-state-text {
+        color: #fdfdfd;
+        font-size: 2.2rem;
+    }
+}
 .maps {
     height: 100vh;
     width: 100%;
