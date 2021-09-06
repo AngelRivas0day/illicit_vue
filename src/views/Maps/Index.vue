@@ -314,7 +314,13 @@ export default {
     @include flex("row","center","center");
     .empty-state-text {
         color: #fdfdfd;
-        font-size: 2.2rem;
+        font-size: 1.7rem;
+        text-align: center;
+        padding: 0 20px;
+        line-height: normal;
+        @media #{$break-medium} {
+            font-size: 2.2rem;
+        }
     }
 }
 .maps {
