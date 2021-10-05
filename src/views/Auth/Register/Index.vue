@@ -1,7 +1,7 @@
 <template>
     <div class="auth__form">
-        <div class="form-top w-100">
-            <div class="row">
+        <div class="form-top mt-5 w-100">
+            <div class="row mt-3">
                 <div class="col-6">
                     <p class="ml-5">Registro</p>
                 </div>
@@ -83,15 +83,8 @@
         </form>
         <div class="form-bottom w-100">
             <div class="row">
-                <div class="col-6">
-                    <router-link class="button-action ml-5" to="/">
-                        T&eacute;rminos y codiciones
-                    </router-link>
-                </div>
-                <div class="col-6 text-right">
-                    <router-link class="button-action mr-5" to="/">
-                        Pol&iacute;tica de privacidad
-                    </router-link>
+                <div class="col text-center">
+                    <span class='button-action fake-link' @click="goToPrivacy">Pol&iacute;tica de privacidad</span>
                 </div>
             </div>
         </div>
@@ -145,6 +138,9 @@ export default {
         },
         changeForm(){
             this.$emit('clicked', 'Login')
+        },
+        goToPrivacy(){
+            window.open('https://www.iubenda.com/privacy-policy/79149079', '_blank')
         }
     },
     computed: {

@@ -489,3 +489,9 @@ $quaternary-color: #FF5E5B;
 .cursor-pointer {
     cursor: pointer !important;
 }
+
+.fake-link {
+    @extend .cursor-pointer;
+    color: $main-green !important;
+    text-decoration: underline !important;
+}
