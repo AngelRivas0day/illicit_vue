@@ -80,7 +80,6 @@ export default {
 		if (this.token) this.getFavorites()
 		await this.getCurrentEvent()
 		if (this.event) this.addEventMenuOption()
-		// this.checkForEvents()
 	},
     destroyed() {
         window.removeEventListener("resize", this.resizeWindowHandler);

@@ -2,9 +2,9 @@
 	<div class="products">
 		<div class="products__header">
 			<div class="header-inner">
-				<img src="https://source.unsplash.com/1600x900?glasses,white" alt="" />
+				<img :src="category ? category.banner : 'Cargando...'" :alt="'Banner de los productos de la categoria '+ category.name" />
 				<div class="header-content">
-					<h2 class="header-title">{{ category ? category : 'Cargando...' }}</h2>
+					<h2 class="header-title">{{ category ? category.name : 'Cargando...' }}</h2>
 				</div>
 			</div>
 		</div>
@@ -83,7 +83,7 @@
 
 <script>
 import ProductCard from './ProductCard'
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
 
 export default {
@@ -95,10 +95,14 @@ export default {
 			isLoading: 'isLoading',
 			filters: 'filters',
 		}),
+		...mapState('category', {
+			category: 'category',
+			categoryLoading: 'loading'
+		})
 	},
 	async mounted() {
-		this.category = this.$route.params.category
-		document.title = `Illicit Óptica - Categorías - ${this.category.charAt(0).toUpperCase() + this.category.substring(1)}`
+		await this.getCategory(this.$route.params.id)
+		document.title = `Illicit Óptica - Categorías - ${this.category.name.charAt(0).toUpperCase() + this.category.name.substring(1)}`
 		await this.getData()
 	},
 	data: () => ({
@@ -131,12 +135,14 @@ export default {
 			{ value: '401-600', label: '$401 - $600' },
 			{ value: '601-800', label: '$601 - $800' },
 		],
-		category: null,
 	}),
 	methods: {
 		...mapActions('product', {
 			getData: 'getGlasses',
 			clearFilters: 'clearFilters',
+		}),
+		...mapActions('category', {
+			getCategory: 'getCategory'
 		}),
 		async onChangeBrand(v) {
 			this.filters.brand = v.value

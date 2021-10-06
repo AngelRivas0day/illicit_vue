@@ -29,7 +29,7 @@ const routes = [
 		component: () => import(/* webpackChunkName: "Categorias" */ '../views/Categories/Index.vue'),
 	},
 	{
-		path: '/productos/:category',
+		path: '/productos/:category/:id',
 		name: 'Products',
 		component: () => import(/* webpackChunkName: "Productos" */ '../views/Products/Index.vue'),
 	},

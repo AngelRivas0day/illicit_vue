@@ -17,9 +17,9 @@ export default {
 		},
 	},
 	methods: {
-		goToCategory({ name }) {
+		goToCategory({ id, name }) {
 			name = name.toLowerCase()
-			this.$router.push({ name: 'Products', params: { category: name } })
+			this.$router.push({ name: 'Products', params: { category: name, id } })
 		},
 	},
 }
