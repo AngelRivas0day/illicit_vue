@@ -37,28 +37,27 @@ Vue.prototype.$store = store
 Vue.material.locale.dateFormat = 'dd/MM/yyyy'
 Vue.$cookies.config('1d')
 
-
-router.beforeEach((to, from, next)=>{
-  if(to.matched.some(record=>record.meta.requiresAuth)){
-    if(store.getters['user/isLoggedIn']){
-      next()
-      return 
-    }
-    next('/auth')
-  }else{
-    next()
-  }
-});
+router.beforeEach((to, from, next) => {
+	if (to.matched.some((record) => record.meta.requiresAuth)) {
+		if (store.getters['user/isLoggedIn']) {
+			next()
+			return
+		}
+		next('/auth')
+	} else {
+		next()
+	}
+})
 
 Vue.config.productionTip = false
 
 new Vue({
-  sockets: {
-    connect(){
-      console.log("Socket connected!")
-    }
-  },
-  router,
-  store,
-  render: h => h(App)
+	sockets: {
+		connect() {
+			console.log('Socket connected!')
+		},
+	},
+	router,
+	store,
+	render: (h) => h(App),
 }).$mount('#app')

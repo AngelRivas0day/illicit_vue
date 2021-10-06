@@ -1,33 +1,32 @@
 import Vue from 'vue'
 import {
-    MdButton,
-    MdContent,
-    MdDrawer,
-    MdIcon,
-    MdBadge,
-    MdMenu,
-    MdList,
-    MdField,
-    MdCard,
-    MdTabs,
-    MdSwitch,
-    MdDialog,
-    MdEmptyState,
-    MdChips,
-    MdProgress,
-    MdCheckbox,
-    MdRadio,
-    MdTable,
-    MdTooltip,
-    MdRipple,
-    MdDialogConfirm,
-    MdDivider,
-    MdSubheader,
-    MdSteppers
+	MdButton,
+	MdContent,
+	MdDrawer,
+	MdIcon,
+	MdBadge,
+	MdMenu,
+	MdList,
+	MdField,
+	MdCard,
+	MdTabs,
+	MdSwitch,
+	MdDialog,
+	MdEmptyState,
+	MdChips,
+	MdProgress,
+	MdCheckbox,
+	MdRadio,
+	MdTable,
+	MdTooltip,
+	MdRipple,
+	MdDialogConfirm,
+	MdDivider,
+	MdSubheader,
+	MdSteppers,
 } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
-
 
 // @include md-register-theme("default", (
 //   primary: md-get-palette-color(white, A200), // The primary color of your application

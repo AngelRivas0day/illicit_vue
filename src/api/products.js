@@ -5,40 +5,26 @@ const base_url = process.env.VUE_APP_API_URL
 const resource = 'glasses'
 const request_url = `${base_url}/${resource}`
 
-function getGlasses(filters){
-    let {
-        start, 
-        end, 
-        category, 
-        max, 
-        min, 
-        lenseMaterial, 
-        frameMaterial, 
-        query,
-        brand
-    } = filters
-    const config = {
-        params: {
-            query,
-            start,
-            end,
-            category,
-            max,
-            min,
-            lenseMaterial,
-            frameMaterial,
-            brand
-        }
-    }
-    return get(`${request_url}`, config)
+function getGlasses(filters) {
+	let { start, end, category, max, min, lenseMaterial, frameMaterial, query, brand } = filters
+	const config = {
+		params: {
+			query,
+			start,
+			end,
+			category,
+			max,
+			min,
+			lenseMaterial,
+			frameMaterial,
+			brand,
+		},
+	}
+	return get(`${request_url}`, config)
 }
 
-function getGlass(id){
-    return get(`${request_url}/${id}`)
+function getGlass(id) {
+	return get(`${request_url}/${id}`)
 }
 
-
-export {
-    getGlasses,
-    getGlass
-}
+export { getGlasses, getGlass }

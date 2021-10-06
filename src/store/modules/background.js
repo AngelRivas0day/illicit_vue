@@ -1,25 +1,25 @@
 const state = {
-  whiteIcons: false
+	whiteIcons: false,
 }
 
 const mutations = {
-  SET_WHITE_ICONS(state, payload) {
-    state.whiteIcons = payload
-  }
+	SET_WHITE_ICONS(state, payload) {
+		state.whiteIcons = payload
+	},
 }
 
 const actions = {
-  setWhiteIcons({commit}){
-    commit('SET_WHITE_ICONS', true)
-  },
-  unsetWhiteIcons({commit}){
-    commit('SET_WHITE_ICONS', false)
-  }
+	setWhiteIcons({ commit }) {
+		commit('SET_WHITE_ICONS', true)
+	},
+	unsetWhiteIcons({ commit }) {
+		commit('SET_WHITE_ICONS', false)
+	},
 }
 
 export default {
-    namespaced: true,
-    state,
-    mutations,
-    actions
-  }
+	namespaced: true,
+	state,
+	mutations,
+	actions,
+}

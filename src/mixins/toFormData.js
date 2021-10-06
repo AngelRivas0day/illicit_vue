@@ -1,9 +1,9 @@
 export default {
-    methods: {
-        toFormData(data){
-            const formData = new FormData()
-            
-            return formData
-        }
-    }
+	methods: {
+		toFormData(data) {
+			const formData = new FormData()
+
+			return formData
+		},
+	},
 }

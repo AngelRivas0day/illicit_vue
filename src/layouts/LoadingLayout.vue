@@ -1,13 +1,11 @@
 <template>
-    <div>Loading</div>
+	<div>Loading</div>
 </template>
 
 <script>
 export default {
-    name: 'Loading Layout'
+	name: 'Loading Layout',
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
