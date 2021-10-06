@@ -53,9 +53,14 @@
 				</div>
 			</div>
 			<EventSnackBar />
-			<transition name="panels" mode="out-in">
-				<router-view></router-view>
-			</transition>
+            <template v-if="windowWidth >= 840">
+                <transition name="panels" mode="out-in">
+                    <router-view></router-view>
+                </transition>
+            </template>
+            <template v-else>
+                <router-view></router-view>
+            </template>
 		</md-content>
 		<Footer />
 	</div>
@@ -71,11 +76,15 @@ export default {
 	name: 'MainLayout',
 	components: { Footer, Favs, EventSnackBar },
 	async mounted() {
+        window.addEventListener("resize", this.resizeWindowHandler);
 		if (this.token) this.getFavorites()
 		await this.getCurrentEvent()
 		if (this.event) this.addEventMenuOption()
 		// this.checkForEvents()
 	},
+    destroyed() {
+        window.removeEventListener("resize", this.resizeWindowHandler);
+    },
 	data: () => ({
 		showNavigation: false,
 		menuOptions: [
@@ -90,6 +99,7 @@ export default {
 			{ name: 'instagram', url: '/', icon: 'fab fa-instagram' },
 			{ name: 'twitter', url: '/', icon: 'fab fa-twitter' },
 		],
+        windowWidth: 0
 	}),
 	computed: {
 		...mapState('background', {
@@ -130,6 +140,9 @@ export default {
 		insertAt(array, index, ...elementsArray) {
 			array.splice(index, 0, ...elementsArray)
 		},
+        resizeWindowHandler() {
+            this.windowWidth = window.innerWidth
+        },
 	},
 }
 </script>
