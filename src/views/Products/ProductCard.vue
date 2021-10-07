@@ -1,5 +1,5 @@
 <template>
-	<div class="product__card">
+	<div class="product__card" :class="{'product__offer': hasOffer}">
 		<div @click="openProduct(product)" class="card__image">
 			<img :src="product.designs[designIndex].mainImage" alt="" />
 			<div class="card__image--hover">
@@ -57,13 +57,14 @@ export default {
 
 .product__card {
 	// main card container
+	position: relative;
 	background-color: $gray;
 	box-sizing: border-box;
 	padding: 0 0 15px 0;
 	max-width: 370px;
 	display: block;
 	margin: 0 auto 25px auto;
-	overflow: hidden;
+	// overflow: hidden;
 	background: transparent;
 	.card__image {
 		position: relative;
@@ -80,7 +81,7 @@ export default {
 			transform: scale(1.6);
 		}
 		&--hover {
-			z-index: 999;
+			z-index: 500;
 			opacity: 0;
 			display: flex;
 			position: absolute;
@@ -141,6 +142,20 @@ export default {
 				margin: 0 4px;
 				cursor: pointer;
 			}
+		}
+	}
+	&.product__offer {
+		&:after {
+			content: '';
+			width: 40px;
+			height: 40px;
+			position: absolute;
+			background-image: url('../../assets/img/icons/sale.png');
+			background-size: contain;
+			top: 0px;
+			right: 0px;
+			z-index: 600;
+			transform: translateX(50%) translateY(-50%) rotateZ(40deg);
 		}
 	}
 }

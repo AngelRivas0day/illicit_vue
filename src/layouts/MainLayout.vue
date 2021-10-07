@@ -76,6 +76,7 @@ export default {
 	name: 'MainLayout',
 	components: { Footer, Favs, EventSnackBar },
 	async mounted() {
+		this.windowWidth = window.innerWidth
         window.addEventListener("resize", this.resizeWindowHandler);
 		if (this.token) this.getFavorites()
 		await this.getCurrentEvent()

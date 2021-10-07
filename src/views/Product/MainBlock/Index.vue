@@ -10,7 +10,7 @@
 			@md-confirm="onConfirm"
 		/>
 		<div class="main-block">
-			<div class="main-block__info">
+			<div class="main-block__info" :class="{'product__offer': hasOffer}">
 				<div class="info__body">
 					<div class="d-flex flex-row justify-content-between align-items-center">
 						<div class="mb-2">
@@ -21,11 +21,13 @@
 							<md-icon :class="{ 'is-fav': isFavorite, 'not-fav': !isFavorite }" class="md-fav">favorite</md-icon>
 						</md-button>
 					</div>
-					<span v-if="hasOffer" class="info__price"
-						><div class="text-muted text-decoration-line-through">${{ glass.price }}</div>
-						${{ offerPrice }}</span
-					>
+
+					<span v-if="hasOffer" class="info__price">
+						<div class="text-muted text-decoration-line-through">${{ glass.price }}</div>
+						${{ offerPrice }}
+					</span>
 					<span v-else class="info__price">${{ glass.price }}</span>
+
 					<ul class="info__colors-selector">
 						<template v-for="c in glass.designs">
 							<li @click="setDesign(c)" :key="c.name" :style="'background-color:' + c.color.hex + ';'"></li>
@@ -94,10 +96,12 @@ export default {
 			}
 			this.lenseSpecs.design = JSON.stringify(this.currentDesign)
 		})
-		if (this.glass.offer) {
-			this.hasOffer = true
-			this.offerPrice = this.glass.price - this.glass.offer.value
-		}
+		this.hasOffer = true
+		this.offerPrice = 200
+		// if (this.glass.offer) {
+		// 	this.hasOffer = true
+		// 	this.offerPrice = this.glass.price - this.glass.offer.value
+		// }
 	},
 	data: () => ({
 		currentDesign: null,
@@ -163,6 +167,7 @@ export default {
 	flex-direction: row;
 	flex-wrap: wrap;
 	&__info {
+		position: relative;
 		flex: -1;
 		order: -1; // this is meant to make the mobile layout order
 		@include flex('column', 'flex-start', 'flex-end');
@@ -220,6 +225,20 @@ export default {
 				margin-bottom: 50px !important;
 				// .info__buy{
 				// }
+			}
+		}
+		&.product__offer {
+			&:after {
+				content: '';
+				width: 70px;
+				height: 70px;
+				position: absolute;
+				background-image: url('../../../assets/img/icons/sale.png');
+				background-size: contain;
+				bottom: 0px;
+				right: 0px;
+				z-index: 600;
+				transform: rotateZ(-40deg);
 			}
 		}
 	}
