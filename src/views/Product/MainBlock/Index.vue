@@ -96,12 +96,10 @@ export default {
 			}
 			this.lenseSpecs.design = JSON.stringify(this.currentDesign)
 		})
-		this.hasOffer = true
-		this.offerPrice = 200
-		// if (this.glass.offer) {
-		// 	this.hasOffer = true
-		// 	this.offerPrice = this.glass.price - this.glass.offer.value
-		// }
+		if (this.glass.offer) {
+			this.hasOffer = true
+			this.offerPrice = this.glass.price - this.glass.offer.value
+		}
 	},
 	data: () => ({
 		currentDesign: null,
