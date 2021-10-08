@@ -12,8 +12,10 @@
 										<span
 											v-if="gd.value == 'antireflective' && (lenseSpecs.lenseMaterial == 'poliverga' || lenseSpecs.graduation_type == 'neutros')"
 											class="text-right text-white custom-radio-price"
-											><del>{{ gd.price == 'GRATIS' ? 'GRATIS' : '$' + gd.price }}</del> GRATIS</span
 										>
+											<del>{{ gd.price == 'GRATIS' ? 'GRATIS' : '$' + gd.price }}</del>
+											GRATIS
+										</span>
 										<span v-else class="text-right text-white custom-radio-price">{{ gd.price == 'GRATIS' ? 'GRATIS' : '$' + gd.price }}</span>
 									</div>
 									<span class="f-100 md-helper-text text-white custom-radio-helper">{{ gd.text }}</span>
