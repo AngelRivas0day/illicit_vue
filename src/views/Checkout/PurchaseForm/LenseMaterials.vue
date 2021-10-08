@@ -62,7 +62,7 @@ export default {
 	methods: {
 		onChange(value) {
 			this.lenseMaterialCurrentPrice = value.price == 'GRATIS' ? 0 : value.price
-			this.lenseSpecs.lenseMaterial = value.value
+			this.$set(this.lenseSpecs, 'lenseMaterial', value.value)
 		},
 	},
 }

@@ -161,7 +161,7 @@ export default {
 					valid = this.lenseSpecs.lenseMaterial != undefined
 					break
 				case 'last':
-					valid = this.lenseSpecs.extra != undefined
+					valid = this.lenseSpecs.photochromatic != undefined || this.lenseSpecs.antireflective != undefined
 					break
 				default:
 					valid = true

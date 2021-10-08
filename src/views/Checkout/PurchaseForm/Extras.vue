@@ -49,14 +49,21 @@ export default {
 		],
 		extra: null,
 	}),
-	mounted() {
-		this.extra = this.lenseSpecs.extra
-	},
 	computed: {
 		...mapFields('order', {
 			extrasCurrentPrice: 'extrasCurrentPrice',
 			lenseSpecs: 'lenseSpecs',
 		}),
+	},
+	mounted() {
+		if (this.lenseSpecs.antireflective) {
+			this.extra = 'antireflective'
+			return
+		}
+		if (this.lenseSpecs.photochromatic) {
+			this.extra = 'photochromatic'
+			return
+		}
 	},
 	methods: {
 		onChange(value) {
@@ -69,7 +76,11 @@ export default {
 			} else {
 				this.extrasCurrentPrice = value.price == 'GRATIS' ? 0 : value.price
 			}
-			this.lenseSpecs.extra = value.value
+			if (value.value == 'antireflective')
+				this.$set(this.lenseSpecs, 'photochromatic', value)
+			if (value.value == 'photochromatic')
+				this.$set(this.lenseSpecs, 'antireflective', false)
+			this.$set(this.lenseSpecs, value.value, true)
 		},
 	},
 }

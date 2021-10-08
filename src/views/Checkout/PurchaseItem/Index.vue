@@ -13,11 +13,9 @@
 							<div class="mx-1">-</div>
 							<div :style="'background-color:' + design.hex + ';'" class="circle"></div>
 						</li>
-						<li><span>Tipo de graduaci&oacute;n: </span> {{ lenseSpecs.graduation_type }}</li>
-						<li><span>Antirreflejante: </span>{{ antireflective }}</li>
-						<li><span>Fotocrom&aacute;tico: </span> test</li>
-						<li><span>Lente: </span> lente material</li>
-						<li><span>Mountura: </span> montura</li>
+						<li><span>Tipo de graduaci&oacute;n: </span> {{ graduation }}</li>
+						<li><span>Material del lente: </span> {{ material }}</li>
+						<li><span>Extra: </span> {{ extra }}</li>
 					</ul>
 				</div>
 			</div>
@@ -28,7 +26,6 @@
 				<md-icon class="info-icon">help</md-icon>
 				<md-tooltip md-direction="right">El precio de envio viene dado por la direcci&oacute;n de env&iacute;o</md-tooltip>
 			</div>
-
 			<p><span>Subtotal: </span>${{ finalPrice }}</p>
 		</div>
 	</div>
@@ -41,7 +38,7 @@ export default {
 	name: 'PurchaseItem',
 	mounted() {
 		// this.specs = JSON.parse(this.lenseSpecs)
-		this.design = this.lenseSpecs.design ? JSON.parse(this.lenseSpecs.design) : {}
+		this.design = JSON.parse(this.lenseSpecs.design)
 		this.initalPrice = this.lenseSpecs.price
 		if (this.glass.offer) {
 			this.hasOffer = true
@@ -71,13 +68,13 @@ export default {
 			glass: 'glass',
 		}),
 		material() {
-			return this.lenseSpecs.material ? this.lenseSpecs.material : 'Selecciona uno'
+			return this.lenseSpecs.lenseMaterial ? this.lenseSpecs.lenseMaterial : '-'
 		},
-		antireflective() {
-			return this.lenseSpecs.antireflective == true ? 'Con antirreflejante' : 'Sin antirreflejante'
+		extra() {
+			return !this.lenseSpecs.antireflective && !this.lenseSpecs.photochromatic ? '-' : (this.lenseSpecs.antireflective ? 'Antirreflejante' : 'Fotocromático')
 		},
 		graduation() {
-			return this.lenseSpecs.graduation_type ? this.lenseSpecs.graduation_type : 'Selecciona una'
+			return this.lenseSpecs.graduation_type ? this.lenseSpecs.graduation_type : '-'
 		},
 		finalPrice() {
 			return parseInt(this.initalPrice) + parseInt(this.lenseMaterialCurrentPrice) + parseInt(this.graduationCurrentPrice) + parseInt(this.extrasCurrentPrice) + parseInt(this.discountPrice)
@@ -115,8 +112,10 @@ export default {
 					font-weight: 100;
 					font-size: 15px;
 					margin-bottom: 5px;
+					text-transform: capitalize;
 					span {
 						font-weight: bold;
+						text-transform: inherit;
 					}
 					.circle {
 						width: 14px;
