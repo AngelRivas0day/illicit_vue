@@ -2,6 +2,7 @@
 	<div class="home-page">
 		<Banner />
 		<Brands />
+		<Steps />
 		<Products />
 		<Categories />
 		<Offers />
@@ -16,10 +17,11 @@ import Brands from './Brands'
 import Categories from './Categories'
 import Contact from './Contact'
 import Offers from './Offers'
+import Steps from './Steps.vue'
 
 export default {
 	name: 'Home',
-	components: { Banner, Products, Brands, Categories, Contact, Offers },
+	components: { Banner, Products, Brands, Categories, Contact, Offers, Steps },
 	mounted() {
 		document.title = 'Illicit Óptica - Inicio'
 	},
