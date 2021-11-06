@@ -26,7 +26,8 @@
 				<md-field>
 					<md-icon>call</md-icon>
 					<label>Tel&eacute;fono</label>
-					<md-input v-model="form.phone" v-mask="'+## ## #### ####'"></md-input>
+					<md-input v-model="form.phone" v-mask="'## #### ####'"></md-input>
+					<span class="md-helper-text">E.g. 33 3333 3333</span>
 				</md-field>
 			</div>
 			<div class="col-12 text-right">
@@ -77,7 +78,7 @@ export default {
 			const updatedUser = {
 				name,
 				lastName,
-				phone,
+				phone: phone.replace(/\s/g,''),
 			}
 			this.updateInfo(updatedUser)
 		},

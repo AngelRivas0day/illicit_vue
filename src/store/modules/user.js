@@ -14,6 +14,7 @@ const state = {
 	errMessage: '',
 	user: null,
 	emailSentStatus: null,
+	userType: null
 }
 
 const mutations = {
@@ -21,10 +22,11 @@ const mutations = {
 	SET_LOADING(state, paylaod) {
 		state.isLoading = paylaod
 	},
-	AUTH_SUCCESS(state, { userName, token }) {
+	AUTH_SUCCESS(state, { userName, token, userType = 'client' }) {
 		state.userName = userName
 		state.success = true
 		state.token = token
+		state.userType = userType
 	},
 	AUTH_ERROR(state, errorMessage) {
 		state.success = false
@@ -116,7 +118,8 @@ const actions = {
 			commit('SET_LOADING', true)
 			const { data } = await api.post('clients/login', { email, password })
 			localStorage.setItem('token', data.token)
-			commit('AUTH_SUCCESS', { userName: data.name, token: data.token })
+			localStorage.setItem('user_type', data.type)
+			commit('AUTH_SUCCESS', { userName: data.name, token: data.token, userType: data.type })
 			dispatch('user/checkIfOrigin', null, { root: true })
 		} catch (error) {
 			this._vm.$sentry.captureException(error)
@@ -142,6 +145,7 @@ const actions = {
 			commit('SET_LOADING', true)
 			await api.getAll('clients/logout', true)
 			localStorage.removeItem('token')
+			localStorage.removeItem('user_type')
 			commit('LOGOUT_SUCCESS')
 			router.push({ name: 'Auth' })
 		} catch (error) {
@@ -179,7 +183,10 @@ const actions = {
 	async getInfo({ commit, dispatch }) {
 		try {
 			commit('SET_LOADING', true)
-			const { data } = await api.getAll('clients', true)
+			const { data } = await api.Get({
+				endpoint: 'clients',
+				useToken: true,
+			})
 			commit('SET_USER_INFO', data)
 			return data
 		} catch (error) {

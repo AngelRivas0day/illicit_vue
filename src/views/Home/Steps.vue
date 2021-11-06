@@ -35,7 +35,6 @@ export default {
 	}),
 	methods: {
 		toggleClass(itemId, type = 'mouseover') {
-			console.log('Item id: ', itemId)
 			let stepIndex = this.steps.findIndex(i => i.id == itemId)
 			if (stepIndex != -1) {
 					this.steps[stepIndex].hover = type == 'mouseover' ? true : false

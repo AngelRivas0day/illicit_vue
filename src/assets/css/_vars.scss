@@ -54,6 +54,11 @@ $quaternary-color: #ff5e5b;
 	::v-deep .md-count {
 		color: #333 !important;
 	}
+
+	::v-deep .md-helper-text {
+		color: #333 !important;
+		opacity: .7;
+	}
 }
 
 @mixin simple-button($text-color, $hover-color, $bg-color) {
