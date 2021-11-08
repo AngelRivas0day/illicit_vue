@@ -39,7 +39,7 @@
 				<md-field>
 					<md-icon class="md-accent">phone</md-icon>
 					<label>N&uacute;mero de telefono</label>
-					<md-input v-model="form.model" v-mask="'+## ###-###-####'"></md-input>
+					<md-input v-model="form.model" v-mask="'## #### ####'"></md-input>
 				</md-field>
 			</div>
 			<div class="col-xs-12 col-sm-12">
@@ -112,6 +112,7 @@ export default {
 				lastName: this.form.lastName,
 				email: this.form.email,
 				password: this.form.password,
+				phone: this.form.phone.replace(/\s+/g,'')
 			}
 			this.register(user)
 				.then()

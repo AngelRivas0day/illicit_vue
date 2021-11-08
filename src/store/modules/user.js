@@ -27,6 +27,7 @@ const mutations = {
 		state.success = true
 		state.token = token
 		state.userType = userType
+		state.errMessage = null
 	},
 	AUTH_ERROR(state, errorMessage) {
 		state.success = false
@@ -34,6 +35,7 @@ const mutations = {
 	},
 	REGISTER_SUCCESS(state, payload) {
 		state.success = payload
+		state.errMessage = null
 	},
 	REGISTER_ERROR(state, errorMessage) {
 		state.success = false
@@ -53,12 +55,15 @@ const mutations = {
 		state.userName = ''
 		state.success = true
 		state.token = null
+		state.errMessage = null
 	},
 	EMAIL_SENT_CORRECTLY(state, payload) {
 		state.emailSentStatus = payload
+		state.errMessage = null
 	},
 	EMAIL_SENT_ERROR(state, payload) {
 		state.emailSentStatus = payload
+		state.errMessage = null
 	},
 }
 
