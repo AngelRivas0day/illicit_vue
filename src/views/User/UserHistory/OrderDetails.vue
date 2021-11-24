@@ -43,7 +43,7 @@
 						</p>
 						<p><span>Total: </span> ${{ order.specs.price }}</p>
 					</div>
-					<template v-if="this.order.store">
+					<template v-if="order.store">
 						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
 							<h3 class="md-title">Forma de pago</h3>
 							<p>{{ formattedPaymentOption }}</p>
