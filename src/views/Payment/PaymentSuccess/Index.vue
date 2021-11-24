@@ -2,7 +2,14 @@
 	<div>
 		<div class="payment-success">
 			<div class="payment-success__title mb-4">Compra exitosa</div>
-			<div class="payment-success__message mb-3">Los detalles han sido enviados a tu WhatsApp o tambi&eacute;n puedes consultarlos aqu&iacute;:</div>
+			<div class="payment-success__message mb-3">
+				<template v-if="pendingPayment">
+					El pago a&uacute;n no ha sido realizado. Deber&aacute; realizarse cuando se entregue el producto.
+				</template>
+				<template v-else>
+					Los detalles han sido enviados a tu WhatsApp o tambi&eacute;n puedes consultarlos aqu&iacute;:
+				</template>
+			</div>
 			<div class="from-top fancy-button" @click="goToOrders">Ver detalles</div>
 		</div>
 	</div>
@@ -14,11 +21,15 @@ import { mapActions } from 'vuex'
 export default {
 	name: 'PaymentSuccess',
 	async mounted() {
-		let { order_id } = this.$route.query
-		if (order_id) {
+		let { order_id, confirmPayment, pendingPayment } = this.$route.query
+		this.pendingPayment = pendingPayment == '1' ? true : false
+		if (order_id && confirmPayment == '1') {
 			await this.confirm(order_id)
 		}
 	},
+	data: () => ({
+		pendingPayment: null,
+	}),
 	methods: {
 		...mapActions('user', {
 			setTab: 'setTab',

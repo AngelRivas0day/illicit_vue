@@ -52,6 +52,23 @@
 						</div>
 						<p class="mt-2 text-white help-text">¿Necesitas ayuda?</p>
 					</div>
+					<template v-if="userType == 'store'">
+						<div class="col-12">
+							<h3 class="md-title text-white">Forma de pago:</h3>
+						</div>
+						<div class="col-12">
+							<div class="row no-gutters ml0">
+								<div v-for="opt in paymentOptions" :key="opt.id" class="w-100">
+									<md-radio @change="onChangeOptionType" v-model="paymentOption" :value="opt.value" class="text-white md-primary my-2">
+										{{ opt.label }}
+									</md-radio>
+								</div>
+							</div>
+						</div>
+					</template>
+					<div class="col-12">
+						<h3 class="md-title text-white">Extras:</h3>
+					</div>
 					<div class="col-12">
 						<Coupons />
 					</div>
@@ -94,11 +111,18 @@ export default {
 		stripe_key: 'pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14',
 		loading: false,
 		showDialog: false,
+		paymentOptions: [
+			{ id: 1, label: 'Pagar al recibir en tienda.', value: 'pay_now_in_store_get_in_store' },
+			{ id: 2, label: 'Pagar ahora y recibir en casa', value: 'pay_now_in_store_get_in_home' },
+			{ id: 3, label: 'Pagar ahora y recibir en tienda', value: 'pay_later_in_store_get_in_store' },
+		],
+		paymentOption: null
 	}),
 	computed: {
 		...mapState('order', {
 			session_id: 'session_id',
 			lenseSpecs: 'lenseSpecs',
+			paymentStatus: 'paymentStatus',
 		}),
 		...mapFields('order', {
 			addressId: 'addressId',
@@ -106,6 +130,10 @@ export default {
 		}),
 		...mapState('addresses', {
 			addresses: 'addresses',
+		}),
+		...mapState('user', {
+			userType: 'userType',
+			storeId: 'storeId',
 		}),
 	},
 	methods: {
@@ -117,6 +145,9 @@ export default {
 		}),
 		onChangeAddress(value) {
 			this.addressId = value
+		},
+		onChangeOptionType(value) {
+			this.paymentOption = value
 		},
 		onChange() {
 			this.filelist = [...this.$refs.file.files]
@@ -147,53 +178,106 @@ export default {
 		},
 		async goToCheckout() {
 			// refirect to stripe checkout onClick
-			if (this.addressId != undefined) {
-				this.loading = true
-				try {
-					let form_data = new FormData()
-					let design = JSON.parse(this.lenseSpecs.design)
-					let { id } = this.$route.params
-					let graduation = this.filelist[0]
-					let data = {
-						id: id,
-						// checkout session data start
-						name: this.lenseSpecs.name,
-						product_description: `Estás por comprar los lentes ${this.lenseSpecs.name}. Es una buena elección.`,
-						price: this.lenseSpecs.price,
-						images: design.images,
-						// checkout sesion data end
-						design: {
-							// only this props are needed from the design
-							image: design.image,
-							hex: design.hex,
-							name: design.name,
-						},
-						lenseMaterial: this.lenseSpecs.lenseMaterial,
-						// only one of these can be true
-						antireflective: this.lenseSpecs.extra == 'antireflective' ? true : false,
-						photochromatic: this.lenseSpecs.extra == 'photochromatic' ? true : false,
-						graduationType: this.lenseSpecs.graduation_type,
-						graduation: graduation || null,
-						addressId: this.addressId,
-						extraComments: this.extraComments,
-					}
-					for (var key in data) {
-						let value = data[key]
-						if (typeof value == 'object' && key != 'graduation') form_data.append(key, JSON.stringify(data[key]))
-						else form_data.append(key, value)
-					}
-					await this.createSession(form_data)
-					this.$refs.checkoutRef.redirectToCheckout()
-				} catch {
-					this.$notify({
-						group: 'user',
-						title: 'Ha habido un error',
-						text: 'Ha habido un error al crear tu order. Por favor inténtalo más tarse.',
-						type: 'warn',
-					})
-				} finally {
-					this.loading = false
+			if (!this.addressId) {
+				this.$notify({
+					group: 'user',
+					title: 'Ha habido un error',
+					text: 'Por favor escoge o crea una dirección de envío.',
+					type: 'warn',
+				})	
+				return
+			}
+			if (this.userType == 'store' && !this.paymentOption) {
+				this.$notify({
+					group: 'user',
+					title: 'Escoge una forma de pago',
+					text: 'La forma de pago es obligatoria para proceder.',
+					type: 'warn',
+				})
+				return
+			}
+			if (!this.storeId && this.userType == 'store') {
+				this.$notify({
+					group: 'user',
+					title: 'Ha habido un error',
+					text: 'Reinicia el proceso y recarga la página.',
+					type: 'warn',
+				})	
+				return
+			}
+			this.loading = true
+			try {
+				let form_data = new FormData()
+				let design = JSON.parse(this.lenseSpecs.design)
+				let { id } = this.$route.params
+				let graduation = this.filelist[0]
+				let data = {
+					id: id,
+					// checkout session data start
+					name: this.lenseSpecs.name,
+					product_description: `Estás por comprar los lentes ${this.lenseSpecs.name}. Es una buena elección.`,
+					price: this.lenseSpecs.price,
+					images: design.images,
+					// checkout sesion data end
+					design: {
+						// only this props are needed from the design
+						image: design.image,
+						hex: design.hex,
+						name: design.name,
+					},
+					lenseMaterial: this.lenseSpecs.lenseMaterial,
+					// only one of these can be true
+					antireflective: this.lenseSpecs.extra == 'antireflective' ? true : false,
+					photochromatic: this.lenseSpecs.extra == 'photochromatic' ? true : false,
+					// end of extra fields
+					graduationType: this.lenseSpecs.graduation_type,
+					graduation: graduation || null,
+					extraComments: this.extraComments,
+					addressId: this.addressId,
+					paymentOption: null,
+					storeId: null,
+					deleteAddress: false,
+					markAsPayed: false
 				}
+				if (this.userType == 'store') {
+					if (this.paymentOption != 'pay_now_in_store_get_in_store')
+						data.markAsPayed = true
+					data.deleteAddress = true
+					data.storeId = this.storeId
+					data.paymentOption = this.paymentOption
+				} else {
+					data.paymentOption = 'card'
+				}
+				for (var key in data) {
+					let value = data[key]
+					if (typeof value == 'object' && key != 'graduation') form_data.append(key, JSON.stringify(data[key]))
+					else form_data.append(key, value)
+				}
+				await this.createSession({
+					payload: form_data, 
+					cardPayment: this.userType == 'store' ? 0 : 1
+				})
+				if (this.userType == 'client') {
+					this.$refs.checkoutRef.redirectToCheckout()
+				} else if (this.userType == 'store') {
+					// handle store order creation
+					this.$router.push({
+						name: 'PaymentSuccess',
+						query: {
+							confirmPayment: 0,
+							pendingPayment: this.paymentStatus == 'PENDIENTE' ? 1 : 0
+						}
+					})
+				}
+			} catch {
+				this.$notify({
+					group: 'user',
+					title: 'Ha habido un error',
+					text: 'Ha habido un error al crear tu order. Por favor inténtalo más tarse.',
+					type: 'warn',
+				})
+			} finally {
+				this.loading = false
 			}
 		},
 		async submitChildForm() {

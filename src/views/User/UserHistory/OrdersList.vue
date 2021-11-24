@@ -76,4 +76,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.md-table-row {
+	cursor: pointer !important;
+}
+</style>

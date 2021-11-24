@@ -60,7 +60,7 @@ const routes = [
 	},
 	{
 		path: '/payment/cancel',
-		name: 'PaymentSuccess',
+		name: 'PaymentCancel',
 		component: () => import(/* webpackChunkName: "PaymentSuccess" */ '../views/Payment/PaymentCancel/Index.vue'),
 	},
 	{

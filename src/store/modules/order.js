@@ -75,6 +75,11 @@ const mutations = {
 	ERROR_SET_ID(state) {
 		state.session_id = null
 	},
+	SET_SUCCESS_URL(state, { paymentStatus }) {
+		state.errorMessage = null
+		state.isError = null
+		state.paymentStatus = paymentStatus
+	},
 	RESET_INFO(state) {
 		state.lenseSpecs = {
 			name: '',
@@ -98,6 +103,7 @@ const mutations = {
 		state.lenseMaterialCurrentPrice = 0
 		state.graduationCurrentPrice = 0
 		state.extrasCurrentPrice = 0
+		state.paymentStatus = null
 	},
 }
 
@@ -135,15 +141,22 @@ const actions = {
 			commit('SET_LOADING', false)
 		}
 	},
-	async createSession({ commit }, payload) {
+	async createSession({ commit }, { payload, cardPayment = 1 }) {
 		commit('SET_LOADING', true)
 		try {
 			let { data } = await api.Post({
-				endpoint: 'orders/create-session',
+				endpoint: `orders/create-session?cardPayment=${cardPayment}`,
 				data: payload,
 				useToken: true,
 			})
-			commit('SET_SESSION_ID', data.sessionId)
+			if (cardPayment == 1) {
+				commit('SET_SESSION_ID', data.sessionId)
+			} else {
+				// handle non card payments
+				commit('SET_SUCCESS_URL', {
+					paymentStatus: data.paymentStatus
+				})
+			}
 		} catch (error) {
 			this._vm.$sentry.captureException(error)
 			commit('ERROR_SET_ID')

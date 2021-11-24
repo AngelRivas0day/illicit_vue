@@ -76,6 +76,7 @@ export default {
 	name: 'MainLayout',
 	components: { Footer, Favs, EventSnackBar },
 	async mounted() {
+		await this.verifyUserState()
 		this.windowWidth = window.innerWidth
         window.addEventListener("resize", this.resizeWindowHandler);
 		if (this.token) this.getFavorites()
@@ -107,6 +108,7 @@ export default {
 		}),
 		...mapState('user', {
 			token: 'token',
+			userName: 'userName'
 		}),
 		...mapState('favorites', {
 			favorites: 'favorites',
@@ -121,6 +123,9 @@ export default {
 		}),
 		...mapActions('events', {
 			getCurrentEvent: 'getCurrentEvent',
+		}),
+		...mapActions('user', {
+			restoreAccess: 'restoreAccess'
 		}),
 		goToLogin() {
 			if (this.token != '') {
@@ -143,6 +148,11 @@ export default {
         resizeWindowHandler() {
             this.windowWidth = window.innerWidth
         },
+		async verifyUserState() {
+			console.log('called')
+			if (!this.userName)
+				await this.restoreAccess()
+		}
 	},
 }
 </script>

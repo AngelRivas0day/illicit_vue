@@ -14,9 +14,14 @@
 				<div class="order-details__resume row">
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
 						<h3 class="md-title">Direcci&oacute;n de env&iacute;o</h3>
-						<p>{{ order.address.street }} #{{ order.address.extNumber }}</p>
-						<p>{{ order.address.city }}, {{ order.address.state }}, {{ order.address.zip }}</p>
-						<p>Referencias del domicilio: {{ order.address.reference }}</p>
+						<template v-if="order.paymentOption == 'pay_now_in_store_get_in_home' || order.paymentOption == 'card'">
+							<p>{{ order.address.street }} #{{ order.address.extNumber }}</p>
+							<p>{{ order.address.city }}, {{ order.address.state }}, {{ order.address.zip }}</p>
+							<p>Referencias del domicilio: {{ order.address.reference }}</p>
+						</template>
+						<template v-else>
+							<p>{{ order.store.street }} #{{ order.store.extNumber }}</p>
+						</template>
 					</div>
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
 						<h3 class="md-title">Estado del pago</h3>
@@ -38,7 +43,13 @@
 						</p>
 						<p><span>Total: </span> ${{ order.specs.price }}</p>
 					</div>
-					<div class="col-xs-12 col-sm-12 col-md-6">
+					<template v-if="this.order.store">
+						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+							<h3 class="md-title">Forma de pago</h3>
+							<p>{{ formattedPaymentOption }}</p>
+						</div>
+					</template>
+					<div class="col-12">
 						<h3 class="md-title">Comentarios extras</h3>
 						<p>{{ order.extraComments }}</p>
 					</div>
@@ -106,6 +117,7 @@ export default {
 	}),
 	mounted() {
 		this.getGlass(this.order.specs.id)
+		console.log('order: ', this.order)
 	},
 	methods: {
 		...mapActions('product', {
@@ -127,7 +139,20 @@ export default {
 			const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(orderDate)
 			const mo = new Intl.DateTimeFormat('es', { month: 'long' }).format(orderDate)
 			const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(orderDate)
-			return `${da} ${mo} ${ye}`
+			return `${da} ${mo} del ${ye}`
+		},
+		formattedPaymentOption() {
+			let code = this.order.paymentOption
+			if (code == 'card')
+				return 'Pago con tarjeta.'
+			else if (code == 'pay_now_in_store_get_in_store')
+				return 'Pagar al recibir en tienda.'
+			else if (code == 'pay_now_in_store_get_in_home')
+				return 'Pagar ahora y recibir en casa.'
+			else if (code == 'pay_later_in_store_get_in_store')
+				return 'Pagar ahora y recibir en tienda.'
+			else
+				return 'Pago con tarjeta.'
 		},
 	},
 }

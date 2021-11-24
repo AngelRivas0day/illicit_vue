@@ -14,7 +14,8 @@ const state = {
 	errMessage: '',
 	user: null,
 	emailSentStatus: null,
-	userType: null
+	userType: null,
+	storeId: null
 }
 
 const mutations = {
@@ -22,11 +23,12 @@ const mutations = {
 	SET_LOADING(state, paylaod) {
 		state.isLoading = paylaod
 	},
-	AUTH_SUCCESS(state, { userName, token, userType = 'client' }) {
+	AUTH_SUCCESS(state, { userName, token, userType = 'client', storeId = null }) {
 		state.userName = userName
 		state.success = true
 		state.token = token
 		state.userType = userType
+		state.storeId = storeId
 		state.errMessage = null
 	},
 	AUTH_ERROR(state, errorMessage) {
@@ -53,6 +55,8 @@ const mutations = {
 	LOGOUT_SUCCESS(state) {
 		state.user = {}
 		state.userName = ''
+		state.storeId = null
+		state.userType = null
 		state.success = true
 		state.token = null
 		state.errMessage = null
@@ -124,13 +128,30 @@ const actions = {
 			const { data } = await api.post('clients/login', { email, password })
 			localStorage.setItem('token', data.token)
 			localStorage.setItem('user_type', data.type)
-			commit('AUTH_SUCCESS', { userName: data.name, token: data.token, userType: data.type })
+			if (data.storeId)
+				localStorage.setItem('user_store_id', data.storeId)
+			commit('AUTH_SUCCESS', { userName: data.name, token: data.token, userType: data.type, storeId: data?.storeId ? data.storeId : null })
 			dispatch('user/checkIfOrigin', null, { root: true })
 		} catch (error) {
 			this._vm.$sentry.captureException(error)
 			commit('AUTH_ERROR', error.response.data)
 		} finally {
 			commit('SET_LOADING', false)
+		}
+	},
+	async restoreAccess({ commit }) {
+		try {
+			let { data } = await api.Get({
+				endpoint: 'clients/restore-access',
+				useToken: true,
+			})
+			localStorage.setItem('token', data.token)
+			localStorage.setItem('user_type', data.type)
+			if (data.storeId)
+				localStorage.setItem('user_store_id', data.storeId)
+			commit('AUTH_SUCCESS', { userName: data.name, token: data.token, userType: data.type, storeId: data?.storeId ? data.storeId : null })	
+		} catch (error) {
+			commit('AUTH_ERROR', error.response.data)
 		}
 	},
 	async register({ commit }, user) {
