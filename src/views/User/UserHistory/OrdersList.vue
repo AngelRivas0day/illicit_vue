@@ -42,6 +42,7 @@ export default {
 				order.createdAt = this.formatDate(order.createdAt)
 				return order
 			})
+		this.verifyQueryParams()
 	},
 	data: () => ({
 		currentOrder: null,
@@ -66,6 +67,13 @@ export default {
 				this.currentOrder = null
 			}
 		},
+		verifyQueryParams() {
+			if (this.$route.query.orderId) {
+				let item = this.orders.find(i => i.id == this.$route.query.orderId)
+				if (item)
+					this.onSelect(item)
+			}
+		}
 	},
 	computed: {
 		...mapFields('orders', {

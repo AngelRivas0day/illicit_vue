@@ -14,6 +14,13 @@ export default {
 		...mapActions('background', {
 			unsetWhiteIcons: 'unsetWhiteIcons',
 		}),
+		...mapActions('user', {
+			setTab: 'setTab',
+		}),
+		verifyQueryParams() {
+			if (this.$route.query.goToOrders)
+				this.setTab('UserHistory')
+		}
 	},
 	mounted() {
 		document.title = 'Illicit Óptica - Cuenta'
@@ -21,6 +28,7 @@ export default {
 			this.$router.push({ name: 'Auth' })
 		}
 		this.unsetWhiteIcons()
+		this.verifyQueryParams()
 	},
 	components: {
 		TopNav: () => import('./TopNav/Index'),
