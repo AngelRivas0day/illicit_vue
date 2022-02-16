@@ -205,8 +205,6 @@ export default {
 			flex: 1;
 			max-width: 100px;
 			margin-right: 20px;
-			img {
-			}
 		}
 		&__info {
 			flex: 1;

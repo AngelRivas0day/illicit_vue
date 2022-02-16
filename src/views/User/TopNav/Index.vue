@@ -20,7 +20,6 @@ export default {
 		tabs: [
 			{ id: 'tab-user-info', icon: 'account_circle', label: 'Perfil', component: 'UserInfo' },
 			{ id: 'tab-user-history', icon: 'receipt_long', label: 'Compras', component: 'UserHistory' },
-			{ id: 'tab-user-coupons', icon: 'local_offer', label: 'Cupones', component: 'UserCoupons' },
 		],
 	}),
 }

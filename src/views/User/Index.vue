@@ -12,7 +12,6 @@ export default {
 	name: 'User',
 	methods: {
 		...mapActions('background', {
-			setWhiteIcons: 'setWhiteIcons',
 			unsetWhiteIcons: 'unsetWhiteIcons',
 		}),
 	},

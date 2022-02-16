@@ -14,7 +14,6 @@ export default {
 	components: {
 		UserInfo: () => import('./UserInfo/Index'),
 		UserHistory: () => import('./UserHistory/Index'),
-		UserCoupons: () => import('./UserCoupons/Index'),
 	},
 	computed: {
 		...mapState('user', {

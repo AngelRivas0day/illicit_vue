@@ -11,7 +11,7 @@
 			</template>
 			<template v-else>
 				<md-list-item>
-					<span class="md-list-item-text">No tienes productos aqu&iacute; :(</span>
+					<span class="md-list-item-text">No tienes productos en favoritos</span>
 				</md-list-item>
 			</template>
 		</md-list>

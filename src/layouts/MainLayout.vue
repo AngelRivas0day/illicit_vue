@@ -22,7 +22,7 @@
 			</div>
 		</md-drawer>
 		<md-content class="white-content">
-			<div class="navbar">
+			<div class="navbar" :class="{'active-bg md-elevation-3': navbarBg, 'white-bg': !whiteIcons}">
 				<div class="navbar__container">
 					<router-link to="/" class="navbar__logo">
 						<img v-if="!whiteIcons" src="@/assets/img/v2/small_logo.png" width="30" height="30" alt="Small black ILLICIT logo" />
@@ -79,12 +79,24 @@ export default {
 		await this.verifyUserState()
 		this.windowWidth = window.innerWidth
         window.addEventListener("resize", this.resizeWindowHandler);
+		window.addEventListener('scroll', this.handleScroll);
+		this.interval = setInterval(() => {
+			if (this.scrolling) {
+				this.scrolling = false
+				if (window.scrollY > 30)
+					this.navbarBg = true
+				else
+					this.navbarBg = false
+			}
+		}, 300)
 		if (this.token) this.getFavorites()
 		await this.getCurrentEvent()
 		if (this.event) this.addEventMenuOption()
 	},
     destroyed() {
         window.removeEventListener("resize", this.resizeWindowHandler);
+		window.removeEventListener('scroll', this.handleScroll);
+		clearInterval(this.interval);
     },
 	data: () => ({
 		showNavigation: false,
@@ -100,7 +112,10 @@ export default {
 			{ name: 'instagram', url: '/', icon: 'fab fa-instagram' },
 			{ name: 'twitter', url: '/', icon: 'fab fa-twitter' },
 		],
-        windowWidth: 0
+        windowWidth: 0,
+		scrolling: false,
+		interval: null,
+		navbarBg: false
 	}),
 	computed: {
 		...mapState('background', {
@@ -152,6 +167,9 @@ export default {
 			console.log('called')
 			if (!this.userName)
 				await this.restoreAccess()
+		},
+		handleScroll() {
+			this.scrolling = true
 		}
 	},
 }
@@ -225,6 +243,7 @@ export default {
 	left: 0;
 	height: 55px;
 	z-index: 200;
+	transition: background 0.5s ease-in-out;
 	.navbar__container {
 		width: 100%;
 		display: flex;
@@ -235,6 +254,12 @@ export default {
 	}
 	@media #{$break-medium} {
 		padding: 0px 110px 0 25px;
+	}
+	&.active-bg {
+		background: #333333 !important;
+	}
+	&.white-bg.active-bg {
+		background: white !important;
 	}
 }
 

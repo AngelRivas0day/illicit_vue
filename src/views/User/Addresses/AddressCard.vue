@@ -11,13 +11,11 @@
 			<md-card-header>
 				<md-card-header-text>
 					<div class="md-title">
-						Direcci&oacute;n #{{ index + 1 }}
+						{{ address.street }} {{ address.extNumber }}, {{ address.city }}, {{ address.state}}
 						<small style="font-size: 10px" v-if="address.isDefault">(DEFAULT)</small>
 					</div>
-					<div class="md-subhead">{{ address.city }}</div>
 				</md-card-header-text>
 			</md-card-header>
-			<md-card-content> </md-card-content>
 			<md-card-actions>
 				<md-button v-if="!readOnly" @click="onDelete(address.id)" class="md-dense md-stroked md-accent">Borrar</md-button>
 				<md-button v-if="readOnly" @click="selectAddress(address.id)" class="md-dense md-primary text-white md-raised">Seleccionar</md-button>
@@ -35,10 +33,6 @@ export default {
 		address: {
 			type: Object,
 			required: true,
-		},
-		index: {
-			type: Number,
-			required: false,
 		},
 		readOnly: {
 			type: Boolean,
