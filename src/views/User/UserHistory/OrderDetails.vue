@@ -49,10 +49,25 @@
 							<p>{{ formattedPaymentOption }}</p>
 						</div>
 					</template>
-					<div class="col-12">
+					<div class="col-12" v-if="order.extraComments">
 						<h3 class="md-title">Comentarios extras</h3>
 						<p>{{ order.extraComments }}</p>
 					</div>
+					<template v-if="order.transitData">
+						<div class="col-12">
+							<h3 class="md-title">Detalles de env&iacute;o</h3>
+						</div>
+						<div class="col-12">
+							<ul class="order-details-list">
+								<li class="details-item">
+									<strong>Paqueter&iacute;a:</strong> {{ order.transitData.sender }}
+								</li>
+								<li class="details-item">
+									<strong>C&oacute;digo: </strong> {{ order.transitData.code }}
+								</li>
+							</ul>
+						</div>
+					</template>
 				</div>
 				<div class="w-100 px-0 my-2">
 					<md-divider class="w-100"></md-divider>
