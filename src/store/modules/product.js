@@ -80,6 +80,7 @@ const actions = {
 	async getGlasses({ commit, state }) {
 		try {
 			commit('SET_LOADING', true)
+			console.log('filters: ', state.filters)
 			const { data } = await api.getGlasses(state.filters)
 			commit('SET_GLASSES', data)
 		} catch (error) {
