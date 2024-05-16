@@ -82,22 +82,22 @@ export default {
             line-height: 1.4em;
         }
     }
-    ::v-deep .md-radio{
-        margin-bottom: 10px;
-        max-width: 500px;
-    }
-    ::v-deep .md-radio .md-radio-container{
-        border-color: #fff !important;
-    }
-    ::v-deep .md-field.md-theme-default:after {
-        background-color: white !important;
-    }
-    ::v-deep .md-field.md-theme-default:before {
-        background-color: white !important;
-    }
-    ::v-deep .md-radio-label{
-        width: 100% !important;
-        height: auto !important;
-    }
+    //::v-deep .md-radio{
+    //    margin-bottom: 10px;
+    //    max-width: 500px;
+    //}
+    //::v-deep .md-radio .md-radio-container{
+    //    border-color: #fff !important;
+    //}
+    //::v-deep .md-field.md-theme-default:after {
+    //    background-color: white !important;
+    //}
+    //::v-deep .md-field.md-theme-default:before {
+    //    background-color: white !important;
+    //}
+    //::v-deep .md-radio-label{
+    //    width: 100% !important;
+    //    height: auto !important;
+    //}
 }
 </style>

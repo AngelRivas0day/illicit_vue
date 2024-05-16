@@ -2,7 +2,6 @@
     <div class="checkout-main">
         <md-dialog class="dialog" :md-active.sync="showDialog" @md-closed="getAddresses">
             <md-dialog-title>Direcci&oacute;n de env&iacute;o</md-dialog-title>
-            <AddressForm />
         </md-dialog>
         <md-dialog class="graduation-dialog" :md-fullscreen="false" :md-active.sync="showHelp">
             <md-dialog-title>¿Cómo subir mi graduación?</md-dialog-title>
@@ -80,7 +79,6 @@ import { required } from 'vuelidate/lib/validators'
 export default {
     name: 'PurchaseForm',
     components: {
-        AddressForm:    () => import('@/views/User/Addresses/AddressForm.vue'),
         Graduation:     () => import('./Graduation'),
         MountMaterials: () => import('./MountMaterials'),
         LenseMaterials: () => import('./LenseMaterials'),

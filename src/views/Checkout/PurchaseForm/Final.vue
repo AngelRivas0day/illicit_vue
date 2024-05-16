@@ -91,7 +91,6 @@ export default {
     delimiters: ['${', '}'], // Avoid Twig conflicts
     components: {
         StripeCheckout,
-        AddressForm: () => import('@/views/User/Addresses/AddressForm.vue'),
         Coupons: () => import('./Coupons.vue')
     },
     async mounted(){

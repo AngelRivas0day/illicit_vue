@@ -25,40 +25,32 @@ import './plugins/Sentry'
 import './directives'
 
 // styles
-import './assets/css/mainTheme.scss'
-import './assets/css/fieldTheme.scss'
 import '../node_modules/animate.css/animate.min.css'
+import './assets/scss/_light_theme.scss';
 
 // helpers
 import interceptorSetup from './helpers/interceptor'
+import { getAuth } from "firebase/auth";
 
 interceptorSetup()
 Vue.prototype.$store = store
-Vue.material.locale.dateFormat = 'dd/MM/yyyy'
 Vue.$cookies.config('1d')
 
-
-router.beforeEach((to, from, next)=>{
-  if(to.matched.some(record=>record.meta.requiresAuth)){
-    if(store.getters['user/isLoggedIn']){
-      next()
-      return 
-    }
-    next('/auth')
-  }else{
-    next()
-  }
+router.beforeEach((to, from, next) => {
+	const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+	const isAuthenticated = getAuth().currentUser;
+	next(requiresAuth && !isAuthenticated ? '/auth' : undefined)
 });
 
 Vue.config.productionTip = false
 
 new Vue({
-  sockets: {
-    connect(){
-      console.log("Socket connected!")
-    }
-  },
-  router,
-  store,
-  render: h => h(App)
+	sockets: {
+		connect() {
+			console.log("Socket connected!")
+		}
+	},
+	router,
+	store,
+	render: h => h(App)
 }).$mount('#app')

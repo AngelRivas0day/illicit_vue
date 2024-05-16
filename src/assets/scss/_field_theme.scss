@@ -1,0 +1,9 @@
+@import "~vue-material/dist/theme/engine";
+
+@include md-register-theme("field-theme", (
+  primary: #dadada,
+  accent: #333,
+  theme: light,
+));
+
+@import "~vue-material/dist/components/MdField/theme";

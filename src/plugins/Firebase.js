@@ -1,13 +1,14 @@
 // import Vue from 'vue'
-import firebase from 'firebase'
+import { initializeApp } from "firebase/app";
 
 const config = {
-    apiKey: 'AIzaSyB6YVfPzY9e4R7sVD7aC5o5cpW_0TEQMAs',
-    authDomain: 'illicit-optica.firebaseapp.com',
-    databaseURL: 'https://illicit-optica.firebaseio.com',
-    projectId: 'illicit-optica',
-    storageBucket: 'illicit-optica.appspot.com',
-    messagingSenderId: '685773728849'
+    apiKey: "AIzaSyDe_Ye6n3OhmmOJSGt3kBC1cmXLlRU_120",
+    authDomain: "illicit-b2266.firebaseapp.com",
+    projectId: "illicit-b2266",
+    storageBucket: "illicit-b2266.appspot.com",
+    messagingSenderId: "637553011653",
+    appId: "1:637553011653:web:5ae40f02901b814f7fb9ac",
+    measurementId: "G-R83WCEESCK"
   };
 
-  firebase.initializeApp(config);
+  initializeApp(config);

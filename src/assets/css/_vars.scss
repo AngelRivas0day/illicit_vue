@@ -4,57 +4,14 @@ $break-large: "screen and (min-width: 992px)";
 $break-extra: "screen and (min-width: 1200px)";
 $main-black: rgb(26,26,26);
 $main-red: rgb(147,41,32);
-$terciary-color: "";
 $gray: #C4C4C4;
 $main-green: #2ec5c5;
 $main-green-mate: #24919c;
-
-// $primary-color: #f9f9f9;
-// $secondary-color: #222222;
-// $tertiary-color: #24919c;
-// $quaternary-color: #AD9C9C;
-// $quinary-color: #FAFAFA;
 
 $primary-color: #f9f9f9;
 $secondary-color: #222222;
 $tertiary-color: #24919c;
 $quaternary-color: #FF5E5B;
-
-@mixin white_form{
-    ::v-deep .md-field{
-        color: black !important;
-        input{
-            -webkit-text-fill-color: #333333 !important;
-        }
-        i:after{
-            height: 0px !important;
-        }
-    }
-    
-    ::v-deep .md-textarea{
-        -webkit-text-fill-color: #333333 !important;
-    }
-
-    ::v-deep .md-field.md-theme-default label{
-        color: black !important;
-    }
-    
-    ::v-deep .md-field.md-theme-default.md-focused .md-icon{
-        color: #2ec5c5 !important;
-    }
-    
-    ::v-deep .md-field.md-theme-default:after {
-        background-color: black !important;
-    }
-    
-    ::v-deep .md-field.md-theme-default:before {
-        background-color: black !important;
-    }
-
-    ::v-deep .md-count{
-        color: #333 !important;
-    }
-}
 
 @mixin simple-button($text-color, $hover-color, $bg-color){
     display: block;
@@ -337,28 +294,28 @@ $quaternary-color: #FF5E5B;
   opacity: 0
 }
 
-.md-stroked{
-    border: 1px solid rgba(33, 33, 33, .6) !important;
-    border-radius: 3px !important;
-    &.md-basic{
-        color: #222222 !important;
-        border: 1x solid #222222 !important;
-    }
-    &.md-primary{
-        color: #2ec5c5 !important;
-        border: 1px solid #2ec5c5 !important;
-    }
-    &.md-accent{
-        color: #ff5252 !important;
-        border: 1px solid #ff5252 !important;
-    }
-}
+//.md-stroked{
+//    border: 1px solid rgba(33, 33, 33, .6) !important;
+//    border-radius: 3px !important;
+//    &.md-basic{
+//        color: #222222 !important;
+//        border: 1x solid #222222 !important;
+//    }
+//    &.md-primary{
+//        color: #2ec5c5 !important;
+//        border: 1px solid #2ec5c5 !important;
+//    }
+//    &.md-accent{
+//        color: #ff5252 !important;
+//        border: 1px solid #ff5252 !important;
+//    }
+//}
 
-.md-raised{
-    &.md-primary{
-        color: white !important;
-    }
-}
+//.md-raised{
+//    &.md-primary{
+//        color: white !important;
+//    }
+//}
 
 .text-decoration-line-through{
     text-decoration: line-through !important;

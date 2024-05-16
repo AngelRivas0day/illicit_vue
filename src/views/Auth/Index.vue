@@ -1,100 +1,46 @@
 <template>
     <div class="auth">
         <div class="auth__form">
-            <!-- <keep-alive> -->
-                <component @clicked="changeComponent" :is="activeComponent" />
-            <!-- </keep-alive> -->
+			<component @clicked="changeComponent" :is="activeComponent"/>
         </div>
         <div v-responsive.lg.xl class="auth__image">
-            <div class="image__logo">
-                <!-- <img src="" alt=""> -->
-            </div>
+            <div class="image__logo"></div>
             <img src="@/assets/img/login_bg.jpg" alt="">
         </div>
     </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
-
 export default {
     name: 'Auth',
-    components: { 
+    components: {
         Login: () => import(/* webpackChunkName: "LoginComponent" */'./Login/Index'),
         Register: () => import(/* webpackChunkName: "RegisterComponent" */'./Register/Index')
     },
-    computed: {
-        ...mapState('user',{
-            isLoading: 'isLoading'
-        })
-    },
-    data: () => ({
-        activeComponent: 'Login'
-    }),
+	data: () => ({
+		activeComponent: 'Login'
+	}),
     methods: {
-        changeComponent(component){
-            this.activeComponent = component
+		/**
+		 * @description
+		 * The `changeComponent` is a method that switches the active component to the component string
+		 * passed as an argument. By changing the string value of the activeComponent, the component will be
+		 * re-rendered and displayed to the user.
+		 *
+		 * The values it expects are 'Login' or 'Register'. The method will set the activeComponent to the
+		 * component string passed as an argument. If the component string is not equal to either 'Login' or 'Register',
+		 * then the activeComponent will be set to 'Login'.
+		 *
+		 * The method is called when the user clicks on either the 'Login' or 'Register' button.
+		 * @param {String} component
+		 */
+        changeComponent(component) {
+			// If the component string is not equal to either 'Login' or 'Register', then set the activeComponent to 'Login'
+			// Otherwise, set the activeComponent to the component string.
+			this.activeComponent = component !== 'Login' && component !== 'Register' ?
+				'Login' :
+				component;
         }
     }
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/assets/css/_vars';
-
-.auth{
-    background: #dadada;
-    .auth__form{
-        flex: 1;
-    }
-    &__image{
-        flex: 1;
-    }
-    @media #{$break-medium}{
-        height: 100vH;
-        @include flex("row","stretch","center");
-        &__image{
-            position: relative;
-            .image__logo{
-                width: 30px;
-                height: 30px;
-                position: absolute;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(255,255,255,.6);
-            }
-            img{
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-            }
-        }
-    }
-}
-
-::v-deep .md-field.md-theme-default{
-    color: black !important;
-    input{
-        -webkit-text-fill-color: #333333 !important;
-    }
-    i:after{
-        height: 0px !important;
-    }
-}
-
-::v-deep .md-field.md-theme-default label{
-    color: black !important;
-}
-
-::v-deep .md-field.md-theme-default.md-focused .md-icon{
-    color: #2ec5c5 !important;
-}
-
-::v-deep .md-field.md-theme-default:after {
-    background-color: black !important;
-}
-
-::v-deep .md-field.md-theme-default:before {
-    background-color: black !important;
-}
-</style>

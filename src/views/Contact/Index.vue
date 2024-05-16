@@ -143,7 +143,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "@/assets/css/_vars";
-@import "@/assets/css/buttonTheme";
 
 .contact{
     @include flex("column","stretch","center");

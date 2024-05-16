@@ -23,7 +23,7 @@ const actions = {
     async getPins({commit}){
         try {
             commit('SET_LOADING', true)
-            const { data } = await api.getAll('pins')
+            const { data } = await api.getAll('locations')
             commit('SET_PINS', data)
         } catch (error) {
             this._vm.$sentry.captureException(error)

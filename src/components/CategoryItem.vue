@@ -1,28 +1,29 @@
 <template>
     <div class="category-item">
-        <img @click="goToCategory(category)" :src="category.img" alt="" class="item-image">
-        <div @click="goToCategory(category)" class="item-label text-center">
-            <div>{{category.label}}</div>
+        <img
+			@click="$router.push({name: 'Products', query: { category_id: category.id }})"
+			:src="category.image"
+			:alt="'Imagen de la categoría de lentes' + category.name"
+			class="item-image"
+		>
+        <div
+			@click="$router.push({name: 'Products', query: { category_id: category.id }})"
+			class="item-label text-center"
+		>
+            <div>{{category.name}}</div>
         </div>
     </div>
 </template>
 
 <script>
-
-
 export default {
     name: 'CategoryItem',
     props: {
         category: {
             type: Object,
-            required: true
+            required: true,
         }
     },
-    methods:{
-        goToCategory({category}){
-            this.$router.push({name: 'Products', params: {category: category}})
-        }
-    }
 }
 </script>
 
@@ -43,6 +44,11 @@ export default {
         width: 220px;
         height: 220px;
         object-fit: cover;
+		transition: transform 0.3s, box-shadow 0.3s;
+		&:hover {
+			transform: scale(1.03);
+			box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.6);
+		}
     }
     .item-label{
         cursor: pointer;
