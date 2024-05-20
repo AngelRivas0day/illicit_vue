@@ -20,7 +20,7 @@
         <div class="products__content">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-12" v-if="!this.eventId">
                         <search-filters
                             :filters.sync="filters"
                             @filters-changed="fetchCategoryProducts()"
@@ -33,9 +33,7 @@
                                 v-if="product.designs.length > 0"
                                 class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4"
                             >
-                                <template>
-                                    <ProductCard :product="product" />
-                                </template>
+                                <ProductCard :product="product" />
                             </div>
                         </template>
                         <template v-if="products.length === 0">
@@ -62,7 +60,7 @@
                     </template>
                     <div class="col-12 text-center">
                         <button
-                            @click="fetchCategoryProducts(true)"
+                            @click="fetchDataFunction(true)"
                             class="see-more"
                         >
                             <span>ver m&aacute;s</span>
@@ -95,19 +93,22 @@ export default {
             });
             return;
         }
+        this.setWhiteIcons();
         this.filters.end = { value: this.pageSize };
-
         if (event_id) {
+            this.fetchDataFunction = this.fetchEventProducts;
             this.eventId = event_id;
             this.fetchEvent();
             return;
         }
+        this.fetchDataFunction = this.fetchCategoryProducts;
         this.categoryId = category_id;
         this.fetchCategory();
     },
     data: () => ({
         categoryId: null,
         eventId: null,
+        fetchDataFunction: null,
 
         headerLabel: null,
         headerImage: null,
@@ -219,7 +220,7 @@ export default {
         async fetchEventProducts(appendResults = false) {
             try {
                 this.loading = true;
-                const { data } = await Get({
+                const { data = [] } = await Get({
                     endpoint: `events/${this.eventId}/products?${this.getFiltersAsQueryParams()}`,
                     useToken: false,
                 });
@@ -232,7 +233,7 @@ export default {
         async fetchCategoryProducts(appendResults = false) {
             try {
                 this.loading = true;
-                const { data } = await Get({
+                const { data = [] } = await Get({
                     endpoint: `categories/${this.categoryId}/products?${this.getFiltersAsQueryParams()}`,
                     useToken: false,
                 });

@@ -1,27 +1,44 @@
 <template>
     <div class="maps">
         <div class="maps-inner">
-            <div class="maps__side" :class="[isTransition ? 'animate' : 'no-animate']">
+            <div
+                class="maps__side"
+                :class="[isTransitioning ? 'animate' : 'no-animate']"
+            >
                 <div class="map__side-inner">
                     <h1>{{ currentPin.street }}</h1>
-                    <span>
-                        # {{ currentPin.extNumber }}
-                    </span>
+                    <span> # {{ currentPin.extNumber }} </span>
                     <p class="mb-4">
                         {{ currentPin.description }}
                     </p>
-                    <button @click="openGoogleMaps(currentPin.link)" class="maps-button">
+                    <button
+                        @click="openGoogleMaps(currentPin.link)"
+                        class="maps-button"
+                    >
                         <div>GOOGLE MAPS</div>
                     </button>
                 </div>
                 <div class="map__side-controls">
                     <template v-if="showControls">
-                        <button class="controls--prev" @click="setPin(currentPinIndex, true, false)">anterior</button>
-                        <button class="controls--next" @click="setPin(currentPinIndex, false, true)">siguiente</button>
+                        <button
+                            class="controls--prev"
+                            @click="setPin(currentPinIndex, true, false)"
+                        >
+                            anterior
+                        </button>
+                        <button
+                            class="controls--next"
+                            @click="setPin(currentPinIndex, false, true)"
+                        >
+                            siguiente
+                        </button>
                     </template>
                 </div>
             </div>
-            <div class="maps__render-map" :class="[isTransition ? 'animate' : 'no-animate']">
+            <div
+                class="maps__render-map"
+                :class="[isTransitioning ? 'animate' : 'no-animate']"
+            >
                 <gmap-map
                     v-if="pinsLoaded"
                     class="map"
@@ -29,9 +46,7 @@
                     :zoom="16"
                     :options="mapStyle"
                 >
-                    <gmap-marker
-                        :position="currentPin.marker"
-                    ></gmap-marker>
+                    <gmap-marker :position="currentPin.marker"></gmap-marker>
                 </gmap-map>
             </div>
         </div>
@@ -39,31 +54,30 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
-import transition from '@/mixins/transition'
+import { mapActions, mapState } from "vuex";
+import transition from "@/mixins/transition";
 
 export default {
     name: "Maps",
     mixins: [transition],
     computed: {
-        ...mapState('maps',{
-            pins: 'pins',
-            isLoading: 'isLoading'
+        ...mapState("maps", {
+            pins: "pins",
+            isLoading: "isLoading",
         }),
-        showControls(){
-            return this.pins.length > 1
-        }
+        showControls() {
+            return this.pins.length > 1;
+        },
     },
     mounted() {
-        this.setWhiteIcons()
-        this.getPins()
-            .finally(()=>{
-                this.setFirstPin()
-                this.pinsLoaded = true
-            })
+        this.setWhiteIcons();
+        this.getPins().finally(() => {
+            this.setFirstPin();
+            this.pinsLoaded = true;
+        });
     },
-    destroyed(){
-        this.setWhiteIcons()
+    destroyed() {
+        this.setWhiteIcons();
     },
     data: () => ({
         mapStyle: {
@@ -256,30 +270,32 @@ export default {
         },
         currentPin: {},
         currentPinIndex: null,
-        pinsLoaded: false
+        pinsLoaded: false,
     }),
     methods: {
-        ...mapActions('background',{
-            setWhiteIcons: 'setWhiteIcons',
-            unsetWhiteIcons: 'unsetWhiteIcons'
+        ...mapActions("background", {
+            setWhiteIcons: "setWhiteIcons",
+            unsetWhiteIcons: "unsetWhiteIcons",
         }),
-        ...mapActions('maps',{
-            getPins: 'getPins'
+        ...mapActions("maps", {
+            getPins: "getPins",
         }),
-        setFirstPin(){
-            this.currentPin = this.pins[0]
-            this.currentPinIndex = this.pins.findIndex(x => x.id === this.currentPin.id)
+        setFirstPin() {
+            this.currentPin = this.pins[0];
+            this.currentPinIndex = this.pins.findIndex(
+                (x) => x.id === this.currentPin.id,
+            );
         },
-        setPin(index, prev = false, next = false){
+        setPin(index, prev = false, next = false) {
             this.transition(() => {
-                if(next && index + 1 != this.pins.length){
-                    this.currentPin = this.pins[index + 1]
-                    this.currentPinIndex += 1
-                }else if(prev && index != 0){
-                    this.currentPin = this.pins[index - 1]
-                    this.currentPinIndex -= 1
+                if (next && index + 1 != this.pins.length) {
+                    this.currentPin = this.pins[index + 1];
+                    this.currentPinIndex += 1;
+                } else if (prev && index != 0) {
+                    this.currentPin = this.pins[index - 1];
+                    this.currentPinIndex -= 1;
                 }
-            })
+            });
             // if(next && index + 1 != this.pins.length){
             //     this.currentPin = this.pins[index + 1]
             //     this.currentPinIndex += 1
@@ -288,9 +304,9 @@ export default {
             //     this.currentPinIndex -= 1
             // }
         },
-        openGoogleMaps(link){
-            window.open(link, '_blank')
-        }
+        openGoogleMaps(link) {
+            window.open(link, "_blank");
+        },
     },
 };
 </script>
@@ -298,8 +314,8 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/css/vars";
 
-@include transition-common('.maps__side', 'white');
-@include transition-common('.maps__render-map', 'white');
+@include transition-common(".maps__side", "white");
+@include transition-common(".maps__render-map", "white");
 
 .maps {
     height: 100vh;
@@ -334,7 +350,7 @@ export default {
                     margin-top: 15px;
                     color: white;
                 }
-                .maps-button{
+                .maps-button {
                     // @include secondary-button-br($main-green, $main-green);
                     @include small-button("white", "black", "white");
                 }

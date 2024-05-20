@@ -1,58 +1,231 @@
 <template>
     <div class="product">
-        <template v-if="isLoading">
+        <template v-if="loading">
             <SkeletonProduct />
         </template>
         <template v-else>
-            <MainBlock />
-            <Specs />
+            <sign-up-warning :active.sync="showSignUpDialog" />
+            <product-details
+                :product="product"
+                :isAddedToFavorites="isFavorite"
+                :loadingFavorite="loadingFavorite"
+                :hasOffer="hasOffer"
+                :offerPrice="offerPrice"
+                :loadingOffer="loadingOffer"
+                @toggleFavorite="toggleFavorite()"
+                @goToCheckout="goToCheckout()"
+            />
+            <product-tabs :product="product" />
         </template>
     </div>
 </template>
 
 <script>
-import MainBlock from './MainBlock/Index'
-import Specs from './Specs/Index'
-import SkeletonProduct from './SkeletonProduct'
-import { mapActions, mapState } from 'vuex'
-import { mapFields } from 'vuex-map-fields';
+import SkeletonProduct from "./SkeletonProduct";
+import ProductDetails from "./ProductDetails";
+import SignUpWarning from "./SignUpWarning";
+import ProductTabs from "./ProductTabs";
+import { getAuth } from "firebase/auth";
+import { Get, Post } from "@/api/api";
+import { mapActions } from "vuex";
 
 export default {
-    name: 'Product',
+    name: "Product",
     components: {
-        MainBlock,
-        Specs,
-        SkeletonProduct
+        SkeletonProduct,
+        ProductDetails,
+        ProductTabs,
+        SignUpWarning,
     },
-    async mounted(){
-        let { id } = this.$route.params
-        await this.getGlass(id)
-        this.lenseSpecs = { // vuex binding
-            id: this.glass.id,
-            name: this.glass.name,
-            slug: this.glass.slug,
-        }
-        if(this.glass.offer)
-            this.lenseSpecs.price = parseInt(this.glass.price) - parseInt(this.glass.offer.value)
-        else
-            this.lenseSpecs.price = parseInt(this.glass.price) 
-    },
-    computed: {
-        ...mapState('product',{
-            isLoading: 'isLoading',
-            glass: 'glass'
-        }),
-        ...mapFields('order',{
-            lenseSpecs: 'lenseSpecs'
-        })
+    data: () => ({
+        productId: null,
+        product: null,
+        loading: true,
+
+        isFavorite: false,
+        loadingFavorite: false,
+
+        offerId: null,
+        hasOffer: null,
+        offerPrice: null,
+        loadingOffer: false,
+
+        userUnsubscribe: null,
+        isUserLoggedIn: false,
+        showSignUpDialog: false,
+    }),
+    async mounted() {
+        const { id: prductId } = this.$route.params;
+        this.unsetWhiteIcons();
+        this.productId = prductId;
+        this.userUnsubscribe = getAuth().onAuthStateChanged(async (user) => {
+            this.isUserLoggedIn = !!user;
+            await this.fetchProductAndVerify();
+            this.watchQueryChanges();
+        });
     },
     methods: {
-        ...mapActions('product',{
-            getGlass: 'getGlass',
-        })
-    }
-}
+        ...mapActions("background", {
+            unsetWhiteIcons: "unsetWhiteIcons",
+        }),
+        async fetchProductAndVerify() {
+            await this.fetchProduct();
+            await Promise.allSettled([
+                this.verifyIfProductHasOffer(),
+                this.verifyIfProductIsFavorite(),
+            ]);
+        },
+        watchQueryChanges() {
+            this.$watch(
+                () => this.$route.params.id,
+                async (newProductId) => {
+                    this.productId = newProductId;
+                    await this.fetchProductAndVerify();
+                },
+            );
+        },
+        async fetchProduct() {
+            try {
+                this.loading = true;
+                const { data } = await Get({
+                    endpoint: `glasses/${this.productId}`,
+                    useToken: false,
+                });
+                this.product = { ...data };
+                this.loading = false;
+            } catch (error) {
+                this.loading = false;
+                this.$notify({
+                    type: "error",
+                    title: "Error",
+                    message: "Ha ocurrido un error al cargar el producto",
+                });
+            }
+        },
+        async verifyIfProductHasOffer() {
+            const setEmptyOffer = () => {
+                this.offerId = null;
+                this.hasOffer = false;
+                this.offerPrice = null;
+            };
+            try {
+                this.loadingOffer = true;
+                const { data = null } = await Get({
+                    endpoint: `glasses/${this.productId}/offer`,
+                    useToken: false,
+                });
+                const {
+                    hasOffer = false,
+                    offerPrice = false,
+                    offerId = null,
+                } = data;
+                if (!hasOffer) {
+                    setEmptyOffer();
+                    this.loadingOffer = false;
+                    return;
+                }
+                this.offerId = offerId;
+                this.hasOffer = hasOffer;
+                this.offerPrice = offerPrice;
+                this.loadingOffer = false;
+            } catch (error) {
+                setEmptyOffer();
+                this.loadingOffer = false;
+            }
+        },
+        async verifyIfProductIsFavorite() {
+            try {
+                this.loadingFavorite = true;
+                const { data = [] } = await Get({
+                    endpoint: "clients/favorites",
+                    useToken: true,
+                });
+                this.isFavorite = data.some(
+                    (favorite) => favorite.glassId === this.productId,
+                );
+                this.loadingFavorite = false;
+            } catch (error) {
+                this.loadingFavorite = false;
+                this.$notify({
+                    type: "error",
+                    title: "Error",
+                    message:
+                        "Ha ocurrido un error al verificar si el producto es favorito",
+                });
+            }
+        },
+        goToCheckout() {
+            if (!this.isUserLoggedIn) {
+                this.showSignUpDialog = true;
+                return;
+            }
+            this.$router.push({
+                name: "Checkout",
+                params: { id: this.productId },
+                query: this.hasOffer ? { offer_id: this.offerId } : {},
+            });
+        },
+        async toggleFavoriteInBackend() {
+            try {
+                this.loadingFavorite = true;
+                const { data } = await Post({
+                    endpoint: "clients/favorites",
+                    useToken: true,
+                    data: { glassId: this.productId },
+                });
+                const { message, added } = data;
+                this.$notify({
+                    type: "success",
+                    title: "Éxito",
+                    message,
+                });
+                this.isFavorite = added;
+                this.loadingFavorite = false;
+            } catch (error) {
+                this.loadingFavorite = false;
+                this.$notify({
+                    type: "error",
+                    title: "Error",
+                    message:
+                        "Ha ocurrido un error al agregar el producto a favoritos",
+                });
+            }
+        },
+        toggleFavoriteInStorage() {
+            const favorites =
+                JSON.parse(localStorage.getItem("favorites")) || [];
+            const isFavorite = favorites.some(
+                (favorite) => favorite.glassId === this.productId,
+            );
+            if (isFavorite) {
+                const newFavorites = favorites.filter(
+                    (favorite) => favorite.glassId !== this.productId,
+                );
+                localStorage.setItem("favorites", JSON.stringify(newFavorites));
+                this.isFavorite = false;
+                this.$notify({
+                    type: "success",
+                    title: "Éxito",
+                    message: "Producto eliminado de favoritos",
+                });
+                return;
+            }
+            const newFavorites = [...favorites, { glassId: this.productId }];
+            localStorage.setItem("favorites", JSON.stringify(newFavorites));
+            this.isFavorite = true;
+            this.$notify({
+                type: "success",
+                title: "Éxito",
+                message: "Producto agregado a favoritos",
+            });
+        },
+        async toggleFavorite() {
+            this.isUserLoggedIn
+                ? await this.toggleFavoriteInBackend()
+                : this.toggleFavoriteInStorage();
+        },
+    },
+};
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
