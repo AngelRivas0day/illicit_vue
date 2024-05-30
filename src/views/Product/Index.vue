@@ -1,10 +1,11 @@
 <template>
     <div class="product">
-        <template v-if="loading">
-            <SkeletonProduct />
-        </template>
+        <SkeletonProduct v-if="loading" />
         <template v-else>
-            <sign-up-warning :active.sync="showSignUpDialog" />
+            <sign-up-warning
+                :productId="productId"
+                :active.sync="showSignUpDialog"
+            />
             <product-details
                 :product="product"
                 :isAddedToFavorites="isFavorite"
@@ -14,6 +15,7 @@
                 :loadingOffer="loadingOffer"
                 @toggleFavorite="toggleFavorite()"
                 @goToCheckout="goToCheckout()"
+                @changeDesign="selectedDesignName = $event.name"
             />
             <product-tabs :product="product" />
         </template>
@@ -40,6 +42,7 @@ export default {
     data: () => ({
         productId: null,
         product: null,
+        selectedDesignName: null,
         loading: true,
 
         isFavorite: false,
@@ -64,16 +67,22 @@ export default {
             this.watchQueryChanges();
         });
     },
+    destroyed() {
+        if (this.userUnsubscribe) this.userUnsubscribe();
+    },
     methods: {
         ...mapActions("background", {
             unsetWhiteIcons: "unsetWhiteIcons",
         }),
         async fetchProductAndVerify() {
             await this.fetchProduct();
-            await Promise.allSettled([
+            const verifyFunctions = [
                 this.verifyIfProductHasOffer(),
-                this.verifyIfProductIsFavorite(),
-            ]);
+                this.isUserLoggedIn
+                    ? this.verifyIfProductIsFavoriteInAPI()
+                    : this.verifyIfProductIsFavoriteInLocalStorage(),
+            ];
+            await Promise.allSettled(verifyFunctions);
         },
         watchQueryChanges() {
             this.$watch(
@@ -96,9 +105,10 @@ export default {
             } catch (error) {
                 this.loading = false;
                 this.$notify({
+                    group: "user",
                     type: "error",
                     title: "Error",
-                    message: "Ha ocurrido un error al cargar el producto",
+                    text: "Ha ocurrido un error al cargar el producto",
                 });
             }
         },
@@ -133,7 +143,14 @@ export default {
                 this.loadingOffer = false;
             }
         },
-        async verifyIfProductIsFavorite() {
+        async verifyIfProductIsFavoriteInLocalStorage() {
+            const favorites =
+                JSON.parse(localStorage.getItem("favorites")) || [];
+            this.isFavorite = favorites.some(
+                (favorite) => favorite.glassId === this.productId,
+            );
+        },
+        async verifyIfProductIsFavoriteInAPI() {
             try {
                 this.loadingFavorite = true;
                 const { data = [] } = await Get({
@@ -147,10 +164,10 @@ export default {
             } catch (error) {
                 this.loadingFavorite = false;
                 this.$notify({
+                    group: "user",
                     type: "error",
                     title: "Error",
-                    message:
-                        "Ha ocurrido un error al verificar si el producto es favorito",
+                    text: "Ha ocurrido un error al verificar si el producto es favorito",
                 });
             }
         },
@@ -159,10 +176,14 @@ export default {
                 this.showSignUpDialog = true;
                 return;
             }
+            const query = {
+                design_name: this.selectedDesignName,
+            };
+            if (this.hasOffer) query["offer_id"] = this.offerId;
             this.$router.push({
                 name: "Checkout",
                 params: { id: this.productId },
-                query: this.hasOffer ? { offer_id: this.offerId } : {},
+                query,
             });
         },
         async toggleFavoriteInBackend() {
@@ -175,19 +196,20 @@ export default {
                 });
                 const { message, added } = data;
                 this.$notify({
+                    group: "user",
                     type: "success",
                     title: "Éxito",
-                    message,
+                    text: message,
                 });
                 this.isFavorite = added;
                 this.loadingFavorite = false;
             } catch (error) {
                 this.loadingFavorite = false;
                 this.$notify({
+                    group: "user",
                     type: "error",
                     title: "Error",
-                    message:
-                        "Ha ocurrido un error al agregar el producto a favoritos",
+                    text: "Ha ocurrido un error al agregar el producto a favoritos",
                 });
             }
         },
@@ -204,9 +226,10 @@ export default {
                 localStorage.setItem("favorites", JSON.stringify(newFavorites));
                 this.isFavorite = false;
                 this.$notify({
+                    group: "user",
                     type: "success",
                     title: "Éxito",
-                    message: "Producto eliminado de favoritos",
+                    text: "Producto eliminado de favoritos",
                 });
                 return;
             }
@@ -214,9 +237,10 @@ export default {
             localStorage.setItem("favorites", JSON.stringify(newFavorites));
             this.isFavorite = true;
             this.$notify({
+                group: "user",
                 type: "success",
                 title: "Éxito",
-                message: "Producto agregado a favoritos",
+                text: "Producto agregado a favoritos",
             });
         },
         async toggleFavorite() {

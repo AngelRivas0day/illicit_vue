@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import User from "@/views/User/Index.vue";
 
 Vue.use(VueRouter);
 
@@ -16,29 +15,37 @@ const routes = [
         name: "Register",
         component: () =>
             import(
-                /* webpackChunkName: "Register" */ "../views/Auth/Register/Index.vue"
+                /* webpackChunkName: "Register" */ "../views/Register/Index.vue"
             ),
     },
     {
         path: "/inicio-sesion",
         name: "Login",
         component: () =>
-            import(
-                /* webpackChunkName: "Login" */ "../views/Auth/Login/Index.vue"
-            ),
+            import(/* webpackChunkName: "Login" */ "../views/Login/Index.vue"),
     },
     {
         path: "/verificar-correo-electronico",
-        name: "VerifyEmail",
+        name: "RegisterWelcome",
         component: () =>
             import(
-                /* webpackChunkName: "VerifyEmail" */ "../views/Auth/VerifyEmail/Index.vue"
+                /* webpackChunkName: "RegisterWelcome" */ "../views/RegisterWelcome/Index.vue"
             ),
     },
     {
         path: "/cuenta",
         name: "Account",
-        component: User,
+        component: () =>
+            import(/* webpackChunkName: "Account" */ "../views/User/Index.vue"),
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/cuenta/pedidos/:id",
+        name: "OrderDetails",
+        component: () =>
+            import(
+                /* webpackChunkName: "OrderDetails" */ "../views/OrderDetails/Index.vue"
+            ),
         meta: { requiresAuth: true },
     },
     {
@@ -57,7 +64,6 @@ const routes = [
                 /* webpackChunkName: "Productos" */ "../views/Products/Index.vue"
             ),
     },
-
     {
         path: "/productos/:id",
         name: "Product",
@@ -74,44 +80,47 @@ const routes = [
                 /* webpackChunkName: "Checkout" */ "../views/Checkout/Index.vue"
             ),
     },
+
     {
-        path: "/productos/payment/:id",
-        name: "Payment",
+        path: "/subir-graduacion",
+        name: "UploadGraduation",
         component: () =>
             import(
-                /* webpackChunkName: "Payment" */ "../views/Payment/Index.vue"
+                /* webpackChunkName: "UploadGraduation" */ "../views/UploadGraduation/Index.vue"
             ),
     },
     {
-        path: "/payment/success",
-        name: "PaymentSuccess",
+        path: "/completar-pago",
+        name: "CompletePayment",
         component: () =>
             import(
-                /* webpackChunkName: "PaymentSuccess" */ "../views/Payment/PaymentSuccess/Index.vue"
-            ),
-    },
-    {
-        path: "/payment/cancel",
-        name: "PaymentSuccess",
-        component: () =>
-            import(
-                /* webpackChunkName: "PaymentSuccess" */ "../views/Payment/PaymentCancel/Index.vue"
-            ),
-    },
-    {
-        path: "/payment/error",
-        name: "PaymentError",
-        component: () =>
-            import(
-                /* webpackChunkName: "PaymentError" */ "../views/Payment/Error.vue"
+                /* webpackChunkName: "CompletePayment" */ "../views/Payments/Complete/Index.vue"
             ),
     },
 
     {
+        path: "/pago-procesado",
+        name: "ProcessedPayment",
+        component: () =>
+            import(
+                /* webpackChunkName: "ProcessedPayment" */ "../views/Payments/Processed/Index.vue"
+            ),
+    },
+    {
+        path: "/pago-cancelado",
+        name: "CancelledPayment",
+        import: () =>
+            import(
+                /* webpackChunkName: "CancelledPayment" */ "../views/Payments/Cancelled/Index.vue"
+            ),
+    },
+    {
         path: "/ubicaciones",
         name: "Locations",
         component: () =>
-            import(/* webpackChunkName: "Maps" */ "../views/Maps/Index.vue"),
+            import(
+                /* webpackChunkName: "Locations" */ "../views/Maps/Index.vue"
+            ),
     },
     {
         path: "/contacto",

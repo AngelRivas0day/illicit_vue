@@ -7,6 +7,10 @@ export default {
             required: true,
             default: false,
         },
+        productId: {
+            type: String,
+            required: true,
+        },
     },
     computed: {
         showDialog: {
@@ -25,7 +29,13 @@ export default {
         md-content="Para poder hacer tu compra tienes que iniciar sesión. Es muy rápido hacerlo."
         md-confirm-text="Iniciar sesión"
         md-cancel-text="Cancelar"
-        @md-confirm="() => $router.push({ name: 'Login' })"
+        @md-confirm="
+            () =>
+                $router.push({
+                    name: 'Login',
+                    query: { from_route: 'Product', product_id: productId },
+                })
+        "
         @md-cancel="() => $emit('update:active', false)"
     />
 </template>

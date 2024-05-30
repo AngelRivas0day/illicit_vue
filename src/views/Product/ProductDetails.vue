@@ -1,9 +1,10 @@
 <script>
 import transition from "@/mixins/transition";
+import filters from "@/mixins/filters";
 
 export default {
     name: "ProductDetails",
-    mixins: [transition],
+    mixins: [transition, filters],
     props: {
         product: {
             type: Object,
@@ -48,16 +49,6 @@ export default {
                 : "Cargando...";
         },
     },
-    filters: {
-        currency(value) {
-            if (!value) return "";
-            const formattedValue = new Intl.NumberFormat("es-MX", {
-                style: "currency",
-                currency: "MXN",
-            }).format(value);
-            return formattedValue;
-        },
-    },
     methods: {
         changeDesign(design) {
             if (!design) return;
@@ -68,6 +59,7 @@ export default {
                     image: design.mainImage,
                     images: design.images,
                 };
+                this.$emit("changeDesign", this.currentDesign);
             });
         },
     },
