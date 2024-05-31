@@ -2,7 +2,7 @@
 import { Get } from "@/api/api";
 
 export default {
-    name: "ProcessedPayment",
+    name: "SuccessfulPayment",
     async mounted() {
         const { token } = this.$route.query;
         if (!token) {

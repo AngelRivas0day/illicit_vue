@@ -1,8 +1,12 @@
 <script>
 import { Get } from "@/api/api";
+import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
 export default {
     name: "CompletePayment",
+    components: {
+        StripeCheckout,
+    },
     mounted() {
         const { token = null } = this.$route.query;
         if (!token) {
@@ -17,9 +21,11 @@ export default {
         loading: false,
         invalidUrl: false,
         creatingSession: false,
+        sessionId: null,
         product: null,
         displayName: null,
-        errorMessage: null,
+        stripePubickKey:
+            "pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14",
     }),
     methods: {
         async fetchData() {
@@ -40,20 +46,27 @@ export default {
         },
         async goToCheckout() {
             try {
-                this.errorMessage = null;
                 this.creatingSession = true;
                 const { data } = await Get({
-                    endpoint: "/token-order/stripe-checkout",
+                    endpoint: "token-order/stripe-checkout",
                     useToken: this.urlToken,
                 });
                 const { sessionId } = data;
-                console.log({
-                    sessionId,
-                });
-                this.creatingSession = false;
+                this.sessionId = sessionId;
+                setTimeout(() => {
+                    this.creatingSession = false;
+                    this.$refs.stripeCheckout.redirectToCheckout();
+                }, 750);
             } catch (error) {
                 this.creatingSession = false;
-                this.errorMessage = error.message;
+                this.$notify({
+                    group: "user",
+                    type: "error",
+                    title: "Error",
+                    text:
+                        error.response?.data?.message ||
+                        "Ha ocurrido un error al crear la sesión de pago. Por favor, intenta de nuevo.",
+                });
             }
         },
     },
@@ -61,27 +74,63 @@ export default {
 </script>
 
 <template>
-    <div id="graduation">
-        <div class="row">
-            <template v-if="loading">
-                <div class="col-12"></div>
-            </template>
-            <template v-else-if="invalidUrl">
-                <div class="col-12"></div>
-            </template>
-            <template v-else-if="errorMessage">
-                <div class="col-12">
-                    {{ errorMessage }}
-                </div>
-            </template>
-            <template v-else>
-                <div class="col-12">
-                    {{ displayName }}
-                    {{ product }}
-                </div>
-            </template>
-        </div>
+    <div id="payment">
+        <template v-if="loading">
+            <div class="loading-container">
+                <h2 class="md-title">Cargando...</h2>
+            </div>
+        </template>
+        <template v-else-if="invalidUrl">
+            <div class="invalid-url-container">
+                <md-empty-state
+                    md-rounded
+                    md-icon="error"
+                    md-label="Enlace inválido"
+                    md-description="El enlace que has ingresado no es válido. Por favor, verifica que sea correcto."
+                />
+            </div>
+        </template>
+        <template v-else>
+            <stripe-checkout
+                ref="stripeCheckout"
+                :pk="stripePubickKey"
+                :session-id="sessionId"
+            />
+            <div class="checkout-container">
+                <md-empty-state
+                    md-icon="attach_money"
+                    md-label="¡Listo para pagar!"
+                    md-description="Haz clic en el botón para completar tu pago y continuar con el proceso de tu pedido."
+                >
+                    <md-button
+                        @click="goToCheckout"
+                        :disabled="creatingSession"
+                        class="md-primary md-raised"
+                    >
+                        {{
+                            creatingSession
+                                ? "Creando sesión..."
+                                : "Completar pago"
+                        }}
+                    </md-button>
+                </md-empty-state>
+            </div>
+        </template>
     </div>
 </template>
 
-<style lang="scss" scope></style>
+<style lang="scss" scope>
+#payment {
+    min-height: 100vh;
+    padding-top: 55px;
+    margin: 0 20px;
+    .checkout-container,
+    .loading-container,
+    .invalid-url-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: calc(100vh - 55px);
+    }
+}
+</style>

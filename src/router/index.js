@@ -99,11 +99,11 @@ const routes = [
     },
 
     {
-        path: "/pago-procesado",
-        name: "ProcessedPayment",
+        path: "/pago-exitoso",
+        name: "SuccessfulPayment",
         component: () =>
             import(
-                /* webpackChunkName: "ProcessedPayment" */ "../views/Payments/Processed/Index.vue"
+                /* webpackChunkName: "SuccessfulPayment" */ "../views/Payments/Successful/Index.vue"
             ),
     },
     {
