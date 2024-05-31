@@ -43,6 +43,14 @@ export default {
                     this.form.email,
                     this.form.password,
                 );
+                const tokenResult = await user.getIdTokenResult();
+                const isUserClient = !tokenResult.claims["admin"];
+                if (!isUserClient) {
+                    await signOut(auth);
+                    this.errorMessage = "Usuario no autorizado.";
+                    this.loading = false;
+                    return;
+                }
                 if (user.emailVerified === false) {
                     await sendEmailVerification(user);
                     await signOut(auth);

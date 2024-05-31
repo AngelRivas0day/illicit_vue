@@ -56,6 +56,17 @@ export default {
                     },
                     useToken: true,
                 });
+
+                // Sync the users favorite products with the database
+                const favorites =
+                    JSON.parse(localStorage.getItem("favorites")) || [];
+                if (favorites.length > 0)
+                    await Post({
+                        endpoint: "clients/favorites/sync",
+                        data: favorites,
+                        useToken: true,
+                    });
+
                 this.loading = false;
                 // Redirigir al usuario a la página de verificación de correo electrónico
                 await this.$router.push({ name: "RegisterWelcome" });

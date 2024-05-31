@@ -14,6 +14,14 @@
                             </md-card-content>
                         </md-card>
                     </div>
+                    <div class="col-12" v-if="showVerificationEmailWarning">
+                        <request-error-message
+                            message="Por favor verifica tu correo electrónico para poder utilizar todas las funcionalidades de la aplicación."
+                            @closed-message="
+                                showVerificationEmailWarning = false
+                            "
+                        />
+                    </div>
                     <div class="col-12" v-if="errorMessage">
                         <request-error-message
                             :message="errorMessage"
@@ -142,6 +150,7 @@ export default {
         errorMessage: null,
         showStoreReference: null,
         storeName: null,
+        showVerificationEmailWarning: false,
     }),
     methods: {
         /**
@@ -163,8 +172,10 @@ export default {
                     birth_day,
                     type,
                     store_name = null,
+                    email_verified,
                     ...restOfSettings
                 } = settings;
+                this.showVerificationEmailWarning = !email_verified;
                 this.form = restOfSettings;
                 this.email = email;
                 this.birthDay = birth_day;

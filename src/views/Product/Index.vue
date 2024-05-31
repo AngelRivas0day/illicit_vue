@@ -233,7 +233,10 @@ export default {
                 });
                 return;
             }
-            const newFavorites = [...favorites, { glassId: this.productId }];
+            const newFavorites = [
+                ...favorites,
+                { glassId: this.productId, glassName: this.product.name },
+            ];
             localStorage.setItem("favorites", JSON.stringify(newFavorites));
             this.isFavorite = true;
             this.$notify({
