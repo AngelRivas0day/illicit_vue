@@ -34,7 +34,10 @@ export default {
                     const defaultAddress = this.addresses.find(
                         (address) => address.default,
                     );
-                    if (defaultAddress) this.addressId = defaultAddress.id;
+                    if (defaultAddress) {
+                        this.addressId = defaultAddress.id;
+                        this.$emit("selectDeliveryAddress", defaultAddress.id);
+                    }
                 }
             },
             immediate: true,
