@@ -284,6 +284,7 @@ export default {
                             @selectPaymentMethod="onPaymentMethodSelected"
                             @selectDeliveryAddress="onDeliveryAddressSelected"
                             @selectDeliveryMethod="onDeliveryMethodSelected"
+                            @addressCreated="$emit('addressCreated')"
                         />
                         <extra-comments
                             @changeComments="onExtraCommentsChanged"

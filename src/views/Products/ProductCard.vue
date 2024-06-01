@@ -44,7 +44,6 @@ export default {
         },
     },
     mounted() {
-        console.log(this.product);
         if (this.product.offerId) {
             this.hasOffer = true;
             this.offerPrice = this.product.offerPrice;

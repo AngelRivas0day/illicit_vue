@@ -148,7 +148,7 @@ export default {
                 endpoint: "clients/addresses",
                 useToken: true,
             });
-            this.addresses = data;
+            this.addresses = [...data];
         },
         async verifyAndApplyOffer() {
             const { data } = await Get({
@@ -366,7 +366,8 @@ export default {
                     :creatingCheckoutSession="creatingCheckoutSession"
                     :creatingOrder="creatingOrder"
                     :sendingURLs="sendingURLs"
-                    @createOrder="createOrder()"
+                    @addressCreated="fetchAddresses"
+                    @createOrder="createOrder"
                     @finishProcessForUserStore="sendURLsToClient"
                 />
                 <stripe-checkout

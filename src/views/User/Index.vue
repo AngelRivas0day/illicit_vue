@@ -31,6 +31,7 @@ import Settings from "@/views/User/Settings.vue";
 import History from "@/views/User/History.vue";
 import Addresses from "@/views/User/Addresses.vue";
 import UpdatePassword from "@/views/User/UpdatePassword.vue";
+import { mapActions } from "vuex";
 
 export default {
     name: "User",
@@ -44,12 +45,17 @@ export default {
         activeTab: null,
     }),
     mounted() {
+        this.unsetWhiteIcons();
         if (this.$route.query.active_tab) {
             this.activeTab = this.$route.query.active_tab;
             this.$refs.userTabs.activeTab = this.activeTab;
         }
     },
     methods: {
+        ...mapActions("background", {
+            setWhiteIcons: "setWhiteIcons",
+            unsetWhiteIcons: "unsetWhiteIcons",
+        }),
         onTabChange(activeTab) {
             this.activeTab = activeTab;
             let query = { ...this.$route.query, active_tab: activeTab };

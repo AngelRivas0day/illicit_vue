@@ -1,6 +1,11 @@
 <script>
+import GoogleSignInWidget from "@/components/GoogleSignInWidget";
+
 export default {
     name: "AuthWrapper",
+    components: {
+        GoogleSignInWidget,
+    },
     props: {
         loading: {
             type: Boolean,
@@ -20,6 +25,7 @@ export default {
                 <md-progress-bar md-mode="indeterminate"></md-progress-bar>
             </div>
             <slot></slot>
+            <google-sign-in-widget />
             <div class="auth__form__footer">
                 <slot name="footer"></slot>
             </div>

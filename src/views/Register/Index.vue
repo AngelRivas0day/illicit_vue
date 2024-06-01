@@ -60,12 +60,14 @@ export default {
                 // Sync the users favorite products with the database
                 const favorites =
                     JSON.parse(localStorage.getItem("favorites")) || [];
-                if (favorites.length > 0)
+                if (favorites.length > 0) {
                     await Post({
                         endpoint: "clients/favorites/sync",
                         data: favorites,
                         useToken: true,
                     });
+                    localStorage.removeItem("favorites");
+                }
 
                 this.loading = false;
                 // Redirigir al usuario a la página de verificación de correo electrónico
@@ -198,7 +200,7 @@ export default {
                         <span class="md-error" v-if="!$v.form.email.required"
                             >El correo es requerido.</span
                         >
-                        <span class="md-error" v-if="!$v.form.email.email"
+                        <span class="md-error" v-else-if="!$v.form.email.email"
                             >El correo no es válido.</span
                         >
                     </md-field>
@@ -245,7 +247,7 @@ export default {
                         >
                         <span
                             class="md-error"
-                            v-if="!$v.form.password.minLength"
+                            v-else-if="!$v.form.password.minLength"
                             >La contrase&ntilde;a debe tener al menos 6
                             caracteres.</span
                         >
@@ -273,12 +275,12 @@ export default {
                         >
                         <span
                             class="md-error"
-                            v-if="!$v.form.repeatedPassword.sameAsPassword"
+                            v-else-if="!$v.form.repeatedPassword.sameAsPassword"
                             >Las contrase&ntilde;as no coinciden.</span
                         >
                         <span
                             class="md-error"
-                            v-if="!$v.form.repeatedPassword.minLength"
+                            v-else-if="!$v.form.repeatedPassword.minLength"
                             >La contrase&ntilde;a debe tener al menos 6
                             caracteres.</span
                         >

@@ -24,7 +24,7 @@ const state = {
         photochromatic: "",
         graduation_type: "",
         graduation_image: null,
-        extra: ""
+        extra: "",
     },
     extraComments: null,
     basePrice: null,
@@ -45,8 +45,8 @@ const state = {
     extrasCurrentPrice: 0,
     discountPrice: 0,
     // checkout session
-    session_id: null
-}
+    session_id: null,
+};
 
 const mutations = {
     updateField,
@@ -63,18 +63,18 @@ const mutations = {
     PAYMENT_SUCCESS(state, payload) {
         state.paymentStatus = payload;
     },
-    SET_DISCOUNT_CODE(state, payload){
-        if(payload != null){
-            state.validDiscountCode = true
-            state.discountCode['source'] = payload.source
-            state.discountCode['value'] = payload.value
-        }else state.validDiscountCode = false
+    SET_DISCOUNT_CODE(state, payload) {
+        if (payload != null) {
+            state.validDiscountCode = true;
+            state.discountCode["source"] = payload.source;
+            state.discountCode["value"] = payload.value;
+        } else state.validDiscountCode = false;
     },
-    SET_SESSION_ID(state, id){
-        state.session_id = id
+    SET_SESSION_ID(state, id) {
+        state.session_id = id;
     },
-    ERROR_SET_ID(state){
-        state.session_id = null
+    ERROR_SET_ID(state) {
+        state.session_id = null;
     },
     RESET_INFO(state) {
         state.lenseSpecs = {
@@ -87,7 +87,7 @@ const mutations = {
             photochromatic: "",
             graduation_type: "",
             graduation_image: null,
-            extra: ""
+            extra: "",
         };
         state.addressId = "";
         state.orderStatus = "PENDING";
@@ -99,18 +99,22 @@ const mutations = {
         state.lenseMaterialCurrentPrice = 0;
         state.graduationCurrentPrice = 0;
         state.extrasCurrentPrice = 0;
-    }
-}
+    },
+};
 
 const actions = {
     async createPayment({ commit, dispatch }, { stripeToken, total }) {
         try {
             commit("SET_LOADING", true);
-            const { data } = await api.post("orders/charge", { stripeToken, total }, true)
+            const { data } = await api.post(
+                "orders/charge",
+                { stripeToken, total },
+                true,
+            );
             commit("PAYMENT_SUCCESS", data.chargeStatus);
             dispatch("order/createOrder", null, { root: true });
         } catch (error) {
-            this._vm.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error);
             commit("SET_ERROR", {
                 isError: true,
                 errorMessage: error.response.data.error,
@@ -128,81 +132,80 @@ const actions = {
         ];
         const orderObject = Object.assign({}, ...reducible);
         try {
-            commit("SET_LOADING", true)
-            await api.post("orders", toFormData(orderObject), true)
-            commit("ORDER_SUCCESS", true)
+            commit("SET_LOADING", true);
+            await api.post("orders", toFormData(orderObject), true);
+            commit("ORDER_SUCCESS", true);
             // commit("RESET_INFO")
             // router.push({ name: "PaymentSuccess" })
         } catch (error) {
-            this._vm.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error);
             commit("ORDER_SUCCESS", false);
         } finally {
             commit("SET_LOADING", false);
         }
     },
-    async createSession({commit},payload){
-        commit('SET_LOADING', true)
+    async createSession({ commit }, payload) {
+        commit("SET_LOADING", true);
         try {
-            let {data}  = await api.Post({
-                endpoint: 'orders/create-session', 
-                data: payload, 
-                useToken: true
-            })
-            commit('SET_SESSION_ID', data.sessionId)
+            let { data } = await api.Post({
+                endpoint: "orders/create-session",
+                data: payload,
+                useToken: true,
+            });
+            commit("SET_SESSION_ID", data.sessionId);
         } catch (error) {
-            this._vm.$sentry.captureException(error)
-            commit('ERROR_SET_ID')
+            this._vm.$sentry.captureException(error);
+            commit("ERROR_SET_ID");
         }
     },
-    async confirmPayment({commit}, orderId){
-        commit('SET_LOADING', true)
+    async confirmPayment({ commit }, orderId) {
+        commit("SET_LOADING", true);
         try {
-            await api.patch('orders/confirm-order',orderId, {}, true)
+            await api.patch("orders/confirm-order", orderId, {}, true);
         } catch (error) {
-            this._vm.$sentry.captureException(error)
+            this._vm.$sentry.captureException(error);
         } finally {
-            commit('SET_LOADING', false) 
+            commit("SET_LOADING", false);
         }
     },
-    async cancelPayment({commit}, orderId){
-       commit('SET_LOADING', true)
-       try {
-           await api.patch('orders/cancel-order',orderId, {}, true)
-       } catch (error) {
-            this._vm.$sentry.captureException(error)
-       } finally {
-           commit('SET_LOADING', false) 
-       } 
+    async cancelPayment({ commit }, orderId) {
+        commit("SET_LOADING", true);
+        try {
+            await api.patch("orders/cancel-order", orderId, {}, true);
+        } catch (error) {
+            this._vm.$sentry.captureException(error);
+        } finally {
+            commit("SET_LOADING", false);
+        }
     },
     resetInfo({ commit }) {
-        commit("RESET_INFO")
+        commit("RESET_INFO");
     },
-    async checkForDiscountCode({commit}, code){
-        commit('SET_LOADING', true)
+    async checkForDiscountCode({ commit }, code) {
+        commit("SET_LOADING", true);
         try {
-            let {data} = await api.Get({
+            let { data } = await api.Get({
                 endpoint: `promo-codes/check/${code}`,
-                useToken: true
-            })
-            commit('SET_DISCOUNT_CODE', data)
+                useToken: true,
+            });
+            commit("SET_DISCOUNT_CODE", data);
         } catch (error) {
-            console.log("error: ", error)
-            this._vm.$sentry.captureException(error)
-            commit('SET_DISCOUNT_CODE', null)
+            this._vm.$sentry.captureException(error);
+            commit("SET_DISCOUNT_CODE", null);
         } finally {
-            commit('SET_LOADING', false) 
+            commit("SET_LOADING", false);
         }
-    }
-}
+    },
+};
 
 const getters = {
-    getField
-}
+    getField,
+};
 
 export default {
     namespaced: true,
     state,
     mutations,
     getters,
-    actions
+    actions,
 };

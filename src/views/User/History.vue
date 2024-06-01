@@ -51,7 +51,7 @@ export default {
         history: [],
         tableActions: [],
         showConfirmCancelDialog: false,
-        confirmFunction: null,
+        confirmFunction: () => {},
         loadingConfirmedAction: false,
     }),
     methods: {

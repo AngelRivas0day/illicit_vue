@@ -79,6 +79,7 @@ const routes = [
             import(
                 /* webpackChunkName: "Checkout" */ "../views/Checkout/Index.vue"
             ),
+        meta: { requiresAuth: true },
     },
 
     {

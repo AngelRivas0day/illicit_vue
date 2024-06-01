@@ -40,11 +40,18 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <md-field>
-                            <md-tooltip md-direction="bottom">
+                            <md-tooltip
+                                v-if="disableBirthDayField"
+                                md-direction="bottom"
+                            >
                                 La fecha de nacimiento no puede ser modificada.
                             </md-tooltip>
                             <label> Fecha de nacimiento </label>
-                            <md-input v-model="birthDay" disabled></md-input>
+                            <md-input
+                                v-model="form.birth_day"
+                                type="date"
+                                :disabled="disableBirthDayField"
+                            ></md-input>
                         </md-field>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
@@ -144,9 +151,10 @@ export default {
             name: null,
             last_name: null,
             phone_number: null,
+            birth_day: null,
         },
         email: null,
-        birthDay: null,
+        disableBirthDayField: false,
         errorMessage: null,
         showStoreReference: null,
         storeName: null,
@@ -163,23 +171,22 @@ export default {
             try {
                 this.errorMessage = null;
                 this.loading = true;
-                let { data: settings } = await Get({
+                const { data: settings } = await Get({
                     endpoint: "clients",
                     useToken: true,
                 });
-                let {
+                const {
                     email,
-                    birth_day,
                     type,
                     store_name = null,
                     email_verified,
                     ...restOfSettings
                 } = settings;
                 this.showVerificationEmailWarning = !email_verified;
-                this.form = restOfSettings;
+                this.disableBirthDayField = !!restOfSettings.birth_day;
                 this.email = email;
-                this.birthDay = birth_day;
                 this.loading = false;
+                this.form = restOfSettings;
                 this.showStoreReference = type.includes("store");
                 if (this.showStoreReference && store_name)
                     this.storeName = store_name;
@@ -234,6 +241,9 @@ export default {
                 required,
             },
             phone_number: {
+                required,
+            },
+            birth_day: {
                 required,
             },
         },

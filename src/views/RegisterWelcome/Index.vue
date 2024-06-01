@@ -24,23 +24,18 @@ export default {
         userName: null,
         userEmail: null,
         errorMessage: null,
-        userUnsubscribe: null,
     }),
-    mounted() {
-        this.userUnsubscribe = getAuth().onAuthStateChanged(async (user) => {
-            if (!user) {
-                this.$router.push({ name: "Login" });
-                return;
-            }
-            this.userName = user.displayName;
-            this.userEmail = user.email;
-            if (!user.emailVerified) await sendEmailVerification(user);
-            const auth = getAuth();
-            await signOut(auth);
-        });
-    },
-    destroyed() {
-        if (this.userUnsubscribe) this.userUnsubscribe();
+    async mounted() {
+        const user = getAuth().currentUser;
+        if (!user) {
+            this.$router.push({ name: "Login" });
+            return;
+        }
+        this.userName = user.displayName;
+        this.userEmail = user.email;
+        if (!user.emailVerified) await sendEmailVerification(user);
+        const auth = getAuth();
+        await signOut(auth);
     },
 };
 </script>

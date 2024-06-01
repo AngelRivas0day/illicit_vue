@@ -1,12 +1,14 @@
 <script>
 import Options from "./Options";
 import filters from "@/mixins/filters";
+import AddressFormDialog from "@/components/AddressFormDialog.vue";
 
 export default {
     name: "DeliveryAndPayment",
     mixins: [filters],
     components: {
         Options,
+        AddressFormDialog,
     },
     props: {
         userStoreIsLoggedIn: {
@@ -23,6 +25,19 @@ export default {
             type: Array,
             required: false,
             default: () => [],
+        },
+    },
+    watch: {
+        addresses: {
+            handler() {
+                if (!this.addressId) {
+                    const defaultAddress = this.addresses.find(
+                        (address) => address.default,
+                    );
+                    if (defaultAddress) this.addressId = defaultAddress.id;
+                }
+            },
+            immediate: true,
         },
     },
     mounted() {
@@ -78,6 +93,10 @@ export default {
 
 <template>
     <div id="delivery-and-payment">
+        <address-form-dialog
+            :active.sync="showAddressDialog"
+            @closed="$event ? $emit('addressCreated') : null"
+        />
         <div class="row">
             <div class="col-12">
                 <h2 class="md-title">M&eacute;todo de env&iacute;o</h2>
