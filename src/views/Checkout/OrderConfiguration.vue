@@ -198,9 +198,9 @@ export default {
             };
             this.$emit("update:orderDetails", updatedOrderDetails);
         },
-        onGraduationFileSelected(files) {
-            if (!files) return;
-            this.$emit("update:graduationFile", files[0]);
+        onGraduationFileSelected(file) {
+            if (!file) return;
+            this.$emit("update:graduationFile", file);
         },
         finishOrder() {
             this.$emit("createOrder");

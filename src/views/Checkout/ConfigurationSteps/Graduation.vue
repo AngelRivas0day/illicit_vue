@@ -84,6 +84,7 @@ export default {
             this.$emit("selectGraduationType", graudationType);
         },
         selectGraduationFile(files) {
+            console.log({ files });
             this.graduationFile = files[0];
             this.$emit("selectGraduationFile", files[0]);
         },
