@@ -281,8 +281,11 @@ export default {
                             </md-avatar>
                             <div class="md-title">Estado de pago</div>
                             <div class="md-subhead">
-                                {{ order.payment.status | paymentStatusToText }}
+                                {{ order.payment.type | paymentTypeToText }}
                             </div>
+                            <md-card-content>
+                                {{ order.payment.status | paymentStatusToText }}
+                            </md-card-content>
                         </md-card-header>
                         <md-card-actions v-if="order.canUpdatePaymentData">
                             <md-button
@@ -409,7 +412,10 @@ export default {
                                 Ver graduaci&oacute;n
                             </md-button>
                             <md-button
-                                v-if="order.type === 'store'"
+                                v-if="
+                                    order.type === 'store' &&
+                                    order.canUpdateGraduationData
+                                "
                                 class="md-dense md-primary"
                                 @click="showRequestGraduationDialog = true"
                                 :disabled="sendingGraduationRequest"
@@ -421,7 +427,10 @@ export default {
                                 }}
                             </md-button>
                             <md-button
-                                v-if="order.type === 'client'"
+                                v-if="
+                                    order.type === 'client' &&
+                                    order.canUpdateGraduationData
+                                "
                                 :disabled="uploadingGraduation"
                                 @click="showUploadGraduationDialog = true"
                                 class="md-dense md-primary"

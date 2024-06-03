@@ -226,7 +226,7 @@ export default {
             text-align: center;
         }
 
-        [class*="-button"] {
+        [class*="-button"]:not(.md-icon-button) {
             min-width: 150px;
         }
 

@@ -84,6 +84,17 @@ function formatDateFn(date, style) {
     return new Date(date).toLocaleDateString("es-MX", params);
 }
 
+const paymentTypeToTextFn = (value) => {
+    switch (value) {
+        case "card":
+            return "Tarjeta de crédito o débito";
+        case "cash":
+            return "Efectivo";
+        default:
+            return "Desconocido";
+    }
+};
+
 export default {
     filters: {
         currency(value) {
@@ -110,6 +121,9 @@ export default {
         formatDate(value, style = "text") {
             return formatDateFn(value, style);
         },
+        paymentTypeToText(value) {
+            return paymentTypeToTextFn(value);
+        },
     },
     methods: {
         currencyFn,
@@ -120,5 +134,6 @@ export default {
         deliveryStatusToMessageFn,
         graduationTypeToTextFn,
         formatDateFn,
+        paymentTypeToTextFn,
     },
 };
