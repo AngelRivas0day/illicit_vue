@@ -4,6 +4,7 @@ import { StripeCheckout } from "@vue-stripe/vue-stripe";
 import DetailsSkeleton from "./DetailsSkeleton";
 import UploadGraduation from "./UploadGraduation";
 import GraduationDetails from "./GraduationDetails";
+import DesignImagesDialog from "@/components/DesignImagesDialog";
 import filters from "@/mixins/filters";
 
 export default {
@@ -14,6 +15,7 @@ export default {
         StripeCheckout,
         UploadGraduation,
         GraduationDetails,
+        DesignImagesDialog,
     },
     async mounted() {
         const { id: orderId } = this.$route.params;
@@ -24,10 +26,12 @@ export default {
         loading: false,
         order: null,
         orderId: null,
-        showGraduationDialog: false,
+
+        showDesignDialog: false,
 
         uploadingGraduation: false,
         showUploadGraduationDialog: false,
+        showGraduationDialog: false,
 
         requestEmail: null,
         sendingPaymentRequest: false,
@@ -175,6 +179,10 @@ export default {
 
 <template>
     <div id="order-details">
+        <design-images-dialog
+            :active.sync="showDesignDialog"
+            :product="order.product"
+        />
         <graduation-details
             :active.sync="showGraduationDialog"
             :orderId="orderId"
@@ -211,6 +219,8 @@ export default {
                     <span>
                         Fecha del pedido: {{ order.createdAt | formatDate }}
                     </span>
+                    <br />
+                    <span> ID del pedido: {{ order.id }} </span>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
                     <md-card class="order-details-card address md-elevation-1">
@@ -361,9 +371,7 @@ export default {
                                     <span> Dise&ntilde;o del lente: </span>
                                     <span>
                                         <small
-                                            @click="
-                                                showDesignImagesDialog = true
-                                            "
+                                            @click="showDesignDialog = true"
                                             class="cursor-pointer"
                                         >
                                             (Ver imag&eacute;n)
