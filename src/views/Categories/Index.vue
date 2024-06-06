@@ -45,7 +45,7 @@
 
 <script>
 import CategoryItem from "@/components/CategoryItem";
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 
 export default {
     name: "Categories",

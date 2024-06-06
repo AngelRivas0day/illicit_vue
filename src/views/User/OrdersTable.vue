@@ -74,7 +74,7 @@ export default {
                 </template>
                 <el-table-column label="" width="60">
                     <template slot-scope="scope">
-                        <md-menu>
+                        <md-menu md-size="big">
                             <md-button class="md-icon-button" md-menu-trigger>
                                 <md-icon>more_vert</md-icon>
                             </md-button>

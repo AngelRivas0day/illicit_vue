@@ -4,9 +4,7 @@
             <div class="header-inner">
                 <img
                     :src="
-                        headerImage
-                            ? headerImage
-                            : 'https://via.placeholder.com/800x800'
+                        headerImage ? headerImage : 'https://via.placeholder.com/800x800'
                     "
                     :alt="'Imagen de cabezera para la categoría ' + headerLabel"
                 />
@@ -59,10 +57,7 @@
                         </div>
                     </template>
                     <div class="col-12 text-center">
-                        <button
-                            @click="fetchDataFunction(true)"
-                            class="see-more"
-                        >
+                        <button @click="fetchDataFunction(true)" class="see-more">
                             <span>ver m&aacute;s</span>
                         </button>
                     </div>
@@ -75,7 +70,7 @@
 <script>
 import ProductCard from "./ProductCard";
 import SearchFilters from "@/views/Products/SearchFilters.vue";
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 import { mapActions } from "vuex";
 
 export default {
@@ -176,9 +171,7 @@ export default {
             for (const key of filterKeys) {
                 const isFilterArray = Array.isArray(this.filters[key]);
                 if (isFilterArray && this.filters[key].length) {
-                    const values = this.filters[key]
-                        .map(({ value }) => value)
-                        .join(",");
+                    const values = this.filters[key].map(({ value }) => value).join(",");
                     params.append(key, values);
                 } else if (!isFilterArray && this.filters[key]?.value) {
                     params.append(key, this.filters[key].value);
@@ -204,9 +197,7 @@ export default {
             if (appendResults) {
                 const filteredItems = data.filter(
                     ({ id }) =>
-                        this.products.findIndex(
-                            (product) => product.id === id,
-                        ) === -1,
+                        this.products.findIndex((product) => product.id === id) === -1,
                 );
                 this.products = [...this.products, ...filteredItems];
             } else {

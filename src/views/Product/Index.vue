@@ -2,10 +2,7 @@
     <div class="product">
         <SkeletonProduct v-if="loading" />
         <template v-else>
-            <sign-up-warning
-                :productId="productId"
-                :active.sync="showSignUpDialog"
-            />
+            <sign-up-warning :productId="productId" :active.sync="showSignUpDialog" />
             <product-details
                 :product="product"
                 :isAddedToFavorites="isFavorite"
@@ -28,7 +25,7 @@ import ProductDetails from "./ProductDetails";
 import SignUpWarning from "./SignUpWarning";
 import ProductTabs from "./ProductTabs";
 import { getAuth } from "firebase/auth";
-import { Get, Post } from "@/api/api";
+import { Get, Post } from "@/services/api";
 import { mapActions } from "vuex";
 
 export default {
@@ -124,11 +121,7 @@ export default {
                     endpoint: `glasses/${this.productId}/offer`,
                     useToken: false,
                 });
-                const {
-                    hasOffer = false,
-                    offerPrice = false,
-                    offerId = null,
-                } = data;
+                const { hasOffer = false, offerPrice = false, offerId = null } = data;
                 if (!hasOffer) {
                     setEmptyOffer();
                     this.loadingOffer = false;
@@ -144,8 +137,7 @@ export default {
             }
         },
         async verifyIfProductIsFavoriteInLocalStorage() {
-            const favorites =
-                JSON.parse(localStorage.getItem("favorites")) || [];
+            const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
             this.isFavorite = favorites.some(
                 (favorite) => favorite.glassId === this.productId,
             );
@@ -214,8 +206,7 @@ export default {
             }
         },
         toggleFavoriteInStorage() {
-            const favorites =
-                JSON.parse(localStorage.getItem("favorites")) || [];
+            const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
             const isFavorite = favorites.some(
                 (favorite) => favorite.glassId === this.productId,
             );

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { Get, Patch } from "@/api/api";
+import { Get, Patch } from "@/services/api";
 import OrdersTable from "./OrdersTable";
 import filters from "@/mixins/filters";
 
@@ -69,12 +69,8 @@ export default {
                 });
                 this.history = history.map((order) => ({
                     ...order,
-                    delivery_status: this.deliveryStatusToTextFn(
-                        order.delivery_status,
-                    ),
-                    payment_status: this.paymentStatusToTextFn(
-                        order.payment_status,
-                    ),
+                    delivery_status: this.deliveryStatusToTextFn(order.delivery_status),
+                    payment_status: this.paymentStatusToTextFn(order.payment_status),
                 }));
                 this.loading = false;
             } catch (error) {
@@ -111,7 +107,7 @@ export default {
                             try {
                                 this.loadingConfirmedAction = true;
                                 await Patch({
-                                    endpoint: `users-orders/${row.id}/cancel`,
+                                    endpoint: `orders/${row.id}/cancel`,
                                     useToken: true,
                                 });
                                 this.loadingConfirmedAction = false;

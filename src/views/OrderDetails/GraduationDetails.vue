@@ -1,5 +1,5 @@
 <script>
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 import filters from "@/mixins/filters";
 
 export default {
@@ -22,7 +22,7 @@ export default {
     }),
     watch: {
         async active(value) {
-            if (value) await this.fetchGraduationDetails();
+            if (value && !this.graduation) await this.fetchGraduationDetails();
         },
     },
     methods: {
@@ -30,7 +30,7 @@ export default {
             try {
                 this.loading = true;
                 const { data } = await Get({
-                    endpoint: `users-orders/${this.orderId}/graduation`,
+                    endpoint: `orders/${this.orderId}/graduation`,
                     useToken: true,
                 });
                 this.graduation = data;

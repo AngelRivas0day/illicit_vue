@@ -17,9 +17,7 @@
                     <div class="col-12" v-if="showVerificationEmailWarning">
                         <request-error-message
                             message="Por favor verifica tu correo electrónico para poder utilizar todas las funcionalidades de la aplicación."
-                            @closed-message="
-                                showVerificationEmailWarning = false
-                            "
+                            @closed-message="showVerificationEmailWarning = false"
                         />
                     </div>
                     <div class="col-12" v-if="errorMessage">
@@ -31,8 +29,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <md-field>
                             <md-tooltip md-direction="bottom">
-                                El correo electr&oacute;nico no puede ser
-                                modificado.
+                                El correo electr&oacute;nico no puede ser modificado.
                             </md-tooltip>
                             <label> Correo electr&oacute;nico </label>
                             <md-input v-model="email" disabled></md-input>
@@ -40,10 +37,7 @@
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-6">
                         <md-field>
-                            <md-tooltip
-                                v-if="disableBirthDayField"
-                                md-direction="bottom"
-                            >
+                            <md-tooltip v-if="disableBirthDayField" md-direction="bottom">
                                 La fecha de nacimiento no puede ser modificada.
                             </md-tooltip>
                             <label> Fecha de nacimiento </label>
@@ -58,8 +52,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.name.$invalid &&
-                                    $v.form.name.$dirty,
+                                    $v.form.name.$invalid && $v.form.name.$dirty,
                             }"
                         >
                             <label>Nombre</label>
@@ -67,10 +60,7 @@
                                 @blur="$v.form.name.$touch"
                                 v-model="form.name"
                             ></md-input>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.name.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.name.required">
                                 El nombre es requerido.
                             </span>
                         </md-field>
@@ -88,10 +78,7 @@
                                 @blur="$v.form.last_name.$touch"
                                 v-model="form.last_name"
                             ></md-input>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.last_name.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.last_name.required">
                                 El apellido es requerido.
                             </span>
                         </md-field>
@@ -110,10 +97,7 @@
                                 v-model="form.phone_number"
                                 v-mask="'+## ## #### ####'"
                             ></md-input>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.phone_number.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.phone_number.required">
                                 El tel&eacute;fono es requerido.
                             </span>
                         </md-field>
@@ -135,7 +119,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import { Get, Patch } from "@/api/api";
+import { Get, Patch } from "@/services/api";
 import RequestErrorMessage from "@/components/RequestErrorMessage.vue";
 
 export default {
@@ -188,12 +172,9 @@ export default {
                 this.loading = false;
                 this.form = restOfSettings;
                 this.showStoreReference = type.includes("store");
-                if (this.showStoreReference && store_name)
-                    this.storeName = store_name;
+                if (this.showStoreReference && store_name) this.storeName = store_name;
             } catch (error) {
-                this.errorMessage = error.response
-                    ? error.response.data
-                    : error.message;
+                this.errorMessage = error.response ? error.response.data : error.message;
                 this.loading = false;
             }
         },
@@ -224,9 +205,7 @@ export default {
                 // ?: The fetchData method will set the loading to false.
                 await this.fetchData();
             } catch (error) {
-                this.errorMessage = error.response
-                    ? error.response.data
-                    : error.message;
+                this.errorMessage = error.response ? error.response.data : error.message;
                 this.loading = false;
                 this.loadingSubmit = false;
             }

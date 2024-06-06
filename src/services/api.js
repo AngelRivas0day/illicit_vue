@@ -105,9 +105,7 @@ async function Get({ endpoint, useToken = false, contentType = "json" }) {
     } else if (useToken === true) {
         token = await getAuth().currentUser.getIdToken();
     }
-    const config = token
-        ? setHeaders(contentType, token)
-        : setHeaders(contentType);
+    const config = token ? setHeaders(contentType, token) : setHeaders(contentType);
     return axios.get(`${base_url}/${endpoint}`, config);
 }
 
@@ -128,9 +126,7 @@ async function Post({ endpoint, data, useToken, contentType = "json" }) {
     } else if (useToken === true) {
         token = await getAuth().currentUser.getIdToken();
     }
-    const config = token
-        ? setHeaders(contentType, token)
-        : setHeaders(contentType);
+    const config = token ? setHeaders(contentType, token) : setHeaders(contentType);
     return axios.post(`${base_url}/${endpoint}`, data, config);
 }
 
@@ -144,21 +140,14 @@ async function Post({ endpoint, data, useToken, contentType = "json" }) {
  * @param {'json'|'x-www-form-urlencoded'|'form-data'} [options.contentType = 'json'] - The content type of the request.
  * @return {Promise<any>}
  */
-async function Patch({
-    endpoint,
-    data,
-    useToken = false,
-    contentType = "json",
-}) {
+async function Patch({ endpoint, data, useToken = false, contentType = "json" }) {
     let token;
     if (typeof useToken === "string") {
         token = useToken;
     } else if (useToken === true) {
         token = await getAuth().currentUser.getIdToken();
     }
-    const config = token
-        ? setHeaders(contentType, token)
-        : setHeaders(contentType);
+    const config = token ? setHeaders(contentType, token) : setHeaders(contentType);
     return axios.patch(`${base_url}/${endpoint}`, data, config);
 }
 
@@ -178,9 +167,7 @@ async function Delete({ endpoint, useToken = false, contentType = "json" }) {
     } else if (useToken === true) {
         token = await getAuth().currentUser.getIdToken();
     }
-    const config = token
-        ? setHeaders(contentType, token)
-        : setHeaders(contentType);
+    const config = token ? setHeaders(contentType, token) : setHeaders(contentType);
     return axios.delete(`${base_url}/${endpoint}`, config);
 }
 

@@ -1,5 +1,5 @@
 <script>
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
 export default {
@@ -107,11 +107,7 @@ export default {
                         :disabled="creatingSession"
                         class="md-primary md-raised"
                     >
-                        {{
-                            creatingSession
-                                ? "Creando sesión..."
-                                : "Completar pago"
-                        }}
+                        {{ creatingSession ? "Creando sesión..." : "Completar pago" }}
                     </md-button>
                 </md-empty-state>
             </div>

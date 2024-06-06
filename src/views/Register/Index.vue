@@ -1,7 +1,7 @@
 <script>
 import { required, minLength, sameAs, email } from "vuelidate/lib/validators";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { Post } from "@/api/api";
+import { Post } from "@/services/api";
 import FirebaseAuthTranslate from "@/mixins/firebaseAuthTranslate";
 import AuthWrapper from "@/components/AuthWrapper.vue";
 
@@ -58,8 +58,7 @@ export default {
                 });
 
                 // Sync the users favorite products with the database
-                const favorites =
-                    JSON.parse(localStorage.getItem("favorites")) || [];
+                const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
                 if (favorites.length > 0) {
                     await Post({
                         endpoint: "clients/favorites/sync",
@@ -73,9 +72,7 @@ export default {
                 // Redirigir al usuario a la página de verificación de correo electrónico
                 await this.$router.push({ name: "RegisterWelcome" });
             } catch (error) {
-                this.errorMessage = this.translateFireBaseAuthError(
-                    error?.code,
-                );
+                this.errorMessage = this.translateFireBaseAuthError(error?.code);
                 this.loading = false;
             }
         },
@@ -130,8 +127,7 @@ export default {
                 <div class="col-xs-12 col-sm-12 col-md-6">
                     <md-field
                         :class="{
-                            'md-invalid':
-                                $v.form.name.$invalid && $v.form.name.$dirty,
+                            'md-invalid': $v.form.name.$invalid && $v.form.name.$dirty,
                         }"
                     >
                         <md-icon class="md-primary">account_circle</md-icon>
@@ -149,8 +145,7 @@ export default {
                     <md-field
                         :class="{
                             'md-invalid':
-                                $v.form.lastName.$invalid &&
-                                $v.form.lastName.$dirty,
+                                $v.form.lastName.$invalid && $v.form.lastName.$dirty,
                         }"
                     >
                         <md-icon class="md-primary">account_circle</md-icon>
@@ -168,8 +163,7 @@ export default {
                     <md-field
                         :class="{
                             'md-invalid':
-                                $v.form.birthDay.$invalid &&
-                                $v.form.birthDay.$dirty,
+                                $v.form.birthDay.$invalid && $v.form.birthDay.$dirty,
                         }"
                     >
                         <md-icon class="md-primary">event</md-icon>
@@ -187,8 +181,7 @@ export default {
                 <div class="col-xs-12 col-sm-12">
                     <md-field
                         :class="{
-                            'md-invalid':
-                                $v.form.email.$invalid && $v.form.email.$dirty,
+                            'md-invalid': $v.form.email.$invalid && $v.form.email.$dirty,
                         }"
                     >
                         <md-icon class="md-primary">alternate_email</md-icon>
@@ -220,9 +213,7 @@ export default {
                             v-model="form.phoneNumber"
                             v-mask="'+## ###-###-####'"
                         ></md-input>
-                        <span
-                            class="md-error"
-                            v-if="!$v.form.phoneNumber.required"
+                        <span class="md-error" v-if="!$v.form.phoneNumber.required"
                             >El n&uacute;mero es requerido.</span
                         >
                     </md-field>
@@ -231,8 +222,7 @@ export default {
                     <md-field
                         :class="{
                             'md-invalid':
-                                $v.form.password.$invalid &&
-                                $v.form.password.$dirty,
+                                $v.form.password.$invalid && $v.form.password.$dirty,
                         }"
                     >
                         <md-icon class="md-primary">vpn_key</md-icon>
@@ -245,11 +235,8 @@ export default {
                         <span class="md-error" v-if="!$v.form.password.required"
                             >La contrase&ntilde;a es requerida.</span
                         >
-                        <span
-                            class="md-error"
-                            v-else-if="!$v.form.password.minLength"
-                            >La contrase&ntilde;a debe tener al menos 6
-                            caracteres.</span
+                        <span class="md-error" v-else-if="!$v.form.password.minLength"
+                            >La contrase&ntilde;a debe tener al menos 6 caracteres.</span
                         >
                     </md-field>
                 </div>
@@ -268,9 +255,7 @@ export default {
                             type="password"
                             v-model="form.repeatedPassword"
                         ></md-input>
-                        <span
-                            class="md-error"
-                            v-if="!$v.form.repeatedPassword.required"
+                        <span class="md-error" v-if="!$v.form.repeatedPassword.required"
                             >La contrase&ntilde;a es requerida.</span
                         >
                         <span
@@ -281,8 +266,7 @@ export default {
                         <span
                             class="md-error"
                             v-else-if="!$v.form.repeatedPassword.minLength"
-                            >La contrase&ntilde;a debe tener al menos 6
-                            caracteres.</span
+                            >La contrase&ntilde;a debe tener al menos 6 caracteres.</span
                         >
                     </md-field>
                 </div>

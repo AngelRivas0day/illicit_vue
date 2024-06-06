@@ -1,5 +1,5 @@
 <script>
-import { Get, Patch } from "@/api/api";
+import { Get, Patch } from "@/services/api";
 
 export default {
     name: "UploadGraduation",
@@ -109,10 +109,7 @@ export default {
                     <template v-if="!alreadyUploaded">
                         <md-field>
                             <label>Archivo de graduaci&oacute;n</label>
-                            <md-file
-                                :disabled="uploading"
-                                @md-change="onFileChange"
-                            />
+                            <md-file :disabled="uploading" @md-change="onFileChange" />
                         </md-field>
                         <md-button
                             @click="uploadGraduationFile"

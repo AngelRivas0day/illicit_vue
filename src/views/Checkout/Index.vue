@@ -1,6 +1,6 @@
 <script>
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
-import { Get, Post } from "@/api/api";
+import { Get, Post } from "@/services/api";
 import { getAuth } from "firebase/auth";
 import OrderResumee from "./OrderResumee";
 import ResumeeSkeleton from "./Loaders/ResumeeSkeleton";
@@ -34,8 +34,7 @@ export default {
                 return;
             }
             const tokenResult = await user.getIdTokenResult();
-            this.userStoreIsLoggedIn =
-                tokenResult.claims["type"] === "user-store";
+            this.userStoreIsLoggedIn = tokenResult.claims["type"] === "user-store";
             await this.fetchData();
         });
     },
@@ -86,8 +85,7 @@ export default {
                 this.loading = true;
                 await this.fetchProduct();
                 await this.fetchAddresses();
-                if (this.userStoreIsLoggedIn)
-                    await this.fetchStoreInformation();
+                if (this.userStoreIsLoggedIn) await this.fetchStoreInformation();
                 if (offer_id) {
                     this.offerId = offer_id;
                     await this.verifyAndApplyOffer();
@@ -115,8 +113,7 @@ export default {
         async fetchProduct() {
             const setDesign = (designs) => {
                 const design = designs.find(
-                    (d) =>
-                        d.name.toLowerCase() === this.designName.toLowerCase(),
+                    (d) => d.name.toLowerCase() === this.designName.toLowerCase(),
                 );
                 if (!design) {
                     this.$notify({
@@ -212,11 +209,9 @@ export default {
                     !!this.graduationFile &&
                     !this.userStoreIsLoggedIn;
                 const shouldRedirectToCheckout = !this.userStoreIsLoggedIn;
-                if (shouldUploadGraduationFile)
-                    await this.submiGraduationFile();
+                if (shouldUploadGraduationFile) await this.submiGraduationFile();
                 this.creatingOrder = false;
-                if (shouldRedirectToCheckout)
-                    await this.createStripeCheckoutSession();
+                if (shouldRedirectToCheckout) await this.createStripeCheckoutSession();
             } catch (error) {
                 this.$notify({
                     group: "user",
@@ -269,8 +264,7 @@ export default {
             const shouldSendWhatsApp = !!data.phoneNumber;
             const requests = [];
 
-            if (shouldSendEmail)
-                requests.push(this.sendOrderDetailsEmail(data.email));
+            if (shouldSendEmail) requests.push(this.sendOrderDetailsEmail(data.email));
             if (shouldSendWhatsApp)
                 requests.push(this.sendOrderDetailsMessage(data.phoneNumber));
 
@@ -318,14 +312,14 @@ export default {
         },
         async sendPaymentEmail(email) {
             await Post({
-                endpoint: `orders-utils/${this.order.id}/payment-email`,
+                endpoint: `orders/${this.order.id}/payment-email`,
                 data: { email },
                 useToken: true,
             });
         },
         async sendGraduationEmail(email) {
             await Post({
-                endpoint: `orders-utils/${this.order.id}/graduation-email`,
+                endpoint: `orders/${this.order.id}/graduation-email`,
                 data: { email },
                 useToken: true,
             });

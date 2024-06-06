@@ -27,11 +27,7 @@
                     ></md-empty-state>
                 </template>
                 <template v-else>
-                    <md-table
-                        v-model="addresses"
-                        md-sort="state"
-                        md-sort-order="asc"
-                    >
+                    <md-table v-model="addresses" md-sort="state" md-sort-order="asc">
                         <md-table-row slot="md-table-row" slot-scope="{ item }">
                             <md-table-cell md-label="Calle" md-sort-by="street">
                                 {{ item.street }}
@@ -42,32 +38,20 @@
                             <md-table-cell md-label="Ciudad" md-sort-by="city">
                                 {{ item.city }}
                             </md-table-cell>
-                            <md-table-cell
-                                md-label="# Ext."
-                                md-sort-by="extNumber"
-                            >
+                            <md-table-cell md-label="# Ext." md-sort-by="extNumber">
                                 {{ item.extNumber }}
                             </md-table-cell>
-                            <md-table-cell
-                                md-label="# Int."
-                                md-sort-by="intNumber"
-                            >
+                            <md-table-cell md-label="# Int." md-sort-by="intNumber">
                                 {{ item.intNumber }}
                             </md-table-cell>
                             <md-table-cell md-label="C.P." md-sort-by="zip">
                                 {{ item.zip }}
                             </md-table-cell>
-                            <md-table-cell
-                                md-label="Predeterminada"
-                                md-sort-by="default"
-                            >
+                            <md-table-cell md-label="Predeterminada" md-sort-by="default">
                                 {{ item.default ? "Si" : "No" }}
                             </md-table-cell>
                             <md-table-cell style="max-width: 70px">
-                                <md-menu
-                                    md-size="auto"
-                                    md-direction="bottom-end"
-                                >
+                                <md-menu md-size="auto" md-direction="bottom-end">
                                     <md-button
                                         class="md-icon-button md-ripple-off"
                                         md-menu-trigger
@@ -76,16 +60,12 @@
                                     </md-button>
                                     <md-menu-content>
                                         <md-menu-item
-                                            @click="
-                                                onAddressDialogOpen(item.id)
-                                            "
+                                            @click="onAddressDialogOpen(item.id)"
                                         >
                                             <md-icon>edit</md-icon>
                                             Editar
                                         </md-menu-item>
-                                        <md-menu-item
-                                            @click="onAttemptDelete(item.id)"
-                                        >
+                                        <md-menu-item @click="onAttemptDelete(item.id)">
                                             <md-icon>delete</md-icon>
                                             Eliminar
                                         </md-menu-item>
@@ -110,7 +90,7 @@
 </template>
 
 <script>
-import { Delete, Get } from "@/api/api";
+import { Delete, Get } from "@/services/api";
 import AddressFormDialog from "@/components/AddressFormDialog.vue";
 
 export default {

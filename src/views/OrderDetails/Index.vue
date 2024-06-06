@@ -1,5 +1,5 @@
 <script>
-import { Get, Post } from "@/api/api";
+import { Get, Post } from "@/services/api";
 import { StripeCheckout } from "@vue-stripe/vue-stripe";
 import DetailsSkeleton from "./DetailsSkeleton";
 import UploadGraduation from "./UploadGraduation";
@@ -50,7 +50,7 @@ export default {
             try {
                 this.loading = true;
                 const { data } = await Get({
-                    endpoint: `users-orders/${this.orderId}`,
+                    endpoint: `orders/${this.orderId}`,
                     useToken: true,
                 });
                 this.order = data;
@@ -112,7 +112,7 @@ export default {
             try {
                 this.sendingGraduationRequest = true;
                 await Post({
-                    endpoint: `orders-utils/${this.orderId}/graduation-email`,
+                    endpoint: `orders/${this.orderId}/graduation-email`,
                     data: { email: this.requestEmail },
                     useToken: true,
                 });
@@ -142,7 +142,7 @@ export default {
             try {
                 this.sendingPaymentRequest = true;
                 await Post({
-                    endpoint: `orders-utils/${this.orderId}/payment-email`,
+                    endpoint: `orders/${this.orderId}/payment-email`,
                     data: { email: this.requestEmail },
                     useToken: true,
                 });
@@ -168,8 +168,7 @@ export default {
             }
         },
         goBack() {
-            const { from_tab = null, from_route = "Account" } =
-                this.$route.query;
+            const { from_tab = null, from_route = "Account" } = this.$route.query;
             const query = from_tab ? { active_tab: from_tab } : {};
             this.$router.push({ name: from_route, query });
         },
@@ -179,18 +178,9 @@ export default {
 
 <template>
     <div id="order-details">
-        <design-images-dialog
-            :active.sync="showDesignDialog"
-            :product="order.product"
-        />
-        <graduation-details
-            :active.sync="showGraduationDialog"
-            :orderId="orderId"
-        />
-        <upload-graduation
-            :active.sync="showUploadGraduationDialog"
-            :orderId="orderId"
-        />
+        <design-images-dialog :active.sync="showDesignDialog" :product="order.product" />
+        <graduation-details :active.sync="showGraduationDialog" :orderId="orderId" />
+        <upload-graduation :active.sync="showUploadGraduationDialog" :orderId="orderId" />
         <md-dialog-prompt
             :md-active.sync="showRequestPaymentDialog"
             v-model="requestEmail"
@@ -216,9 +206,7 @@ export default {
             <template v-else>
                 <div class="col-12 mb-3">
                     <h2>Detalles del pedido</h2>
-                    <span>
-                        Fecha del pedido: {{ order.createdAt | formatDate }}
-                    </span>
+                    <span> Fecha del pedido: {{ order.createdAt | formatDate }} </span>
                     <br />
                     <span> ID del pedido: {{ order.id }} </span>
                 </div>
@@ -228,9 +216,7 @@ export default {
                             <md-avatar>
                                 <md-icon>location_on</md-icon>
                             </md-avatar>
-                            <div class="md-title">
-                                Direcci&oacute;n de env&iacute;o
-                            </div>
+                            <div class="md-title">Direcci&oacute;n de env&iacute;o</div>
                             <div class="md-subhead">
                                 {{
                                     order.type === "client"
@@ -253,9 +239,7 @@ export default {
                                         {{ order.address.zip }}
                                     </li>
                                     <li>
-                                        <strong>
-                                            Referencias del domicilio:
-                                        </strong>
+                                        <strong> Referencias del domicilio: </strong>
                                         {{ order.address.reference }}
                                     </li>
                                 </template>
@@ -293,10 +277,10 @@ export default {
                             <div class="md-subhead">
                                 {{ order.payment.type | paymentTypeToText }}
                             </div>
-                            <md-card-content>
-                                {{ order.payment.status | paymentStatusToText }}
-                            </md-card-content>
                         </md-card-header>
+                        <md-card-content>
+                            {{ order.payment.status | paymentStatusToText }}
+                        </md-card-content>
                         <md-card-actions v-if="order.canUpdatePaymentData">
                             <md-button
                                 v-if="order.type === 'store'"
@@ -336,9 +320,7 @@ export default {
                                     class="purchase-image mini"
                                 />
                             </md-avatar>
-                            <div class="md-title">
-                                Informaci&oacute;n de la compra
-                            </div>
+                            <div class="md-title">Informaci&oacute;n de la compra</div>
                             <div class="md-subhead">Detalles del producto</div>
                         </md-card-header>
                         <md-card-content>
@@ -385,25 +367,18 @@ export default {
                                         Sin graduaci&oacute;n
                                     </template>
                                     <template
-                                        v-else-if="
-                                            order.graduationRef === 'pending'
-                                        "
+                                        v-else-if="order.graduationRef === 'pending'"
                                     >
                                         Pendiente
                                     </template>
                                     <template v-else-if="order.graduation">
-                                        {{
-                                            order.graduation.type
-                                                | graduationTypeToText
-                                        }}
+                                        {{ order.graduation.type | graduationTypeToText }}
                                     </template>
                                     <template v-else> Personalizada </template>
                                 </li>
                                 <li>
                                     <span> Comentarios extras: </span>
-                                    {{
-                                        order.extraComments || "Sin comentarios"
-                                    }}
+                                    {{ order.extraComments || "Sin comentarios" }}
                                 </li>
                                 <li>
                                     <span> Total: </span>
@@ -465,8 +440,8 @@ export default {
                             </md-avatar>
                             <div class="md-title">Detalles de env&iacute;o</div>
                             <div class="md-subhead">
-                                Informaci&oacute;n de la paqueter&iacute;a y
-                                estado de env&iacute;o
+                                Informaci&oacute;n de la paqueter&iacute;a y estado de
+                                env&iacute;o
                             </div>
                         </md-card-header>
                         <md-card-content>
@@ -497,15 +472,11 @@ export default {
                                 <div class="col-xs-12 col-sm-12 col-md-6">
                                     <div class="row">
                                         <div class="col-12">
-                                            <h6>
-                                                Informaci&oacute;n de
-                                                env&iacute;o
-                                            </h6>
+                                            <h6>Informaci&oacute;n de env&iacute;o</h6>
                                         </div>
                                         <div
                                             v-if="
-                                                order.delivery.type ===
-                                                    'delivery' &&
+                                                order.delivery.type === 'delivery' &&
                                                 order.delivery.name &&
                                                 order.delivery.code
                                             "
@@ -521,27 +492,21 @@ export default {
                                             </p>
                                         </div>
                                         <div
-                                            v-else-if="
-                                                order.delivery.type ===
-                                                'delivery'
-                                            "
+                                            v-else-if="order.delivery.type === 'delivery'"
                                             class="col-12"
                                         >
                                             El pedido ser&aacute; enviado por
                                             paqueter&iacute;a. <br />
-                                            A&uacute;n no se ha asignado una
-                                            gu&iacute;a.
+                                            A&uacute;n no se ha asignado una gu&iacute;a.
                                         </div>
                                         <div
-                                            v-if="
-                                                order.delivery.type === 'store'
-                                            "
+                                            v-if="order.delivery.type === 'store'"
                                             class="col-12"
                                         >
                                             <p>
-                                                El pedido ser&aacute; recogido
-                                                en la sucursal donde se
-                                                realiz&oacute; la compra.
+                                                El pedido ser&aacute; recogido en la
+                                                sucursal donde se realiz&oacute; la
+                                                compra.
                                             </p>
                                         </div>
                                     </div>
@@ -552,10 +517,7 @@ export default {
                 </div>
 
                 <div class="col-12 text-right">
-                    <md-button
-                        class="md-raised md-dense md-primary"
-                        @click="goBack"
-                    >
+                    <md-button class="md-raised md-dense md-primary" @click="goBack">
                         Volver
                     </md-button>
                 </div>

@@ -1,5 +1,5 @@
 <script>
-import { Post } from "@/api/api";
+import { Post } from "@/services/api";
 
 export default {
     name: "UploadGraduation",
@@ -80,10 +80,7 @@ export default {
             <md-dialog-content>
                 <md-field>
                     <label>Archivo de graduaci&oacute;n</label>
-                    <md-file
-                        v-model="graduationFile"
-                        @md-change="selectGraduationFile"
-                    />
+                    <md-file v-model="graduationFile" @md-change="selectGraduationFile" />
                 </md-field>
             </md-dialog-content>
             <md-dialog-actions>

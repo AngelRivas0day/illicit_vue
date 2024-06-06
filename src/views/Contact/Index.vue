@@ -27,8 +27,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.fullName.$invalid &&
-                                    $v.form.fullName.$dirty,
+                                    $v.form.fullName.$invalid && $v.form.fullName.$dirty,
                             }"
                         >
                             <label>Nombre</label>
@@ -37,10 +36,7 @@
                                 v-model="form.fullName"
                                 required
                             ></md-input>
-                            <span
-                                v-if="!$v.form.fullName.required"
-                                class="md-error"
-                            >
+                            <span v-if="!$v.form.fullName.required" class="md-error">
                                 El nombre es requerido
                             </span>
                         </md-field>
@@ -49,8 +45,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.subject.$invalid &&
-                                    $v.form.subject.$dirty,
+                                    $v.form.subject.$invalid && $v.form.subject.$dirty,
                             }"
                         >
                             <label>Asunto</label>
@@ -59,10 +54,7 @@
                                 v-model="form.subject"
                                 required
                             ></md-input>
-                            <span
-                                v-if="!$v.form.subject.required"
-                                class="md-error"
-                            >
+                            <span v-if="!$v.form.subject.required" class="md-error">
                                 El asunto es requerido
                             </span>
                         </md-field>
@@ -71,8 +63,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.email.$invalid &&
-                                    $v.form.email.$dirty,
+                                    $v.form.email.$invalid && $v.form.email.$dirty,
                             }"
                         >
                             <label>Email</label>
@@ -81,16 +72,10 @@
                                 v-model="form.email"
                                 required
                             ></md-input>
-                            <span
-                                v-if="!$v.form.email.required"
-                                class="md-error"
-                            >
+                            <span v-if="!$v.form.email.required" class="md-error">
                                 El email es requerido
                             </span>
-                            <span
-                                v-else-if="!$v.form.email.email"
-                                class="md-error"
-                            >
+                            <span v-else-if="!$v.form.email.email" class="md-error">
                                 El email no es válido
                             </span>
                         </md-field>
@@ -99,8 +84,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.message.$invalid &&
-                                    $v.form.message.$dirty,
+                                    $v.form.message.$invalid && $v.form.message.$dirty,
                             }"
                         >
                             <label>Mensaje</label>
@@ -111,10 +95,7 @@
                                 md-autogrow
                                 required
                             ></md-textarea>
-                            <span
-                                v-if="!$v.form.message.required"
-                                class="md-error"
-                            >
+                            <span v-if="!$v.form.message.required" class="md-error">
                                 El mensaje es requerido
                             </span>
                         </md-field>
@@ -169,7 +150,7 @@
 
 <script>
 import { mapActions } from "vuex";
-import { Post } from "@/api/api";
+import { Post } from "@/services/api";
 import { required, email } from "vuelidate/lib/validators";
 
 export default {
@@ -248,10 +229,7 @@ export default {
     min-height: 100vh;
     &__banner {
         flex: 1;
-        background: linear-gradient(
-                rgba(51, 51, 51, 0.8),
-                rgba(51, 51, 51, 0.7)
-            ),
+        background: linear-gradient(rgba(51, 51, 51, 0.8), rgba(51, 51, 51, 0.7)),
             url("../../assets/img/contacto_bg.jpg");
         background-size: cover;
         h1 {

@@ -12,13 +12,8 @@
 </template>
 
 <script>
-import { Post } from "@/api/api";
-import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signOut,
-} from "firebase/auth";
+import { Post } from "@/services/api";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
 
 export default {
     name: "SocialLogin",

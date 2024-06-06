@@ -1,5 +1,5 @@
 <script>
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 
 export default {
     name: "SuccessfulPayment",
@@ -41,9 +41,7 @@ export default {
         setPageProperties(event) {
             const validEvents = ["invalidUrl", "success", "error"];
             if (!event || !validEvents.includes(event))
-                throw new Error(
-                    "setPageProperties method must receive an event name",
-                );
+                throw new Error("setPageProperties method must receive an event name");
             const propsMap = {
                 invalidUrl: {
                     title: "El enlace es inválido",

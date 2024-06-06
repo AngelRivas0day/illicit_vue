@@ -30,8 +30,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.street.$invalid &&
-                                    $v.form.street.$dirty,
+                                    $v.form.street.$invalid && $v.form.street.$dirty,
                             }"
                         >
                             <label>Calle</label>
@@ -39,10 +38,7 @@
                                 @blur="$v.form.street.$touch"
                                 v-model="form.street"
                             ></md-input>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.street.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.street.required">
                                 La calle es requerida.
                             </span>
                         </md-field>
@@ -50,8 +46,7 @@
                     <div class="col-xs-12 col-sm-12 col-md-3">
                         <md-field
                             :class="{
-                                'md-invalid':
-                                    $v.form.zip.$invalid && $v.form.zip.$dirty,
+                                'md-invalid': $v.form.zip.$invalid && $v.form.zip.$dirty,
                             }"
                         >
                             <label>ZIP</label>
@@ -77,10 +72,7 @@
                                 @blur="$v.form.extNumber.$touch"
                                 v-model="form.extNumber"
                             ></md-input>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.extNumber.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.extNumber.required">
                                 El número externo es requerido.
                             </span>
                         </md-field>
@@ -95,8 +87,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.state.$invalid &&
-                                    $v.form.state.$dirty,
+                                    $v.form.state.$invalid && $v.form.state.$dirty,
                             }"
                         >
                             <label>Estado</label>
@@ -106,17 +97,11 @@
                                 v-model="form.state"
                                 required
                             >
-                                <md-option
-                                    v-for="s in states"
-                                    :key="s"
-                                    :value="s"
-                                    >{{ s }}</md-option
-                                >
+                                <md-option v-for="s in states" :key="s" :value="s">{{
+                                    s
+                                }}</md-option>
                             </md-select>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.state.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.state.required">
                                 El estado es requerido.
                             </span>
                         </md-field>
@@ -125,8 +110,7 @@
                         <md-field
                             :class="{
                                 'md-invalid':
-                                    $v.form.city.$invalid &&
-                                    $v.form.city.$dirty,
+                                    $v.form.city.$invalid && $v.form.city.$dirty,
                             }"
                         >
                             <label>Ciudad</label>
@@ -135,22 +119,14 @@
                                 v-model="form.city"
                                 required
                             >
-                                <md-option
-                                    v-for="c in cities"
-                                    :key="c"
-                                    :value="c"
-                                    >{{ c }}</md-option
-                                >
+                                <md-option v-for="c in cities" :key="c" :value="c">{{
+                                    c
+                                }}</md-option>
                                 <template v-if="cities.length === 0">
-                                    <md-option
-                                        >-- Selecciona un estado --</md-option
-                                    >
+                                    <md-option>-- Selecciona un estado --</md-option>
                                 </template>
                             </md-select>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.city.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.city.required">
                                 La ciudad es requerida.
                             </span>
                         </md-field>
@@ -171,10 +147,7 @@
                                 md-counter="150"
                                 required
                             ></md-textarea>
-                            <span
-                                class="md-error"
-                                v-if="!$v.form.reference.required"
-                            >
+                            <span class="md-error" v-if="!$v.form.reference.required">
                                 Las referencias son requeridas.
                             </span>
                         </md-field>
@@ -186,9 +159,7 @@
                     Cancelar
                 </md-button>
                 <md-button
-                    :disabled="
-                        loading || $v.form.$invalid || !$v.form.$anyDirty
-                    "
+                    :disabled="loading || $v.form.$invalid || !$v.form.$anyDirty"
                     class="md-raised md-primary md-dense"
                     @click="onSubmit"
                 >
@@ -203,7 +174,7 @@
 import { required } from "vuelidate/lib/validators";
 import JSONData from "@/assets/data/data.json";
 import RequestErrorMessage from "@/components/RequestErrorMessage.vue";
-import { Get, Patch, Post } from "@/api/api";
+import { Get, Patch, Post } from "@/services/api";
 
 export default {
     name: "AddressFormDialog",
@@ -292,9 +263,7 @@ export default {
                     this.loading = false;
                 }, 500);
             } catch (error) {
-                this.errorMessage = error.response
-                    ? error.response.data
-                    : error.message;
+                this.errorMessage = error.response ? error.response.data : error.message;
                 this.loading = false;
                 this.patchingForm = false;
             }
@@ -323,9 +292,7 @@ export default {
                 this.showDialog = false;
                 this.$emit("closed", true);
             } catch (error) {
-                this.errorMessage = error.response
-                    ? error.response.data
-                    : error.message;
+                this.errorMessage = error.response ? error.response.data : error.message;
                 this.loading = false;
             }
         },

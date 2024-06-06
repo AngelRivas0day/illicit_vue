@@ -70,25 +70,19 @@
                             >
                                 <div
                                     :style="{
-                                        background: whiteIcons
-                                            ? 'white'
-                                            : '#333333',
+                                        background: whiteIcons ? 'white' : '#333333',
                                     }"
                                     class="bar"
                                 ></div>
                                 <div
                                     :style="{
-                                        background: whiteIcons
-                                            ? 'white'
-                                            : '#333333',
+                                        background: whiteIcons ? 'white' : '#333333',
                                     }"
                                     class="bar"
                                 ></div>
                                 <div
                                     :style="{
-                                        background: whiteIcons
-                                            ? 'white'
-                                            : '#333333',
+                                        background: whiteIcons ? 'white' : '#333333',
                                     }"
                                     class="bar"
                                 ></div>
@@ -113,7 +107,7 @@ import { mapState } from "vuex";
 import NavbarAccount from "@/components/NavbarAccount.vue";
 import NavbarFavorites from "@/components/NavbarFavorites.vue";
 import { getAuth } from "firebase/auth";
-import { Get } from "@/api/api";
+import { Get } from "@/services/api";
 import SidebarOptions from "@/components/SidebarOptions.vue";
 
 export default {
@@ -209,9 +203,7 @@ export default {
                 routeData: { name: "Products", query: { event_id: event.id } },
                 children: [],
             }));
-            const option = this.menuOptions.find(
-                (option) => option.label === "eventos",
-            );
+            const option = this.menuOptions.find((option) => option.label === "eventos");
             if (!option) return;
             // ?: Refresh the ID to trigger the reactivity
             option.id = 55;
