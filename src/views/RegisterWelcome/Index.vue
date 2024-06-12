@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import { getAuth, sendEmailVerification, signOut } from "firebase/auth";
-
 export default {
     name: "RegisterWelcome",
     data: () => ({
@@ -26,16 +24,9 @@ export default {
         errorMessage: null,
     }),
     async mounted() {
-        const user = getAuth().currentUser;
-        if (!user) {
-            this.$router.push({ name: "Login" });
-            return;
-        }
-        this.userName = user.displayName;
-        this.userEmail = user.email;
-        if (!user.emailVerified) await sendEmailVerification(user);
-        const auth = getAuth();
-        await signOut(auth);
+        const { user_name, user_email } = this.$route.query;
+        this.userName = user_name;
+        this.userEmail = user_email;
     },
 };
 </script>

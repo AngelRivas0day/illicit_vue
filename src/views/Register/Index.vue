@@ -1,6 +1,11 @@
 <script>
 import { required, minLength, sameAs, email } from "vuelidate/lib/validators";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    sendEmailVerification,
+    signOut,
+} from "firebase/auth";
 import { Post } from "@/services/api";
 import FirebaseAuthTranslate from "@/mixins/firebaseAuthTranslate";
 import AuthWrapper from "@/components/AuthWrapper.vue";
@@ -35,16 +40,18 @@ export default {
          * @return {Promise<void>}
          */
         async onSubmit() {
+            const auth = getAuth();
+            let user = null;
             try {
-                const auth = getAuth();
                 this.errorMessage = null;
                 this.loading = true;
                 // Crear el usuario en Firebase
-                await createUserWithEmailAndPassword(
+                const userCredential = await createUserWithEmailAndPassword(
                     auth,
                     this.form.email,
                     this.form.password,
                 );
+                user = userCredential.user;
                 // Crear el cliente en la base de datos para almacenar la información adicional
                 await Post({
                     endpoint: "clients",
@@ -56,7 +63,7 @@ export default {
                     },
                     useToken: true,
                 });
-
+                await sendEmailVerification(user);
                 // Sync the users favorite products with the database
                 const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
                 if (favorites.length > 0) {
@@ -67,13 +74,19 @@ export default {
                     });
                     localStorage.removeItem("favorites");
                 }
-
+                await signOut(auth);
                 this.loading = false;
-                // Redirigir al usuario a la página de verificación de correo electrónico
-                await this.$router.push({ name: "RegisterWelcome" });
+                await this.$router.push({
+                    name: "RegisterWelcome",
+                    query: {
+                        user_email: this.form.email,
+                        user_name: this.form.name,
+                    },
+                });
             } catch (error) {
                 this.errorMessage = this.translateFireBaseAuthError(error?.code);
                 this.loading = false;
+                if (user) await user.delete();
             }
         },
     },
@@ -99,6 +112,11 @@ export default {
             },
             birthDay: {
                 required,
+                olderThan18: (value) => {
+                    const date = new Date(value);
+                    const now = new Date();
+                    return now.getFullYear() - date.getFullYear() >= 18;
+                },
             },
             repeatedPassword: {
                 required,
@@ -173,9 +191,12 @@ export default {
                             v-model="form.birthDay"
                             type="date"
                         ></md-input>
-                        <span class="md-error" v-if="!$v.form.birthDay.required"
-                            >La fecha de nacimiento es requerida.</span
-                        >
+                        <span class="md-error" v-if="!$v.form.birthDay.required">
+                            La fecha de nacimiento es requerida.
+                        </span>
+                        <span class="md-error" v-else-if="!$v.form.birthDay.olderThan18">
+                            El usuario debe ser mayor de 18 años para registrarse.
+                        </span>
                     </md-field>
                 </div>
                 <div class="col-xs-12 col-sm-12">
@@ -211,7 +232,7 @@ export default {
                         <md-input
                             @blur="$v.form.phoneNumber.$touch"
                             v-model="form.phoneNumber"
-                            v-mask="'+## ###-###-####'"
+                            v-mask="'+## ##-####-####'"
                         ></md-input>
                         <span class="md-error" v-if="!$v.form.phoneNumber.required"
                             >El n&uacute;mero es requerido.</span

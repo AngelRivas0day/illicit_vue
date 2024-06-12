@@ -1,9 +1,7 @@
 <template>
     <div class="product__card">
         <div
-            @click="
-                $router.push({ name: 'Product', params: { id: product.id } })
-            "
+            @click="$router.push({ name: 'Product', params: { id: product.id } })"
             class="card__image"
         >
             <img :src="product.designs[designIndex].mainImage" alt="" />
@@ -140,6 +138,7 @@ export default {
                 border-radius: 100%;
                 margin: 0 4px;
                 cursor: pointer;
+                border: 1px solid #333 !important;
             }
         }
     }

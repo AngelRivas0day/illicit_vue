@@ -76,6 +76,13 @@ export default {
         sendingURLs: false,
     }),
     methods: {
+        onAppliedPromoCode(promoCode) {
+            if (!promoCode) {
+                this.promoCode = null;
+                return;
+            }
+            this.promoCode = promoCode;
+        },
         async fetchData() {
             const { offer_id = null, design_name = null } = this.$route.query;
             const { id } = this.$route.params;
@@ -165,35 +172,6 @@ export default {
             }
             this.orderDetails.offerId = offer.id;
             this.orderDetails.total -= offer.value;
-        },
-        async verifyAndApplyPromoCode(promoCodeId) {
-            try {
-                const { data } = await Get({
-                    endpoint: `promo-codes/check/${promoCodeId}`,
-                    useToken: true,
-                });
-                const { isPromoCodeValid, promoCode } = data;
-                if (!isPromoCodeValid) {
-                    this.orderDetails.coupon = null;
-                    this.orderDetails.total = this.orderDetails.offer
-                        ? this.product.price - this.orderDetails.offer.value
-                        : this.product.price;
-                    this.$notify({
-                        type: "error",
-                        title: "Error",
-                        text: "El código promocional ingresado no es válido.",
-                    });
-                    return;
-                }
-                this.orderDetails.coupon = promoCode;
-                this.orderDetails.total -= promoCode.value;
-            } catch (error) {
-                this.$notify({
-                    type: "error",
-                    title: "Error",
-                    text: "Ha ocurrido un error al verificar el código promocional. Por favor, intenta de nuevo más tarde.",
-                });
-            }
         },
         async createOrder() {
             try {
@@ -344,6 +322,7 @@ export default {
                 v-if="!loading"
                 :product="product"
                 :orderDetails="orderDetails"
+                :promoCode="promoCode"
             />
             <resumee-skeleton v-else />
         </div>
@@ -360,6 +339,7 @@ export default {
                     :creatingCheckoutSession="creatingCheckoutSession"
                     :creatingOrder="creatingOrder"
                     :sendingURLs="sendingURLs"
+                    @appliedPromoCode="onAppliedPromoCode"
                     @addressCreated="fetchAddresses"
                     @createOrder="createOrder"
                     @finishProcessForUserStore="sendURLsToClient"

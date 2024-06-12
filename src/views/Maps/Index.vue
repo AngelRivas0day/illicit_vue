@@ -1,18 +1,15 @@
 <template>
     <div class="maps">
         <div class="maps-inner">
-            <div
-                class="maps__side"
-                :class="[isTransitioning ? 'animate' : 'no-animate']"
-            >
+            <div class="maps__side" :class="[isTransitioning ? 'animate' : 'no-animate']">
                 <div class="map__side-inner">
-                    <h1>{{ currentPin.street }}</h1>
-                    <span> # {{ currentPin.extNumber }} </span>
+                    <h1>{{ currentLocation.street }}</h1>
+                    <span> # {{ currentLocation.extNumber }} </span>
                     <p class="mb-4">
-                        {{ currentPin.description }}
+                        {{ currentLocation.description }}
                     </p>
                     <button
-                        @click="openGoogleMaps(currentPin.link)"
+                        @click="openGoogleMaps(currentLocation.link)"
                         class="maps-button"
                     >
                         <div>GOOGLE MAPS</div>
@@ -22,13 +19,13 @@
                     <template v-if="showControls">
                         <button
                             class="controls--prev"
-                            @click="setPin(currentPinIndex, true, false)"
+                            @click="prevLocation(currentLocationIndex)"
                         >
                             anterior
                         </button>
                         <button
                             class="controls--next"
-                            @click="setPin(currentPinIndex, false, true)"
+                            @click="nextLocation(currentLocationIndex)"
                         >
                             siguiente
                         </button>
@@ -40,13 +37,13 @@
                 :class="[isTransitioning ? 'animate' : 'no-animate']"
             >
                 <gmap-map
-                    v-if="pinsLoaded"
+                    v-if="!loading"
                     class="map"
-                    :center="currentPin.marker"
+                    :center="currentLocation.marker"
                     :zoom="16"
                     :options="mapStyle"
                 >
-                    <gmap-marker :position="currentPin.marker"></gmap-marker>
+                    <gmap-marker :position="currentLocation.marker"></gmap-marker>
                 </gmap-map>
             </div>
         </div>
@@ -54,30 +51,21 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { Get } from "@/services/api";
+import { mapActions } from "vuex";
 import transition from "@/mixins/transition";
 
 export default {
     name: "Maps",
     mixins: [transition],
     computed: {
-        ...mapState("maps", {
-            pins: "pins",
-            isLoading: "isLoading",
-        }),
         showControls() {
-            return this.pins.length > 1;
+            return this.locations.length > 1;
         },
     },
-    mounted() {
+    async mounted() {
         this.setWhiteIcons();
-        this.getPins().finally(() => {
-            this.setFirstPin();
-            this.pinsLoaded = true;
-        });
-    },
-    destroyed() {
-        this.setWhiteIcons();
+        await this.fetchLocations();
     },
     data: () => ({
         mapStyle: {
@@ -268,41 +256,48 @@ export default {
                 },
             ],
         },
-        currentPin: {},
-        currentPinIndex: null,
-        pinsLoaded: false,
+        currentLocation: null,
+        currentLocationIndex: null,
+        loading: false,
+        locations: [],
     }),
     methods: {
         ...mapActions("background", {
             setWhiteIcons: "setWhiteIcons",
-            unsetWhiteIcons: "unsetWhiteIcons",
         }),
-        ...mapActions("maps", {
-            getPins: "getPins",
-        }),
-        setFirstPin() {
-            this.currentPin = this.pins[0];
-            this.currentPinIndex = this.pins.findIndex(
-                (x) => x.id === this.currentPin.id,
+        async fetchLocations() {
+            try {
+                this.loading = true;
+                const { data } = await Get({
+                    endpoint: "locations",
+                    useToken: false,
+                });
+                this.locations = data;
+                this.setInitialLocation();
+                this.loading = false;
+            } catch (error) {
+                this.loading = false;
+            }
+        },
+        setInitialLocation() {
+            this.currentLocation = this.locations[0];
+            this.currentLocationIndex = this.locations.findIndex(
+                (x) => x.id === this.currentLocation.id,
             );
         },
-        setPin(index, prev = false, next = false) {
+        nextLocation(index) {
+            const nextIndex = this.locations.length - 1 === index ? 0 : index + 1;
             this.transition(() => {
-                if (next && index + 1 != this.pins.length) {
-                    this.currentPin = this.pins[index + 1];
-                    this.currentPinIndex += 1;
-                } else if (prev && index != 0) {
-                    this.currentPin = this.pins[index - 1];
-                    this.currentPinIndex -= 1;
-                }
+                this.currentLocation = this.locations[nextIndex];
+                this.currentLocationIndex = nextIndex;
             });
-            // if(next && index + 1 != this.pins.length){
-            //     this.currentPin = this.pins[index + 1]
-            //     this.currentPinIndex += 1
-            // }else if(prev && index != 0){
-            //     this.currentPin = this.pins[index - 1]
-            //     this.currentPinIndex -= 1
-            // }
+        },
+        prevLocation(index) {
+            const prevIndex = index === 0 ? this.locations.length - 1 : index - 1;
+            this.transition(() => {
+                this.currentLocation = this.locations[prevIndex];
+                this.currentLocationIndex = prevIndex;
+            });
         },
         openGoogleMaps(link) {
             window.open(link, "_blank");

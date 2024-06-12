@@ -4,6 +4,7 @@ import Graduation from "./ConfigurationSteps/Graduation";
 import DeliveryAndPayment from "./ConfigurationSteps/DeliveryAndPayment";
 import ExtraComments from "./ConfigurationSteps/ExtraComments";
 import SendEmails from "./ConfigurationSteps/SendEmails";
+import PromoCode from "./ConfigurationSteps/PromoCode";
 
 export default {
     name: "OrderConfiguration",
@@ -13,6 +14,7 @@ export default {
         DeliveryAndPayment,
         ExtraComments,
         SendEmails,
+        PromoCode,
     },
     props: {
         orderDetails: {
@@ -75,6 +77,7 @@ export default {
         graduationAmount: 0,
         photochromicAmount: 0,
         antireflectiveAmount: 0,
+        promoCodeAmount: 0,
     }),
     computed: {
         isFirstStepDone() {
@@ -94,8 +97,7 @@ export default {
             );
         },
         isThirdStepDone() {
-            const { paymentMethod, address, deliveryMethod } =
-                this.orderDetails || {};
+            const { paymentMethod, address, deliveryMethod } = this.orderDetails || {};
             const requiredAddress = deliveryMethod === "delivery";
             if (requiredAddress) return !!address && !!deliveryMethod;
             return !!deliveryMethod && !!paymentMethod;
@@ -105,7 +107,8 @@ export default {
                 this.materialAmount +
                 this.graduationAmount +
                 this.photochromicAmount +
-                this.antireflectiveAmount
+                this.antireflectiveAmount +
+                this.promoCodeAmount
             );
         },
         disbleThirdButton() {
@@ -136,8 +139,7 @@ export default {
                 lensMaterial: material.value,
             };
             this.materialAmount = material.price;
-            updatedOrderDetails.total =
-                this.preModificationsPrice + this.addOnsTotal;
+            updatedOrderDetails.total = this.preModificationsPrice + this.addOnsTotal;
             this.$emit("update:orderDetails", updatedOrderDetails);
         },
         onGraduationTypeSelected(type) {
@@ -146,8 +148,7 @@ export default {
                 graduationType: type.value,
             };
             this.graduationAmount = type.price;
-            updatedOrderDetails.total =
-                this.preModificationsPrice + this.addOnsTotal;
+            updatedOrderDetails.total = this.preModificationsPrice + this.addOnsTotal;
             this.$emit("update:orderDetails", updatedOrderDetails);
         },
         onPhotochromicSelected(option) {
@@ -156,8 +157,7 @@ export default {
                 photochromic: option.value,
             };
             this.photochromicAmount = option.price;
-            updatedOrderDetails.total =
-                this.preModificationsPrice + this.addOnsTotal;
+            updatedOrderDetails.total = this.preModificationsPrice + this.addOnsTotal;
             this.$emit("update:orderDetails", updatedOrderDetails);
         },
         onAntireflectiveSelected(option) {
@@ -166,8 +166,7 @@ export default {
                 antireflective: option.value,
             };
             this.antireflectiveAmount = option.price;
-            updatedOrderDetails.total =
-                this.preModificationsPrice + this.addOnsTotal;
+            updatedOrderDetails.total = this.preModificationsPrice + this.addOnsTotal;
             this.$emit("update:orderDetails", updatedOrderDetails);
         },
         onPaymentMethodSelected(method) {
@@ -197,6 +196,16 @@ export default {
                 extraComments: comments,
             };
             this.$emit("update:orderDetails", updatedOrderDetails);
+        },
+        onPromoCodeApplied(promoCode = null) {
+            const updatedOrderDetails = {
+                ...this.orderDetails,
+                promoCodeId: promoCode ? promoCode.id : null,
+            };
+            this.promoCodeAmount = promoCode ? promoCode.value * -1 : 0;
+            updatedOrderDetails.total = this.preModificationsPrice + this.addOnsTotal;
+            this.$emit("update:orderDetails", updatedOrderDetails);
+            this.$emit("appliedPromoCode", promoCode ? promoCode : null);
         },
         onGraduationFileSelected(file) {
             if (!file) return;
@@ -286,9 +295,8 @@ export default {
                             @selectDeliveryMethod="onDeliveryMethodSelected"
                             @addressCreated="$emit('addressCreated')"
                         />
-                        <extra-comments
-                            @changeComments="onExtraCommentsChanged"
-                        />
+                        <promo-code @promoCodeApplied="onPromoCodeApplied" />
+                        <extra-comments @changeComments="onExtraCommentsChanged" />
                         <div class="step-actions text-right">
                             <md-button
                                 :disabled="disbleThirdButton"
@@ -308,9 +316,7 @@ export default {
                             :creatingOrder="creatingOrder"
                             :sendingURLs="sendingURLs"
                             :order="order"
-                            @sendURLs="
-                                $emit('finishProcessForUserStore', $event)
-                            "
+                            @sendURLs="$emit('finishProcessForUserStore', $event)"
                         />
                     </md-step>
                 </md-steppers>

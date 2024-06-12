@@ -15,10 +15,17 @@ export default {
             required: true,
             default: () => {},
         },
+        promoCode: {
+            type: Object,
+            required: false,
+            default: () => ({}),
+        },
     },
     computed: {
         design() {
-            return this.product.designs?.[0];
+            return this.product.designs.find(
+                (design) => design.name === this.orderDetails.designName,
+            );
         },
         graduationType() {
             return this.orderDetails.graduationType ?? "No especificado";
@@ -59,7 +66,7 @@ export default {
                             <div class="ml-1">{{ design.name }}</div>
                             <div class="mx-1">-</div>
                             <div
-                                :style="'background-color:' + design.hex + ';'"
+                                :style="'background-color:' + design.color.hex + ';'"
                                 class="circle"
                             ></div>
                         </li>
@@ -67,9 +74,7 @@ export default {
                             <span>Tipo de graduaci&oacute;n: </span>
                             {{ graduationType | capitalize }}
                         </li>
-                        <li>
-                            <span>Antirreflejante: </span>{{ antireflective }}
-                        </li>
+                        <li><span>Antirreflejante: </span>{{ antireflective }}</li>
                         <li>
                             <span>Fotocrom&aacute;tico: </span>
                             {{ photochromatic }}
@@ -79,9 +84,7 @@ export default {
                             {{ lensMaterial | capitalize }}
                         </li>
                         <li>
-                            <span>
-                                Cantidad m&aacute;xima de doptr&iacute;as:
-                            </span>
+                            <span> Cantidad m&aacute;xima de doptr&iacute;as: </span>
                             {{ maxDiopter }}
                         </li>
                         <li><span>Mountura: </span> {{ frameMaterial }}</li>
@@ -98,7 +101,17 @@ export default {
                     env&iacute;o</md-tooltip
                 >
             </span>
-            <p><span>Subtotal: </span>${{ orderDetails.total }}</p>
+            <template v-if="promoCode">
+                <div class="pricing-row">
+                    <span>Producto: </span>${{ orderDetails.product.price }}
+                </div>
+                <div class="pricing-row">
+                    <span>C&oacute;digo promocional: </span>-${{ promoCode.value }}
+                </div>
+            </template>
+            <div class="pricing-row pricing-title">
+                <span>Subtotal: </span>${{ orderDetails.total }}
+            </div>
         </div>
     </div>
 </template>
@@ -155,11 +168,20 @@ export default {
 }
 .purchase-pricing {
     padding: 15px;
-    p {
+    .pricing-row {
+        display: flex;
+        justify-content: space-between;
         margin-top: 10px;
-        font-size: 28px;
-        font-weight: bold;
-        margin-bottom: 0;
+        span {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        &.pricing-title {
+            margin-top: 20px;
+            border-top: 1px solid $gray;
+            padding-top: 10px;
+            font-size: 24px;
+        }
     }
     small {
         font-size: 14px;

@@ -18,9 +18,7 @@ export default {
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-4">
                             <md-list>
-                                <md-subheader
-                                    >Materiales del marco</md-subheader
-                                >
+                                <md-subheader>Materiales del marco</md-subheader>
                                 <md-list-item
                                     v-for="fM in product.frameMaterial"
                                     :key="fM"
@@ -32,11 +30,10 @@ export default {
                         <div class="col-xs-12 col-sm-12 col-md-4">
                             <md-list>
                                 <md-subheader
-                                    >Materiales disponibles para el
-                                    lente</md-subheader
+                                    >Materiales disponibles para el lente</md-subheader
                                 >
                                 <md-list-item
-                                    v-for="lM in product.lenseMaterial"
+                                    v-for="lM in product.lensMaterial"
                                     :key="lM"
                                 >
                                     <span class="spec-item">{{ lM }}</span>
@@ -46,12 +43,9 @@ export default {
                         <div class="col-xs-12 col-sm-12 col-md-4">
                             <md-list>
                                 <md-subheader
-                                    >Cantidad m&aacute;xima de
-                                    dioptrias</md-subheader
+                                    >Cantidad m&aacute;xima de dioptrias</md-subheader
                                 >
-                                <md-list-item>{{
-                                    product.maxDiopter
-                                }}</md-list-item>
+                                <md-list-item>{{ product.maxDiopter }}</md-list-item>
                             </md-list>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-4">
@@ -60,17 +54,10 @@ export default {
                                     >Dise&ntilde;os disponibles para el
                                     lente</md-subheader
                                 >
-                                <md-list-item
-                                    v-for="d in product.designs"
-                                    :key="d.name"
-                                >
+                                <md-list-item v-for="d in product.designs" :key="d.name">
                                     <div class="design-item">
                                         {{ d.name }} -
-                                        <div
-                                            :style="
-                                                'background: ' + d.color.hex
-                                            "
-                                        ></div>
+                                        <div :style="'background: ' + d.color.hex"></div>
                                     </div>
                                 </md-list-item>
                             </md-list>
@@ -91,14 +78,11 @@ export default {
                                 <div
                                     class="col-xs-12 col-sm-12 col-md-3 text-center mb-3"
                                 >
-                                    <span class="title"
-                                        >Largo de la varilla</span
-                                    ><br />
+                                    <span class="title">Largo de la varilla</span><br />
                                     <span class="measure"
                                         >{{
                                             product.measurements
-                                                ? product.measurements
-                                                      .dipstick_length
+                                                ? product.measurements.dipstick_length
                                                 : "Cargando..."
                                         }}
                                         mm</span
@@ -107,13 +91,11 @@ export default {
                                 <div
                                     class="col-xs-12 col-sm-12 col-md-3 text-center mb-3"
                                 >
-                                    <span class="title">Ancho del puente</span
-                                    ><br />
+                                    <span class="title">Ancho del puente</span><br />
                                     <span class="measure"
                                         >{{
                                             product.measurements
-                                                ? product.measurements
-                                                      .bridge_width
+                                                ? product.measurements.bridge_width
                                                 : "Cargando..."
                                         }}
                                         mm</span
@@ -122,13 +104,11 @@ export default {
                                 <div
                                     class="col-xs-12 col-sm-12 col-md-3 text-center mb-3"
                                 >
-                                    <span class="title">Ancho del lente</span
-                                    ><br />
+                                    <span class="title">Ancho del lente</span><br />
                                     <span class="measure"
                                         >{{
                                             product.measurements
-                                                ? product.measurements
-                                                      .lense_width
+                                                ? product.measurements.lense_width
                                                 : "Cargando..."
                                         }}
                                         mm</span
@@ -137,14 +117,11 @@ export default {
                                 <div
                                     class="col-xs-12 col-sm-12 col-md-3 text-center mb-3"
                                 >
-                                    <span class="title"
-                                        >Ancho de la montura</span
-                                    ><br />
+                                    <span class="title">Ancho de la montura</span><br />
                                     <span class="measure"
                                         >{{
                                             product.measurements
-                                                ? product.measurements
-                                                      .mount_length
+                                                ? product.measurements.mount_length
                                                 : "Cargando..."
                                         }}
                                         mm</span

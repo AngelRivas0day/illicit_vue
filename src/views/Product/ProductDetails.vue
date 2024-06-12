@@ -70,9 +70,7 @@ export default {
     <div class="main-block">
         <div class="main-block__info">
             <div class="info__body">
-                <div
-                    class="d-flex flex-row justify-content-between align-items-center"
-                >
+                <div class="d-flex flex-row justify-content-between align-items-center">
                     <div class="mb-2">
                         <h1 class="info__title mb-0">{{ product.name }}</h1>
                         <span class="text-muted">{{ categories }}</span>
@@ -105,13 +103,11 @@ export default {
                 </span>
                 <ul class="info__colors-selector">
                     <li
-                        v-for="design in product.designs"
-                        :key="design.name"
+                        v-for="(design, index) in product.designs"
+                        :key="index"
                         @click="changeDesign(design)"
                         :style="{ backgroundColor: design.color.hex }"
-                        :class="
-                            currentDesign.name === design.name ? 'active' : ''
-                        "
+                        :class="currentDesign.name === design.name ? 'active' : ''"
                     ></li>
                 </ul>
                 <p class="info__desc">
@@ -130,15 +126,12 @@ export default {
         </div>
         <template v-if="currentDesign">
             <div
-                v-for="image in currentDesign.images"
-                :key="image"
+                v-for="(image, index) in currentDesign.images"
+                :key="index"
                 class="main-block__image"
                 :class="isTransitioning ? 'animate' : 'no-animate'"
             >
-                <img
-                    v-lazy="image"
-                    alt="Imagén del diseño seleccionado del producto"
-                />
+                <img v-lazy="image" alt="Imagén del diseño seleccionado del producto" />
             </div>
         </template>
     </div>
@@ -190,6 +183,7 @@ export default {
                     border-radius: 100%;
                     margin-right: 8px;
                     cursor: pointer;
+                    border: 1px solid #333 !important;
                 }
             }
             // .info__desc{
@@ -204,11 +198,9 @@ export default {
         @media #{$break-medium} {
             order: -2;
             width: 50%;
-            height: 100vh;
+            height: 80vh;
             .info__actions {
                 margin-bottom: 50px !important;
-                // .info__buy{
-                // }
             }
         }
     }
@@ -219,7 +211,7 @@ export default {
         img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
         &:after {
             content: "";
@@ -251,7 +243,7 @@ export default {
         }
         @media #{$break-medium} {
             order: initial;
-            height: 100vh;
+            height: 80vh;
             width: 50%;
             order: inherit;
         }
