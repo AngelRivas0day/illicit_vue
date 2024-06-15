@@ -1,13 +1,13 @@
 <template>
     <div>
         <md-dialog-confirm
-            :md-active.sync="showConfirmCancelDialog"
-            md-title="Confirmar cancelación de orden"
-            md-content="Cancelar una orden es una acción irreversible. ¿Estás seguro de que deseas continuar?"
-            md-confirm-text="Cancelar orden"
-            md-cancel-text="Cerrar"
-            @md-cancel="showConfirmCancelDialog = false"
-            @md-confirm="confirmFunction"
+            :md-active.sync="showConfirmDialog"
+            :md-title="confirmDialogTitle"
+            :md-content="confirmDialogPhrase"
+            :md-confirm-text="loading ? 'Cargando...' : confirmDialogConfirmLabel"
+            md-cancel-text="Cancelar"
+            @md-cancel="showConfirmDialog = false"
+            @md-confirm="dialogConfirmFn"
         />
         <md-card class="my-4">
             <md-card-header>
@@ -50,9 +50,13 @@ export default {
         loading: false,
         history: [],
         tableActions: [],
-        showConfirmCancelDialog: false,
-        confirmFunction: () => {},
         loadingConfirmedAction: false,
+
+        showConfirmDialog: false,
+        confirmDialogTitle: null,
+        confirmDialogPhrase: null,
+        confirmDialogConfirmLabel: null,
+        dialogConfirmFn: () => {},
     }),
     methods: {
         /**
@@ -97,13 +101,54 @@ export default {
                     }.bind(this),
                 },
                 {
+                    id: "mark-as-delivered",
+                    label: "Marcar como entregada",
+                    icon: "done",
+                    condition: (row) =>
+                        row.payment.status === "paid" && row.delivery.status === "sent",
+                    handler: async function (row) {
+                        this.showConfirmDialog = true;
+                        this.confirmDialogTitle = "Confirmar entrega";
+                        this.confirmDialogPhrase =
+                            "¿Estás seguro de que deseas marcar esta orden como entregada?";
+                        this.confirmDialogConfirmLabel = "Marcar como entregada";
+                        this.dialogConfirmFn = async () => {
+                            try {
+                                this.loadingConfirmedAction = true;
+                                await Patch({
+                                    endpoint: `users-orders/${row.id}/delivered`,
+                                    useToken: true,
+                                });
+                                this.loadingConfirmedAction = false;
+                                this.showConfirmDialog = false;
+                                await this.fetchUserOrders();
+                            } catch (error) {
+                                this.loadingConfirmedAction = false;
+                                this.showConfirmDialog = false;
+                                this.$notify({
+                                    group: "user",
+                                    type: "error",
+                                    title: "Error",
+                                    text:
+                                        error.response?.data?.message ||
+                                        "Ha ocurrido un error al cancelar la orden. Por favor, intenta de nuevo.",
+                                });
+                            }
+                        };
+                    }.bind(this),
+                },
+                {
                     id: "cancel-order",
                     label: "Cancelar orden",
                     icon: "cancel",
                     condition: (row) => row.can_be_cancelled,
                     handler: async function (row) {
-                        this.showConfirmCancelDialog = true;
-                        this.confirmFunction = async () => {
+                        this.showConfirmDialog = true;
+                        this.confirmDialogTitle = "Confirmar cancelación";
+                        this.confirmDialogPhrase =
+                            "¿Estás seguro de que deseas cancelar esta orden?";
+                        this.confirmDialogConfirmLabel = "Cancelar orden";
+                        this.dialogConfirmFn = async () => {
                             try {
                                 this.loadingConfirmedAction = true;
                                 await Patch({
@@ -111,11 +156,11 @@ export default {
                                     useToken: true,
                                 });
                                 this.loadingConfirmedAction = false;
-                                this.showConfirmCancelDialog = false;
+                                this.showConfirmDialog = false;
                                 await this.fetchUserOrders();
                             } catch (error) {
                                 this.loadingConfirmedAction = false;
-                                this.showConfirmCancelDialog = false;
+                                this.showConfirmDialog = false;
                                 this.$notify({
                                     group: "user",
                                     type: "error",

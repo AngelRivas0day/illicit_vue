@@ -8,7 +8,7 @@ const config = {
     storageBucket: "illicit-b2266.appspot.com",
     messagingSenderId: "637553011653",
     appId: "1:637553011653:web:5ae40f02901b814f7fb9ac",
-    measurementId: "G-R83WCEESCK"
-  };
+    measurementId: "G-R83WCEESCK",
+};
 
-  initializeApp(config);
+initializeApp(config);

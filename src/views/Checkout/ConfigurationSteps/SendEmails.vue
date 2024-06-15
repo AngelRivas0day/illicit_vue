@@ -107,11 +107,11 @@ export default {
                     {{ sectionTitle }}
                 </h2>
             </div>
-            <div class="col-12" v-if="!creatingOrder">
+            <!-- <div class="col-12" v-if="!creatingOrder">
                 <md-checkbox v-model="usePhoneNumber" :disabled="sendingURLs">
                     {{ usePhoneNumberLabel }}
                 </md-checkbox>
-            </div>
+            </div> -->
             <div class="col-12" v-if="usePhoneNumber">
                 <md-field>
                     <label>N&uacute;mero de tel&eacute;fono</label>

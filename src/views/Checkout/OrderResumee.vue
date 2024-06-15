@@ -63,12 +63,14 @@ export default {
                     <ul>
                         <li class="d-flex align-items-center">
                             <span>Dise&ntilde;o: &nbsp;</span>
-                            <div class="ml-1">{{ design.name }}</div>
-                            <div class="mx-1">-</div>
-                            <div
-                                :style="'background-color:' + design.color.hex + ';'"
-                                class="circle"
-                            ></div>
+                            <div class="d-flex align-items-center flex-row">
+                                <div class="ml-1">{{ design.name }}</div>
+                                <div class="mx-1">-</div>
+                                <div
+                                    :style="'background-color:' + design.color.hex + ';'"
+                                    class="circle"
+                                ></div>
+                            </div>
                         </li>
                         <li>
                             <span>Tipo de graduaci&oacute;n: </span>
@@ -102,9 +104,7 @@ export default {
                 >
             </span>
             <template v-if="promoCode">
-                <div class="pricing-row">
-                    <span>Producto: </span>${{ orderDetails.product.price }}
-                </div>
+                <div class="pricing-row"><span>Producto: </span>${{ product.price }}</div>
                 <div class="pricing-row">
                     <span>C&oacute;digo promocional: </span>-${{ promoCode.value }}
                 </div>
@@ -168,6 +168,7 @@ export default {
 }
 .purchase-pricing {
     padding: 15px;
+    width: 100%;
     .pricing-row {
         display: flex;
         justify-content: space-between;

@@ -42,7 +42,7 @@ export default {
         sessionId: null,
         creatingCheckoutSession: false,
         stripePubickKey:
-            "pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14",
+            "pk_test_51IYKufCOtbElZiKEDPblTPV59g3RAkY3lpy0XGCBBOJWeNqlZqsujt9yqfe7WIxCs9Rz5PXeCcNIwI5wxulLrat500gKvembnM",
     }),
     computed: {},
     methods: {
@@ -54,6 +54,7 @@ export default {
                     useToken: true,
                 });
                 this.order = data;
+                this.requestEmail = this.order.contact ? this.order.contact.email : null;
                 this.loading = false;
             } catch (error) {
                 this.loading = false;
@@ -116,7 +117,6 @@ export default {
                     data: { email: this.requestEmail },
                     useToken: true,
                 });
-                this.requestEmail = null;
                 this.sendingGraduationRequest = false;
                 this.$notify({
                     group: "user",
@@ -146,7 +146,6 @@ export default {
                     data: { email: this.requestEmail },
                     useToken: true,
                 });
-                this.requestEmail = null;
                 this.sendingPaymentRequest = false;
                 this.$notify({
                     group: "user",
@@ -155,7 +154,6 @@ export default {
                     type: "success",
                 });
             } catch (error) {
-                this.requestEmail = null;
                 this.sendingPaymentRequest = false;
                 this.$notify({
                     group: "user",
@@ -178,32 +176,55 @@ export default {
 
 <template>
     <div id="order-details">
-        <design-images-dialog :active.sync="showDesignDialog" :product="order.product" />
-        <graduation-details :active.sync="showGraduationDialog" :orderId="orderId" />
-        <upload-graduation :active.sync="showUploadGraduationDialog" :orderId="orderId" />
-        <md-dialog-prompt
-            :md-active.sync="showRequestPaymentDialog"
-            v-model="requestEmail"
-            md-title="Enviar solicitud de pago"
-            md-input-maxlength="100"
-            md-input-placeholder="Correo electrónico"
-            md-confirm-text="Enviar solicitud"
-            md-cancel-text="Cancelar"
-            @md-confirm="sendPaymentRequest"
-        />
-        <md-dialog-prompt
-            :md-active.sync="showRequestGraduationDialog"
-            v-model="requestEmail"
-            md-title="Enviar solicitud de archivo de graduación"
-            md-input-maxlength="100"
-            md-input-placeholder="Correo electrónico"
-            md-confirm-text="Enviar solicitud"
-            md-cancel-text="Cancelar"
-            @md-confirm="sendGraduationRequest"
-        />
         <div class="row">
             <details-skeleton v-if="loading" />
             <template v-else>
+                <design-images-dialog
+                    :active.sync="showDesignDialog"
+                    :product="order.product"
+                />
+                <graduation-details
+                    :active.sync="showGraduationDialog"
+                    :orderId="orderId"
+                />
+                <upload-graduation
+                    :active.sync="showUploadGraduationDialog"
+                    :orderId="orderId"
+                />
+                <md-dialog-prompt
+                    :md-active.sync="showRequestPaymentDialog"
+                    v-model="requestEmail"
+                    md-title="Enviar solicitud de pago"
+                    :md-content="
+                        order.contact
+                            ? 'El correo electrónico predeterminado es ' +
+                              order.contact.email +
+                              '. Puedes cambiarlo si lo deseas.'
+                            : 'No se ha encontrado un correo electrónico asociado a este pedido. Por favor, ingresa uno.'
+                    "
+                    md-input-maxlength="100"
+                    md-input-placeholder="Correo electrónico"
+                    md-confirm-text="Enviar solicitud"
+                    md-cancel-text="Cancelar"
+                    @md-confirm="sendPaymentRequest"
+                />
+                <md-dialog-prompt
+                    :md-active.sync="showRequestGraduationDialog"
+                    v-model="requestEmail"
+                    md-title="Enviar solicitud de archivo de graduación"
+                    :md-content="
+                        order.contact
+                            ? 'El correo electrónico predeterminado es ' +
+                              order.contact.email +
+                              '. Puedes cambiarlo si lo deseas.'
+                            : 'No se ha encontrado un correo electrónico asociado a este pedido. Por favor, ingresa uno.'
+                    "
+                    md-input-maxlength="100"
+                    md-input-placeholder="Correo electrónico"
+                    md-confirm-text="Enviar solicitud"
+                    md-cancel-text="Cancelar"
+                    @md-confirm="sendGraduationRequest"
+                />
                 <div class="col-12 mb-3">
                     <h2>Detalles del pedido</h2>
                     <span> Fecha del pedido: {{ order.createdAt | formatDate }} </span>
@@ -389,7 +410,7 @@ export default {
                         <md-card-actions v-if="order.canUpdateGraduationData">
                             <md-button
                                 @click="showGraduationDialog = true"
-                                class="md-stroked md-primary mr-0 mb-0"
+                                class="md-primary md-dense mr-0 mb-0"
                                 :disabled="order.graduationRef === 'pending'"
                             >
                                 Ver graduaci&oacute;n
@@ -596,9 +617,6 @@ export default {
             }
             &.paid {
                 background: #52c41abd !important;
-            }
-            &.denied {
-                background: #f5222dbd !important;
             }
         }
     }

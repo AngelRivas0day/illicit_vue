@@ -55,7 +55,7 @@ export default {
         creatingOrder: false,
         creatingCheckoutSession: false,
         stripePubickKey:
-            "pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14",
+            "pk_test_51IYKufCOtbElZiKEDPblTPV59g3RAkY3lpy0XGCBBOJWeNqlZqsujt9yqfe7WIxCs9Rz5PXeCcNIwI5wxulLrat500gKvembnM",
 
         userStoreIsLoggedIn: false,
         promoCode: null,
@@ -242,23 +242,37 @@ export default {
             const shouldSendWhatsApp = !!data.phoneNumber;
             const requests = [];
 
-            if (shouldSendEmail) requests.push(this.sendOrderDetailsEmail(data.email));
+            // TODO: Remove this conditional once the Twilio integration is done.
             if (shouldSendWhatsApp)
-                requests.push(this.sendOrderDetailsMessage(data.phoneNumber));
+                throw new Error(
+                    "No se puede enviar un mensaje de WhatsApp en este momento.",
+                );
 
-            if (requiresGraduation && shouldSendEmail)
-                requests.push(this.sendGraduationEmail(data.email));
-            if (requiresGraduation && shouldSendWhatsApp)
-                requests.push(this.sendGraduationMessage(data.phoneNumber));
-
-            if (requiresPayment && shouldSendEmail)
-                requests.push(this.sendPaymentEmail(data.email));
-            if (requiresPayment && shouldSendWhatsApp)
-                requests.push(this.sendPaymentMessage(data.phoneNumber));
+            // TODO: Also remove this conditional once the Twilio integration is done.
+            if (!shouldSendEmail) {
+                this.$notify({
+                    group: "user",
+                    type: "error",
+                    title: "Error",
+                    text: "No se ha proporcionado un correo electrónico para enviar la información.",
+                });
+                return;
+            }
 
             try {
                 this.sendingURLs = true;
-                await Promise.all(requests);
+                await Post({
+                    endpoint: `users-orders/${this.order.id}/order-emails`,
+                    data: {
+                        email: data.email,
+                        options: {
+                            details_email: shouldSendEmail,
+                            graduation_email: requiresGraduation,
+                            payment_email: requiresPayment,
+                        },
+                    },
+                    useToken: true,
+                });
                 this.sendingURLs = false;
                 this.$notify({
                     group: "user",
@@ -266,7 +280,7 @@ export default {
                     title: "Enlaces enviados",
                     text:
                         "Los enlaces con los detalles de la orden, el pago y/o graduación" +
-                        ` han sido enviados a ${data.email || data.phoneNumber} con éxito.`,
+                        ` han sido enviados a ${data.email} con éxito.`,
                 });
                 this.$router.push({ name: "Home" });
             } catch (error) {
@@ -280,36 +294,6 @@ export default {
                         "Ha ocurrido un error al enviar los enlaces de pago y/o graduación. Por favor, intenta de nuevo más tarde.",
                 });
             }
-        },
-        async sendOrderDetailsEmail(email) {
-            await Post({
-                endpoint: `orders-utils/${this.order.id}/order-details-email`,
-                data: { email },
-                useToken: true,
-            });
-        },
-        async sendPaymentEmail(email) {
-            await Post({
-                endpoint: `orders/${this.order.id}/payment-email`,
-                data: { email },
-                useToken: true,
-            });
-        },
-        async sendGraduationEmail(email) {
-            await Post({
-                endpoint: `orders/${this.order.id}/graduation-email`,
-                data: { email },
-                useToken: true,
-            });
-        },
-        async sendOrderDetailsMessage(phoneNumber) {
-            console.log("Sending order message to", phoneNumber);
-        },
-        async sendPaymentMessage(phoneNumber) {
-            console.log("Sending payment message to", phoneNumber);
-        },
-        async sendGraduationMessage(phoneNumber) {
-            console.log("Sending graduation message to", phoneNumber);
         },
     },
 };
@@ -368,8 +352,8 @@ export default {
         height: auto;
         @media #{$break-large} {
             flex: 1;
-            width: 250px;
-            min-width: 250px;
+            width: 200px;
+            min-width: 200px;
             height: 100vh;
         }
     }

@@ -25,7 +25,7 @@ export default {
         product: null,
         displayName: null,
         stripePubickKey:
-            "pk_test_51HJkwAD1nUNZOF3ZYIn3DEBY2QSkJdQTAYMYajExWnVXVnRBpiW1zmDJy2Ee1f3hzvmRDeu0kbmN78yMUsagfy2400HkhbwZ14",
+            "pk_test_51IYKufCOtbElZiKEDPblTPV59g3RAkY3lpy0XGCBBOJWeNqlZqsujt9yqfe7WIxCs9Rz5PXeCcNIwI5wxulLrat500gKvembnM",
     }),
     methods: {
         async fetchData() {
