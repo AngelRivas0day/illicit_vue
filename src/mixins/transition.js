@@ -1,17 +1,17 @@
 export default {
-	data: () => ({
-		isTransition: false,
-	}),
-	methods: {
-		transition(callback = () => ({})) {
-			this.isTransition = !this.isTransition
-			setTimeout(
-				function () {
-					this.isTransition = !this.isTransition
-					callback()
-				}.bind(this),
-				800
-			)
-		},
-	},
-}
+    data: () => ({
+        isTransitioning: false,
+    }),
+    methods: {
+        transition(callback = () => ({})) {
+            this.isTransitioning = !this.isTransitioning;
+            setTimeout(
+                function () {
+                    this.isTransitioning = !this.isTransitioning;
+                    callback();
+                }.bind(this),
+                800,
+            );
+        },
+    },
+};

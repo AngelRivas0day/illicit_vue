@@ -1,504 +1,448 @@
-$break-small: 'screen and (min-width: 576px)'; //de esos px para arriba
-$break-medium: 'screen and (min-width: 768px)';
-$break-large: 'screen and (min-width: 992px)';
-$break-extra: 'screen and (min-width: 1200px)';
-$main-black: rgb(26, 26, 26);
-$main-red: rgb(147, 41, 32);
-$terciary-color: '';
-$gray: #c4c4c4;
+$break-small: "screen and (min-width: 576px)"; //de esos px para arriba
+$break-medium: "screen and (min-width: 768px)";
+$break-large: "screen and (min-width: 992px)";
+$break-extra: "screen and (min-width: 1200px)";
+$main-black: rgb(26,26,26);
+$main-red: rgb(147,41,32);
+$gray: #C4C4C4;
 $main-green: #2ec5c5;
 $main-green-mate: #24919c;
-
-// $primary-color: #f9f9f9;
-// $secondary-color: #222222;
-// $tertiary-color: #24919c;
-// $quaternary-color: #AD9C9C;
-// $quinary-color: #FAFAFA;
 
 $primary-color: #f9f9f9;
 $secondary-color: #222222;
 $tertiary-color: #24919c;
-$quaternary-color: #ff5e5b;
+$quaternary-color: #FF5E5B;
 
-@mixin white_form {
-	::v-deep .md-field {
-		color: black !important;
-		input {
-			-webkit-text-fill-color: #333333 !important;
-		}
-		i:after {
-			height: 0px !important;
-		}
-	}
-
-	::v-deep .md-textarea {
-		-webkit-text-fill-color: #333333 !important;
-	}
-
-	::v-deep .md-field.md-theme-default label {
-		color: black !important;
-	}
-
-	::v-deep .md-field.md-theme-default.md-focused .md-icon {
-		color: #2ec5c5 !important;
-	}
-
-	::v-deep .md-field.md-theme-default:after {
-		background-color: black !important;
-	}
-
-	::v-deep .md-field.md-theme-default:before {
-		background-color: black !important;
-	}
-
-	::v-deep .md-count {
-		color: #333 !important;
-	}
-
-	::v-deep .md-helper-text {
-		color: #333 !important;
-		opacity: .7;
-	}
+@mixin simple-button($text-color, $hover-color, $bg-color){
+    display: block;
+    width: auto;
+    max-width: 200px;
+    transition: all .3s;
+    text-align: center;
+    color: #{$text-color};
+    background-color: transparent;
+    text-decoration: none;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        z-index: -1;
+        position: absolute;
+        content: '';
+        background-color: #{$bg-color};
+        width: 30%;
+        height: 100%;
+        left: 0px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    &:hover:after{
+        width: 100%;
+        height: 100%;
+    }
+    &:hover{
+        color: #{$hover-color};
+    }
 }
 
-@mixin simple-button($text-color, $hover-color, $bg-color) {
-	display: block;
-	width: auto;
-	max-width: 200px;
-	transition: all 0.3s;
-	text-align: center;
-	color: #{$text-color};
-	background-color: transparent;
-	text-decoration: none;
-	font-size: 14px;
-	position: relative;
-	z-index: 1;
-	&:after {
-		transition: all 0.3s;
-		z-index: -1;
-		position: absolute;
-		content: '';
-		background-color: #{$bg-color};
-		width: 30%;
-		height: 100%;
-		left: 0px;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-	&:hover:after {
-		width: 100%;
-		height: 100%;
-	}
-	&:hover {
-		color: #{$hover-color};
-	}
+@mixin secondary-button(){
+    position: relative;
+    background-color: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 7px 0;
+    min-width: 140px;
+    text-align: center;
+    transition: all .4s;
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 0px;
+        background-color: white;
+        z-index: -1;
+    }
+    &:hover{
+        color: black;
+        // border-color: transparent;
+    }
+    &:hover:after{
+        width: 100% !important;
+    }
 }
 
-@mixin secondary-button() {
-	position: relative;
-	background-color: transparent;
-	border: 1px solid white;
-	color: white;
-	padding: 7px 0;
-	min-width: 140px;
-	text-align: center;
-	transition: all 0.4s;
-	z-index: 1;
-	&:after {
-		transition: all 0.3s;
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		width: 0px;
-		background-color: white;
-		z-index: -1;
-	}
-	&:hover {
-		color: black;
-		// border-color: transparent;
-	}
-	&:hover:after {
-		width: 100% !important;
-	}
+@mixin small-button($text-color, $hover-color, $bg-color){
+    position: relative;
+    transition: all .4s;
+    padding: 9px 25px;
+    border: none;
+    background-color: transparent;
+    color: #{$text-color};
+    z-index: 1;
+    &:after{
+        transition: all .3s;
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 2px;
+        background-color: #{$bg-color};
+        z-index: -1;
+    }
+    &:hover{
+        color: #{$hover-color};
+    }
+    &:hover:after{
+        width: 100% !important;
+    }
 }
 
-@mixin small-button($text-color, $hover-color, $bg-color) {
-	position: relative;
-	transition: all 0.4s;
-	padding: 9px 25px;
-	border: none;
-	background-color: transparent;
-	color: #{$text-color};
-	z-index: 1;
-	&:after {
-		transition: all 0.3s;
-		content: '';
-		position: absolute;
-		left: 0;
-		top: 0;
-		height: 100%;
-		width: 2px;
-		background-color: #{$bg-color};
-		z-index: -1;
-	}
-	&:hover {
-		color: #{$hover-color};
-	}
-	&:hover:after {
-		width: 100% !important;
-	}
+@mixin call-to-action-2($color){
+    padding: 10px 25px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 500;
+    background: transparent;
+    outline: none !important;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+
+    min-width: 130px;
+    width: 160px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    color: $color;
+    span{
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        &:after, &:before{
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            background: $color !important;
+            transition: all 0.3s ease;
+        }
+        &:before {
+            width: 1px;
+            height: 50%;
+        }
+        &:after {
+            width: 20%;
+            height: 1px;
+        }
+        &:hover:before {
+            height: 100%;
+        }
+        &:hover:after {
+            width: 100%;
+        }
+    }
+    &:before, &:after{
+        position: absolute;
+        content: "";
+        right: 0;
+        top: 0;
+        background: $color !important;
+        transition: all 0.3s ease;
+    }
+    &:before {
+        height: 50%;
+        width: 1px;
+    
+    }
+    &:after {
+        width: 20%;
+        height: 1px;
+    
+    }
+    &:hover:before {
+        height: 100%;
+    }
+    &:hover:after {
+        width: 100%;
+    }
 }
 
-@mixin call-to-action-2($color) {
-	padding: 10px 25px;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 500;
-	background: transparent;
-	outline: none !important;
-	cursor: pointer;
-	transition: all 0.3s ease;
-	position: relative;
-	display: inline-block;
-
-	min-width: 130px;
-	width: 160px;
-	height: 40px;
-	line-height: 42px;
-	padding: 0;
-	border: none;
-	color: $color;
-	span {
-		position: relative;
-		display: block;
-		width: 100%;
-		height: 100%;
-		&:after,
-		&:before {
-			position: absolute;
-			content: '';
-			left: 0;
-			bottom: 0;
-			background: $color !important;
-			transition: all 0.3s ease;
-		}
-		&:before {
-			width: 1px;
-			height: 50%;
-		}
-		&:after {
-			width: 20%;
-			height: 1px;
-		}
-		&:hover:before {
-			height: 100%;
-		}
-		&:hover:after {
-			width: 100%;
-		}
-	}
-	&:before,
-	&:after {
-		position: absolute;
-		content: '';
-		right: 0;
-		top: 0;
-		background: $color !important;
-		transition: all 0.3s ease;
-	}
-	&:before {
-		height: 50%;
-		width: 1px;
-	}
-	&:after {
-		width: 20%;
-		height: 1px;
-	}
-	&:hover:before {
-		height: 100%;
-	}
-	&:hover:after {
-		width: 100%;
-	}
+@mixin center-layout{
+    min-height: 100vH;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-@mixin center-layout {
-	min-height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+@mixin center-layout-custom($height){
+    min-height: calc(#{$height} - 60px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-@mixin center-layout-custom($height) {
-	min-height: calc(#{$height} - 60px);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
+@mixin main-button($isAnchor){
+    position: relative;
+    margin-top: 12px;
+    font-size: 16px;
+    border-radius: 0px;
+    padding: 5px 25px;
+    color: black;
+    background-color: transparent;
+    border: 1px solid black;
+    text-decoration: none;
+    transition: all .3s;
+    z-index: 1;
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    @if $isAnchor {
+        a{
+            color: black;
+            text-decoration: none !important;
+        }
+        &:hover a{
+            color: white;
+        }
+    } @else {
+        &:hover{
+            color: white;
+        }
+    }
+    &:after{
+        transition: all .3s;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 0px;
+        background-color: black;
+        z-index: -1;
+        bottom: 0;
+        left: 0;
+    }
+    &:hover:after{
+        height: 100%;
+    }
 }
 
-@mixin main-button($isAnchor) {
-	position: relative;
-	margin-top: 12px;
-	font-size: 16px;
-	border-radius: 0px;
-	padding: 5px 25px;
-	color: black;
-	background-color: transparent;
-	border: 1px solid black;
-	text-decoration: none;
-	transition: all 0.3s;
-	z-index: 1;
-	font-size: 15px;
-	letter-spacing: 1.5px;
-	text-transform: uppercase;
-	@if $isAnchor {
-		a {
-			color: black;
-			text-decoration: none !important;
-		}
-		&:hover a {
-			color: white;
-		}
-	} @else {
-		&:hover {
-			color: white;
-		}
-	}
-	&:after {
-		transition: all 0.3s;
-		content: '';
-		position: absolute;
-		width: 100%;
-		height: 0px;
-		background-color: black;
-		z-index: -1;
-		bottom: 0;
-		left: 0;
-	}
-	&:hover:after {
-		height: 100%;
-	}
+@mixin flex($direction, $align, $justify){
+    display: flex;
+    align-items: #{$align};
+    justify-content: #{$justify};
+    flex-direction: #{$direction};
 }
 
-@mixin flex($direction, $align, $justify) {
-	display: flex;
-	align-items: #{$align};
-	justify-content: #{$justify};
-	flex-direction: #{$direction};
+@mixin container{
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    @media (min-width: 768px) {
+        width: 750px;
+        }
+    @media (min-width: 992px) {
+        width: 970px;
+    }
+    @media (min-width: 1200px) {
+        width: 1170px;
+    }
 }
 
-@mixin container {
-	padding-right: 15px;
-	padding-left: 15px;
-	margin-right: auto;
-	margin-left: auto;
-	@media (min-width: 768px) {
-		width: 750px;
-	}
-	@media (min-width: 992px) {
-		width: 970px;
-	}
-	@media (min-width: 1200px) {
-		width: 1170px;
-	}
+@mixin transition-common($class, $color){
+    #{$class}{
+        position: relative;
+        &:after{
+            content: '';
+            transition: ease-out .8s;
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #{$color};
+            z-index: 1;
+            height: 100%;
+            width: 0px;
+        }
+        &.animate{
+            &:after{
+                width: 100%;
+                left: 0;
+            }
+        }
+    }
 }
 
-@mixin transition-common($class, $color) {
-	#{$class} {
-		position: relative;
-		&:after {
-			content: '';
-			transition: ease-out 0.8s;
-			position: absolute;
-			top: 0;
-			right: 0;
-			background: #{$color};
-			z-index: 1;
-			height: 100%;
-			width: 0px;
-		}
-		&.animate {
-			&:after {
-				width: 100%;
-				left: 0;
-			}
-		}
-	}
-}
 
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 1s;
+  transition: opacity 1s
 }
 
 .fade-enter,
 .fade-leave-to,
-.fade-leave-active {
-	opacity: 0;
+.fade-leave-active
+{
+  opacity: 0
 }
 
-.md-stroked {
-	border: 1px solid rgba(33, 33, 33, 0.6) !important;
-	border-radius: 3px !important;
-	&.md-basic {
-		color: #222222 !important;
-		border: 1x solid #222222 !important;
-	}
-	&.md-primary {
-		color: #2ec5c5 !important;
-		border: 1px solid #2ec5c5 !important;
-	}
-	&.md-accent {
-		color: #ff5252 !important;
-		border: 1px solid #ff5252 !important;
-	}
+//.md-stroked{
+//    border: 1px solid rgba(33, 33, 33, .6) !important;
+//    border-radius: 3px !important;
+//    &.md-basic{
+//        color: #222222 !important;
+//        border: 1x solid #222222 !important;
+//    }
+//    &.md-primary{
+//        color: #2ec5c5 !important;
+//        border: 1px solid #2ec5c5 !important;
+//    }
+//    &.md-accent{
+//        color: #ff5252 !important;
+//        border: 1px solid #ff5252 !important;
+//    }
+//}
+
+//.md-raised{
+//    &.md-primary{
+//        color: white !important;
+//    }
+//}
+
+.text-decoration-line-through{
+    text-decoration: line-through !important;
 }
 
-.md-raised {
-	&.md-primary {
-		color: white !important;
-	}
+@mixin secondary-button-br($bg-color, $text-color){
+    border: 1.5px solid #{$text-color};
+    height: 35px;
+    width: 140px;
+    padding: 0;
+    background-color: transparent;
+    position: relative;
+    border: none !important;
+    &:hover div::before{
+        height: 100%;
+    }
+    &:hover div::after{
+        width: 100%;
+    }
+    div{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        color: $text-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $main-green;
+        &:after, &:before{
+            transition: .2s all;
+            position: absolute;
+            content: '';
+            background: #{$bg-color};
+        }
+        &:after{
+            width: 0%;
+            height: 1px;
+            top: 0;
+            left: 0;
+        }
+        &:before{
+            width: 1px;
+            height: 0%;
+            top: 0;
+            left: 0;
+        }
+    }
+    &:after, &:before{
+        position: absolute;
+        content: '';
+        background: #{$bg-color};
+    }
+    &:after{
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        right: 0;
+    }
+    &:before{
+        width: 1px;
+        height: 100%;
+        bottom: 0;
+        right: 0;
+    }
 }
 
-.text-decoration-line-through {
-	text-decoration: line-through !important;
-}
-
-@mixin secondary-button-br($bg-color, $text-color) {
-	border: 1.5px solid #{$text-color};
-	height: 35px;
-	width: 140px;
-	padding: 0;
-	background-color: transparent;
-	position: relative;
-	border: none !important;
-	&:hover div::before {
-		height: 100%;
-	}
-	&:hover div::after {
-		width: 100%;
-	}
-	div {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		color: $text-color;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: $main-green;
-		&:after,
-		&:before {
-			transition: 0.2s all;
-			position: absolute;
-			content: '';
-			background: #{$bg-color};
-		}
-		&:after {
-			width: 0%;
-			height: 1px;
-			top: 0;
-			left: 0;
-		}
-		&:before {
-			width: 1px;
-			height: 0%;
-			top: 0;
-			left: 0;
-		}
-	}
-	&:after,
-	&:before {
-		position: absolute;
-		content: '';
-		background: #{$bg-color};
-	}
-	&:after {
-		width: 100%;
-		height: 1px;
-		bottom: 0;
-		right: 0;
-	}
-	&:before {
-		width: 1px;
-		height: 100%;
-		bottom: 0;
-		right: 0;
-	}
-}
-
-@mixin secondary-button-bl($bg-color, $text-color) {
-	border: 1.5px solid #{$text-color};
-	height: 35px;
-	width: 140px;
-	padding: 0;
-	background-color: transparent;
-	position: relative;
-	border: none !important;
-	&:hover div::before {
-		height: 100%;
-	}
-	&:hover div::after {
-		width: 100%;
-	}
-	div {
-		position: relative;
-		width: 100%;
-		height: 100%;
-		color: $text-color;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: $main-green;
-		&:after,
-		&:before {
-			transition: 0.2s all;
-			position: absolute;
-			content: '';
-			background: #{$bg-color};
-		}
-		&:after {
-			width: 0%;
-			height: 1px;
-			top: 0;
-			left: 100%;
-		}
-		&:before {
-			width: 1px;
-			height: 0%;
-			top: 0;
-			left: 100%;
-		}
-	}
-	&:after,
-	&:before {
-		position: absolute;
-		content: '';
-		background: #{$bg-color};
-	}
-	&:after {
-		width: 100%;
-		height: 1px;
-		bottom: 0;
-		left: 0;
-	}
-	&:before {
-		width: 1px;
-		height: 100%;
-		bottom: 0;
-		left: 0;
-	}
+@mixin secondary-button-bl($bg-color, $text-color){
+    border: 1.5px solid #{$text-color};
+    height: 35px;
+    width: 140px;
+    padding: 0;
+    background-color: transparent;
+    position: relative;
+    border: none !important;
+    &:hover div::before{
+        height: 100%;
+    }
+    &:hover div::after{
+        width: 100%;
+    }
+    div{
+        position: relative;
+        width: 100%;
+        height: 100%;
+        color: $text-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $main-green;
+        &:after, &:before{
+            transition: .2s all;
+            position: absolute;
+            content: '';
+            background: #{$bg-color};
+        }
+        &:after{
+            width: 0%;
+            height: 1px;
+            top: 0;
+            left: 100%;
+        }
+        &:before{
+            width: 1px;
+            height: 0%;
+            top: 0;
+            left: 100%;
+        }
+    }
+    &:after, &:before{
+        position: absolute;
+        content: '';
+        background: #{$bg-color};
+    }
+    &:after{
+        width: 100%;
+        height: 1px;
+        bottom: 0;
+        left: 0;
+    }
+    &:before{
+        width: 1px;
+        height: 100%;
+        bottom: 0;
+        left: 0;
+    }
 }
 
 .cursor-pointer {
-	cursor: pointer !important;
-}
-
-.fake-link {
-	@extend .cursor-pointer;
-	color: $main-green !important;
-	text-decoration: underline !important;
+    cursor: pointer !important;
 }

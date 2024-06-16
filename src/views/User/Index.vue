@@ -1,40 +1,74 @@
 <template>
-	<div class="profile">
-		<TopNav />
-		<Tabs />
-	</div>
+    <div id="profile" class="container">
+        <div class="row">
+            <div class="col-12">
+                <md-tabs
+                    ref="userTabs"
+                    @md-changed="onTabChange"
+                    md-alignment="centered"
+                >
+                    <md-tab id="profile-settings" md-label="Perfil">
+                        <settings />
+                        <update-password />
+                    </md-tab>
+                    <md-tab
+                        id="profile-addresses"
+                        md-label="Direcciones de envío"
+                    >
+                        <addresses />
+                    </md-tab>
+                    <md-tab id="profile-history" md-label="Compras">
+                        <history />
+                    </md-tab>
+                </md-tabs>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import Tabs from './Tabs'
-import { mapActions } from 'vuex'
+import Settings from "@/views/User/Settings.vue";
+import History from "@/views/User/History.vue";
+import Addresses from "@/views/User/Addresses.vue";
+import UpdatePassword from "@/views/User/UpdatePassword.vue";
+import { mapActions } from "vuex";
+
 export default {
-	name: 'User',
-	methods: {
-		...mapActions('background', {
-			unsetWhiteIcons: 'unsetWhiteIcons',
-		}),
-		...mapActions('user', {
-			setTab: 'setTab',
-		}),
-		verifyQueryParams() {
-			if (this.$route.query.goToOrders)
-				this.setTab('UserHistory')
-		}
-	},
-	mounted() {
-		document.title = 'Illicit Óptica - Cuenta'
-		if (!localStorage.getItem('token')) {
-			this.$router.push({ name: 'Auth' })
-		}
-		this.unsetWhiteIcons()
-		this.verifyQueryParams()
-	},
-	components: {
-		TopNav: () => import('./TopNav/Index'),
-		Tabs,
-	},
-}
+    name: "User",
+    components: {
+        Settings,
+        History,
+        Addresses,
+        UpdatePassword,
+    },
+    data: () => ({
+        activeTab: null,
+    }),
+    mounted() {
+        this.unsetWhiteIcons();
+        if (this.$route.query.active_tab) {
+            this.activeTab = this.$route.query.active_tab;
+            this.$refs.userTabs.activeTab = this.activeTab;
+        }
+    },
+    methods: {
+        ...mapActions("background", {
+            setWhiteIcons: "setWhiteIcons",
+            unsetWhiteIcons: "unsetWhiteIcons",
+        }),
+        onTabChange(activeTab) {
+            this.activeTab = activeTab;
+            let query = { ...this.$route.query, active_tab: activeTab };
+            let newUrl = `${this.$route.path}?${new URLSearchParams(query).toString()}`;
+            window.history.pushState({}, "", newUrl);
+        },
+    },
+};
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+#profile {
+    margin-top: 60px;
+    min-height: calc(100vh - 55px);
+}
+</style>
