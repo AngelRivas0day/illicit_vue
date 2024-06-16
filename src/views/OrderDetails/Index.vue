@@ -498,14 +498,14 @@ export default {
                                         <div
                                             v-if="
                                                 order.delivery.type === 'delivery' &&
-                                                order.delivery.name &&
+                                                order.delivery.sender &&
                                                 order.delivery.code
                                             "
                                             class="col-12"
                                         >
                                             <p>
                                                 <strong>Paquetería:</strong>
-                                                {{ order.delivery.name }}
+                                                {{ order.delivery.sender }}
                                             </p>
                                             <p>
                                                 <strong>Guía:</strong>

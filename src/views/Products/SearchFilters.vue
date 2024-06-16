@@ -1,4 +1,7 @@
 <script>
+// import VueSlider from "vue-slider-component";
+// import "vue-slider-component/theme/default.css";
+
 export default {
     name: "SearchFilters",
     props: {
@@ -23,9 +26,9 @@ export default {
             { value: "armani", label: "Armani" },
             { value: "channel", label: "Channel" },
             { value: "coach", label: "Coach" },
-            { value: "giorgo_armany", label: "Giorgo Armani" },
+            { value: "giorgo-armany", label: "Giorgo Armani" },
             { value: "burberry", label: "Burberry" },
-            { value: "dolce_gabbana", label: "Dolce Gabbana" },
+            { value: "dolce-gabbana", label: "Dolce Gabbana" },
         ],
         availableLensMaterials: [
             { value: "Mica", label: "Mica" },
@@ -40,6 +43,7 @@ export default {
             { value: "Acetato", label: "Acetato" },
             { value: "Otros", label: "Otros" },
         ],
+        // priceRange: null,
     }),
     methods: {
         clearFilters() {
@@ -83,11 +87,7 @@ export default {
 <template>
     <div class="filters-container mb-0">
         <md-list class="md-list-filter">
-            <md-list-item
-                class="md-list-filter-item"
-                :md-ripple="false"
-                md-expand
-            >
+            <md-list-item class="md-list-filter-item" :md-ripple="false" md-expand>
                 <md-icon class="md-list-item-icon">filter_list</md-icon>
                 <span class="md-list-item-text">Filtros</span>
                 <md-list class="md-list-filters" slot="md-expand">
@@ -106,9 +106,7 @@ export default {
                                     <md-chip
                                         class="option"
                                         :class="{
-                                            active: filters.brands.includes(
-                                                brand,
-                                            ),
+                                            active: filters.brands.includes(brand),
                                         }"
                                         v-for="brand in availableBrands"
                                         :key="brand.value"
@@ -118,16 +116,14 @@ export default {
                                     >
                                 </div>
                             </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
+                            <!-- <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
                                 <div class="filter-title">Precio</div>
                                 <div class="filter-options">
-                                    slider component!
+                                    <vue-slider v-model="priceRange"></vue-slider>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
-                                <div class="filter-title">
-                                    Material del lente
-                                </div>
+                                <div class="filter-title">Material del lente</div>
                                 <div class="filter-options">
                                     <md-chip
                                         class="option"
@@ -145,9 +141,7 @@ export default {
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6 mb-2">
-                                <div class="filter-title">
-                                    Material de la montura
-                                </div>
+                                <div class="filter-title">Material de la montura</div>
                                 <div class="filter-options">
                                     <md-chip
                                         class="option"

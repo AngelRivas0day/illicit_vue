@@ -78,8 +78,8 @@ export default {
     components: { SearchFilters, ProductCard },
     mounted() {
         const { category_id = null, event_id = null } = this.$route.query;
-        const validRender = category_id || event_id;
-        if (!validRender) {
+        const atLeastCategoryOrEventId = category_id || event_id;
+        if (!atLeastCategoryOrEventId) {
             this.$router.push({ name: "Home" });
             this.$notify({
                 title: "Error",
