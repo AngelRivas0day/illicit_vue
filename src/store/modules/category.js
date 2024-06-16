@@ -1,4 +1,4 @@
-import * as api from '@/api/api'
+import * as api from '@/services/api'
 
 const state = {
 	error: null,
