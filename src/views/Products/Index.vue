@@ -99,6 +99,7 @@ export default {
         this.fetchDataFunction = this.fetchCategoryProducts;
         this.categoryId = category_id;
         this.fetchCategory();
+        this.watchEventOrCatogeryChanges();
     },
     data: () => ({
         categoryId: null,
@@ -125,6 +126,35 @@ export default {
             setWhiteIcons: "setWhiteIcons",
             unsetWhiteIcons: "unsetWhiteIcons",
         }),
+        watchEventOrCatogeryChanges() {
+            this.$watch(
+                () => this.$route.query,
+                async (query) => {
+                    const { category_id = null, event_id = null } = query;
+                    const atLeastCategoryOrEventId = category_id || event_id;
+                    if (!atLeastCategoryOrEventId) {
+                        this.$router.push({ name: "Home" });
+                        this.$notify({
+                            title: "Error",
+                            message:
+                                "No se ha especificado una categoría o evento válido",
+                            type: "error",
+                        });
+                        return;
+                    }
+                    this.filters.end = { value: this.pageSize };
+                    if (event_id) {
+                        this.fetchDataFunction = this.fetchEventProducts;
+                        this.eventId = event_id;
+                        this.fetchEvent();
+                        return;
+                    }
+                    this.fetchDataFunction = this.fetchCategoryProducts;
+                    this.categoryId = category_id;
+                    this.fetchCategory();
+                },
+            );
+        },
         async fetchEvent() {
             try {
                 const { data } = await Get({
