@@ -114,6 +114,33 @@
                 </md-button>
             </md-card-actions>
         </md-card>
+        <md-card v-if="promoCodeUsage" class="md-dark md-dense my-4">
+            <md-card-header>
+                <md-card-header-text>
+                    <div class="md-title">Tu código promocional</div>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <div class="row">
+                    <div class="col-12">
+                        <div v-if="promoCodeUsage.usedBy">
+                            Ha sido usado por
+                            {{ promoCodeUsage.usedBy }}
+                        </div>
+                        <div v-else>
+                            <p>
+                                Tu código promocional no ha sido usado aún. Regala 100 MXN
+                                a un amigo compartiendo tu código promocional.
+                            </p>
+                            <md-chip class="md-primary" md-clickable>
+                                <md-icon>content_copy</md-icon>
+                                <span @click="copyPromoCode">Copiar código</span>
+                            </md-chip>
+                        </div>
+                    </div>
+                </div>
+            </md-card-content>
+        </md-card>
     </div>
 </template>
 
@@ -143,6 +170,7 @@ export default {
         showStoreReference: null,
         storeName: null,
         showVerificationEmailWarning: false,
+        promoCodeUsage: null,
     }),
     methods: {
         /**
@@ -155,10 +183,16 @@ export default {
             try {
                 this.errorMessage = null;
                 this.loading = true;
-                const { data: settings } = await Get({
-                    endpoint: "clients",
-                    useToken: true,
-                });
+                const [{ data: settings }, { data: promoCodeUsage }] = await Promise.all([
+                    Get({
+                        endpoint: "clients",
+                        useToken: true,
+                    }),
+                    Get({
+                        endpoint: "clients/my-promo-code",
+                        useToken: true,
+                    }),
+                ]);
                 const {
                     email,
                     type,
@@ -166,6 +200,7 @@ export default {
                     email_verified,
                     ...restOfSettings
                 } = settings;
+                this.promoCodeUsage = promoCodeUsage;
                 this.showVerificationEmailWarning = !email_verified;
                 this.disableBirthDayField = !!restOfSettings.birth_day;
                 this.email = email;
@@ -209,6 +244,20 @@ export default {
                 this.loading = false;
                 this.loadingSubmit = false;
             }
+        },
+        copyPromoCode() {
+            const el = document.createElement("textarea");
+            el.value = this.promoCodeUsage.promoCode.id;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand("copy");
+            document.body.removeChild(el);
+            this.$notify({
+                group: "user",
+                type: "success",
+                title: "Copiado",
+                text: "El c&oacute;digo promocional ha sido copiado.",
+            });
         },
     },
     validations: {

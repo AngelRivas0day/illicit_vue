@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 
-const base_url = "http://localhost:3000";
+const base_url = process.env.VUE_APP_API_URL;
 
 function setHeaders(contentType, token = null) {
     let config = {};
